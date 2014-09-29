@@ -5,31 +5,168 @@ X
 
 CSS Transitions enable simple animations, but the start and end states of the animation are controlled by the existing property values, and provide us with little to no control over how the animation progresses.
 
-Animations are similar to transitions in that they change the value of CSS properties over time. But unlike transitions, where we can only use timing functions to control how the animation goes from the original value to the final value, CSS keyframe animations enable us to granularly control what happens throughout the animation. With transitions, going from black to white will only display varying shades of grey. With animation, you can stick with only grays, or you can animate thru various colors: use as many keyframes as you want to create the desired effect.
+Animations are similar to transitions in that they change the value of CSS properties over time. But unlike transitions, where we can only use timing functions to control how the animation goes from the original value to the final value, CSS keyframe animations enable us to granularly control what happens throughout the animation. With transitions, you can only go from the existing value to a new value: with CSS animations, the property values set on the animated element don't necessarily have to be part of the animation progression.With transitions, going from black to white will only display varying shades of grey. With animation, you can stick with only grays, or you can animate thru various colors: use as many keyframes as you want to create the desired effect.
 
-While transitions trigger implicit property values changes, animations are explicitly executed when the animation keyframe properties are applied. 
+While transitions trigger implicit property values changes, animations are explicitly executed when the animation keyframe properties are applied.
 
 CSS animation enables us to animate the values of CSS properties over time, using keyframes. Similar to transitions, animation provides us with greater control over the duration, number of repeats, the repeating behavior, and what happens before the first animation commences and after the last animation iteration concludes. CSS animation properties allow us to control the timing, and even pause an animation mid-stream.
 
-In addition to the property-specific values listed in their definitions, all properties defined in this specification also accept the `initial` and `inherit` keyword as their property value. 
+The first step in creating an animation is creating a keyframe animation that defines which properties will be animated and how with an @keyframes at-rule. The second step is to apply the keyframe animation you created to one or more elements in your document or application, defining how that animation will progress with the various animation properties
+
+## Keyframes
+
+To animate, within a selector's CSS we provide, at minimum, the name and duration of a keyframe animation. We define this CSS animation separately using the @keyframes at-rule.
+
+To define our CSS animation, we need to declare its keyframes using the @keyframes rule. We give our keyframe animation a name which we use within a CSS selector's code block to attach this particular animation to the elements and pseudo elements selected by that particular code block.
+
+The @keyframes at-rule includes the animation identifier and one or more keyframe blocks. Each keyframe block includes one or more keyframe selectors and a declaration block of zero or more property / value pairs.
+
+@keyframes animation_identifier {
+  keyframe_selector {
+    properties: values;
+  }
+}
+
+The animation_identfier is the name you give your animation for future reference. The keyframe block includes the keyframe_selector is the keyframe time position along the duration of the animation in either percentages or the keyterms `from` or `two`, and the declaration block, which includes the series of zero or more property value pairs enclosed in curly braces.
+
+## Setting up your keyframe animation
+
+We create a `@keyframes` at-rule, with an animation name, and a series of keyframe selectors with blocks of CSS in which you declare the properties we want to animate at that percentage of the way thru the animation. The keyframe we declare don't in themselves animate anything. Rather, we must attach the keyframe animations we created via the animation-name property, whose value is the name we provided within our at-rule.
+
+Start with the at-rule declaration, followed by a name you create, and brackets:
+
+	@keyframes the_name_you want {
+
+	}
+
+The name, which you create, is an identifier, not a string, which we later reference by the `animation-name` property. Identifiers have specific rules. First, they can't be quoted. You can use any characters [a-zA-Z0-9], the hyphen (-), underscore (_), and and any ISO 10646 character U+00A0 and higher.
+ISO 10646 is the universal character set. This means you can use any character in the unicode standard that matches the regular expression [-_a-zA-Z0-9\u00A0-\u10FFFF].
+
+There are some limitations on the name. As mentioned above, do not quote your animation name. The name can't start with a digit [0-9], two hyphens, though one hyphen is fine as long as it is not followed by a digit, unless it's escaped with a back slash. Make sure to escape them any escape characters. For example, Q&A must be written as Q\&A\!. âœŽ can be left as âœŽ, but if you are going to use any keyboard characters that aren't letters or digits, like !, @, #, $, %, ^, &, *, (, ), +, =, ~, `, ,, ., ', ", ;, :, [, ], {, }, |, \ and /, escape it with a back slash.
+
+Also, don't use any of the keyterms covered in this chapter as the name for your animation. For example, possible values for the animation properties include `paused`, `running`, `infinite`, `backwards`, and `forwards`, among others. Using an animation property keyterms, while not prohibited by the spec, will likely break your animation when using the `animation` shorthand property discussed below.
+
+After declaring the name of our @keyframe animation, we encompass all the rules of our at-rule in curly braces. This is where we will put all our keyframes.
+
+### Keyframe Selectors
+
+Keyframes selectors provide points during our animation where we set the values of the properties we want to animate. The entire at-rule specifies the behavior of one full iteration of the animation. The animation may iterate one or more times, or even less than one time.
+
+The keyframe selectors consist of a comma-separated list of one or more percentage values or the keywords `from` or `to`. The keyword `from` is equal to `0%`. The keyword `to` equals `100%`.  The selector is used to specify the percentage along the duration of the animation that the keyframe represents. The keyframe itself is specified by the block of property values declared on the selector. The `%` unit must be used on percentage values: in other words, `0` is invalid as a keyframe selector.
+
+  @keyframes W {
+  	from {
+  	 	left: 0;
+  	  top: 0;
+  	}
+  	25%, 75% {
+  	 	top: 100%;
+  	}
+  	50% {
+  		top: 50%;
+  	}
+  	to {
+  	left: 100%;
+  		top: 0;
+  	}
+  }
+
+In the above example, which would move a relatively or absolutely positioned element along a W shaped path if applied, has 5 keyframes at the 0%, 25%, 50%, 75% and 100% mark. The `from` is the 0% mark, the `to` is the 100% mark, and, as the property values we set for both the 25% and 75% mark is the same, we put two together as a comma-separated list of keyframe selectors.
+
+Note that with the 25% and 75% on the same line, the selectors are not listed in order: they don't need to be. For ease of legibility, it is highly encouraged to progress from the 0% to the 100% mark, but it is not required.
+
+If a `0%` or `from` keyframe is not specified, then the user agent constructs a `0%` keyframe using the original values of the properties being animated: as if the 0% keyframe were declared with the property values when no animation was applied. Similarly, if the `100%` or `to` keyframe is not defined, the browser creates a faux `100%` keyframe using the value the element would have had had no animation been set on it.
+
+Assuming we have a background color change animation:
+
+	@keyframes change_bgcolor {
+  		45% { background-color: green; }
+  		55% { background-color: blue; }
+	}
+
+And the element originally had it's background-color set to red, it would be as if the animation were written as:
+
+	@keyframes change_bgcolor {
+	   0% { background-color: red;}
+		45% { background-color: green; }
+		55% { background-color: blue; }
+	  100% { background-color: red;}
+	}
+or, remembering that we can including multiple, identical keyframes as a comma separated list :
+
+	@keyframes change_bgcolor {
+	   0%, 100% { background-color: red;}
+		45% { background-color: green; }
+		55% { background-color: blue; }
+	}
+
+Negative values or values greater than `100%` are not valid and will be ignored.
+
+In the original -webkit- implementation of animation, each keyframe could only be declared once: if declared more than once, only the last declaration would be applied, and the previous keyframe selector block was ignored. This has been updated. Now, similar to the rest of CSS, the values in the keyframe declaration blocks with identical keyframe values cascade. In the standard (non prefixed) syntax, the `W` animation above can be written with the `to`, or `100%`, declared twice, overriding the value of the left property:
+
+ @keyframes W {
+    from, to {
+      top: 0;
+      left: 0;
+    }
+    25%, 75% {
+      top: 100%;
+    }
+    50% {
+      top: 50%;
+    }
+    to {
+      left: 100%;
+    }
+  }
+
+Only animate animatable properties. Like the rest of CSS, properties and values in a keyframe declaration block that are not understood, are ignored. Properties that are not animatable are also ignored (with the exception of `animation-timing-function`).
+
+> Note: The `animation-timing-function`, described in greater detail below, white not an animatable property, is not ignored. If you include the `animation-timing-function` as a keyframe style rule within a keyframe selector block, the `animation-timing-function` will change to that timing function when the animation moves to the next keyframe.
+
+Do not try to animate between non-numeric values. You can animate between values that are written in a non-numeric way, as long as they can be extrapolated into a numberic value, like named colors which are extrapolated to hexadecimal color values.
+
+If the animation is set between two property values that don't have a mid-point, as the results may not be what you expect: the property will not animated correctly or at all. For example, you can't animate between height: auto; and height: 300px; There is no mid-point between auto and 300px. The element may still animate, but different browsers handle this differently: Firefox does not animate the element. Safari may animate as if auto is equal to 0, and both Opera and Chrome currently jump from the pre animated state to the post animated state half way thru the animation, which may or may not be at the 50% keyframe selector, depending on your animation timing function.
+
+Different browsers behave in differently for different properties when there is no midpoint, the behavior of your animation will be most predictable if you declare both a 0% and a 100% for every property you animate. For example, if you declare `border-radius: 50%;` in your animation, declare `border-radius: 0;` as-well, because there is no mid-point between `none` and anything: the default value of `border-radius` is `none`, not `0`.
+
+That being said, not all the properties need to be included in each keyframe block. As long as an animatable property is included in at-least one block with a value that is different then the non-animated attribute value, and there is a possible midpoint between those two values, that property will animate.
+
 
 ## Animation, Specificity and Precedence Order
 
 In terms of specificity, and which property values get applied: when an animation is attached to an element, it is as if the property values of that keyframe animation were set inline, `<div style="keyframe properties here">`. In general, the weight of a property attached with an ID selector 1-0-0 should take precedence over a property applied by an element selector 0-0-1. However, if that property value was changed via a keyframe animation, it will be applied as if that property/value pair were added as an inline style. A property added via a CSS animation, even if that animation was added on a CSS block that had very low specificity, will be applied to the element, in-spite of there being the same property applied to the same element via a more specific selector. Similar to when a property value is added with style="", if an !important is declared on a property value within the cascade, that will override the style that was added with an animation. (ex. http://codepen.io/estelle/pen/iDvBz). There is discussion in the CSS Working group of making animations override even `!important` property values.
 
+That being said, don't include `!important` within your animation declaration block: the property/value upon which it is declared will be ignored.
 
-If there are multiple animations specifying values for the same property, the property value from the last animation applied will override the previous animations. 
+If there are multiple animations specifying values for the same property, the property value from the last animation applied will override the previous animations.
 
-	div { 	
- 		animation-name: red, green, blue;
- 		animation-duration: 11s, 9s, 6s;
- 	} 	
+  div {
+    animation-name: red, green, blue;
+    animation-duration: 11s, 9s, 6s;
+  }
 
 In the code example above, if red, green and blue are all keyframe animations that change the color property to their respective names, once the `animation-name` and `animation duration` properties are applied to all a <div>, for the first 6 seconds the color will be blue, then green for 3 seconds, then red for 2 seconds, before returning to its default color. If `animation-fill-mode: both;` were added to the mix, the color would always be blue, as the last animation, or blue, overrides the previous green animation, which overrides the red first animation.
 
-The default properties of an element are not impacted before the animation starts, and the properties return to their original values after the animation ends unless an `animation-fill-mode` value other than the default `none` has been set. 
+The default properties of an element are not impacted before the animation starts, and the properties return to their original values after the animation ends unless an `animation-fill-mode` value other than the default `none` has been set.
 
 When an animation is attached to an element, the properties of animation keyframes only effect the element on which they are applied while the animation is iterating, which is the time after the `animation-delay` has expired, through the completion of the last animation iteration. Again, you can ensure the keyframe animation properties impact the element before the expiration of the `animation-delay` and after the last iteration ends with the `animation-fill-mode` property.
+
+
+
+
+============
+ABOVE IS WHAT ESTELLE WROTE,
+BELOW IS THE SPECIFICATION
+============
+
+
+
+In addition to the property-specific values listed in their definitions, all properties defined in this specification also accept the `initial` and `inherit` keyword as their property value.
+
+
+
+
 
 
 The start time of an animation is the time at which the style applying the animation and the corresponding @keyframes rule are both resolved. If an animation is specified for an element but the corresponding @keyframes rule does not yet exist, the animation cannot start; the animation will start from the beginning as soon as a matching @keyframes rule can be resolved. An animation specified by dynamically modifying the element’s style will start when this style is resolved; that may be immediately in the case of a pseudo style rule such as hover, or may be when the scripting engine returns control to the browser (in the case of style applied by script). Note that dynamically updating keyframe style rules does not start or restart an animation.
@@ -38,25 +175,25 @@ An animation applies to an element if its name appears as one of the identifiers
 
 The end of the animation is defined by the combination of the `animation-duration`, `animation-iteration-count` and `animation-fill-mode` properties.
 
- 	div { 	
- 		animation-name: diagonal-slide;
-  		animation-duration: 5s;
-  		animation-iteration-count: 10; }
- 
- 	@keyframes diagonal-slide {
+  div {
+    animation-name: diagonal-slide;
+      animation-duration: 5s;
+      animation-iteration-count: 10; }
 
-  		from {
-    		left: 0;
-    		top: 0;
-  		}
+  @keyframes diagonal-slide {
 
-  		to {
-    		left: 100px;
-    		top: 100px;
-  		}
-  	}
+      from {
+        left: 0;
+        top: 0;
+      }
 
-This will produce an animation that moves an element from (0, 0) to 	(100px, 100px) over five seconds and repeats itself nine times 	(for a total of ten iterations).
+      to {
+        left: 100px;
+        top: 100px;
+      }
+    }
+
+This will produce an animation that moves an element from (0, 0) to   (100px, 100px) over five seconds and repeats itself nine times  (for a total of ten iterations).
 
 
 
@@ -66,63 +203,22 @@ While authors can use animations to create dynamically changing content, dynamic
 
 Implementations may ignore animations when the rendering medium is not interactive e.g. when printed. A future version of this specification may define how to render animations for these media.
 
-## Keyframes
 
-To animate, within a selector's CSS we provide, at minimum, the name and duration of a keyframe animation. We define this CSS animation separately using the @keyframes at-rule.
 
-To define our CSS animation, we need to declare its keyframes using the @keyframes rule. We give our keyframe animation a name which we use within a CSS selector's code block to attach this particular animation to the elements and pseudo elements selected by that particular code block.
 
-We create a `@keyframes` at-rule, with an animation name, and a series of keyframe selectors with blocks of CSS in which you declare the properties we want to animate at that percentage of the way thru the animation. The keyframe we declare don't in themselves animate anything. Rather, we must attach the keyframe animations we created via the animation-name property, whose value is the name we provided within our at-rule.
 
-Start with the at-rule declaration, followed by a name you create, and brackets:
 
-	@keyframes the_name_you want {
-	
-	}
 
-The name, which you create, is an identifier, not a string, which we later reference by the `animation-name` property. Identifiers have specific rules. First, they can't be quoted. You can use any characters [a-zA-Z0-9], the hyphen (-), underscore (_), and and any ISO 10646 character U+00A0 and higher.
-ISO 10646 is the universal character set. This means you can use any character in the unicode standard that matches the regular expression [-_a-zA-Z0-9\u00A0-\u10FFFF].
 
-There are some limitations on the name. As mentioned above, do not quote your animation name. The name can't start with a digit [0-9], two hyphens, though one hyphen is fine as long as it is not followed by a digit, unless it's escaped with a back slash. Make sure to escape them any escape characters. For example, Q&A must be written as Q\&A\!. âœŽ can be left as âœŽ, but if you are going to use any keyboard characters that aren't letters or digits, like !, @, #, $, %, ^, &, *, (, ), +, =, ~, `, ,, ., ', ", ;, :, [, ], {, }, |, \ and /, escape it with a back slash.
 
-Also, don't use any of the keyterms covered in this chapter as the name for your animation. For example, possible values for the animation properties include `paused`, `running`, `infinite`, `backwards`, and `forwards`, among others. Using an animation property keyterms, while not prohibited by the spec, will likely break your animation when using the `animation` shorthand property discussed below. 
 
-After declaring the name of our @keyframe animation, we encompass all the rules of our at-rule in curly braces. This is where we will put all our keyframes.
 
-Keyframes selectors provide points during our animation where we set the values of the properties we want to animate. The entire at-rule specifies the behavior of one full iteration of the animation. The animation may iterate one or more times, or even less than one time.
 
-The keyframe selectors consist of a comma-separated list of one or more percentage values or the keywords `from` or `to`. The keyword `from` is equal to `0%`. The keyword `to` equals `100%`.  The selector is used to specify the percentage along the duration of the animation that the keyframe represents. The keyframe itself is specified by the block of property values declared on the selector. The `%` unit must be used on percentage values: in other words, `0` is invalid as a keyframe selector.
 
- 	@keyframes W { 	
- 		from {
- 		 	left: 0;
- 		  	top: 0; 	
- 		} 	
- 		25%, 75% {
- 		 	top: 100%;
- 		}
- 		50% {
- 			top: 50%;
-	 	}
-	 	to {
-	  		left: 100%;
-	 		top: 0;
-	 	}
-	 }
-
-In the above example, which would move a relatively or absolutely positioned element along a W shaped path if applied, has 5 keyframes at the 0%, 25%, 50%, 75% and 100% mark. The `from` is the 0% mark, the `to` is the 100% mark, and, as the property values we set for both the 25% and 75% mark is the same, we put two together as a comma-separated list of keyframe selectors.
-
-Note that with the 25% and 75% on the same line, the selectors are not listed in order: they don't need to be. For ease of legibility, it is highly encouraged to progress from the 0% to the 100% mark, but it is not required. 
-
-If a `0%` or `from` keyframe is not specified, then the user agent constructs a `0%` keyframe using the computed values of the properties being animated: as if the 0% keyframe were declared with the property values set in the default state when no animation was applied. Similarly, if the `100%` or `to` keyframe is not defined, the browser creates a faux `100%` keyframe using the value the element would have had had no animation been set on it. Negative values or values greater than `100%` are not valid and will be ignored.
-
-Each keyframe can only be declared once: if declared more than once, only the last declaration will be applied, and the previous keyframe selector box with the same selector value will be ignored. Unlike the rest of CSS, the values do not cascade in this instance. XXXX THIS IS THE OLD SPEC: TEST IF SUPPORTED XXXX
-
-The keyframe declaration block for a keyframe rule consists of properties and values. Properties that are unable to be animated are ignored in these rules, with the exception of `animation-timing-function`, the behavior of which is described below. In addition, keyframe rule declarations qualified with !important are ignored.
 
 Issue: Need to describe what happens if a property is not present in all keyframes.
 
-The @keyframes rule that is used by an animation will be the last one encountered in sorted rules order that matches the name of the animation specified by the `animation-name` property. 
+The @keyframes rule that is used by an animation will be the last one encountered in sorted rules order that matches the name of the animation specified by the `animation-name` property.
  div {
   		animation-name: slide-right;
   		animation-duration: 2s; }
@@ -161,9 +257,9 @@ At the 1s mark, the slide-right animation will have the same state as if we had 
  }
 
 
-Note: Since empty @keyframes rules are valid, they may hide the keyframes of those preceding animation definitions with a matching name. 
+Note: Since empty @keyframes rules are valid, they may hide the keyframes of those preceding animation definitions with a matching name.
 
-To determine the set of keyframes, all of the values in the selectors are sorted in increasing order by time. The rules within the @keyframes rule then cascade; the properties of a keyframe may thus derive from more than one @keyframes rule with the same selector value. 
+To determine the set of keyframes, all of the values in the selectors are sorted in increasing order by time. The rules within the @keyframes rule then cascade; the properties of a keyframe may thus derive from more than one @keyframes rule with the same selector value.
 
 If a property is not specified for a keyframe, or is specified but invalid, the animation of that  property proceeds as if that keyframe did not exist. Conceptually, it is as if a set of keyframes is constructed for each property that is present in any of the keyframes, and an animation is run independently for each property.
  @keyframes wobble {
@@ -184,7 +280,7 @@ If a property is not specified for a keyframe, or is specified but invalid, the 
   		} }
   Four keyframes are specified for the animation named "wobble". In the first keyframe, 	shown at the beginning of the animation cycle, the value of the `left` property being animated is `100px`. By 40% of the animation duration, `left` has animated to `150px`. 	At 60% of the animation duration, `left` has animated back to `75px`. At the end of the animation cycle, the value of `left` has returned to `100px`. The diagram below shows the state of the animation if it were given a duration of `10s`.
 
-<figure> 		!`(./animation1.png) 		<figcaption>Animation states specified by keyframes</figcaption> 	</figure> 
+<figure> 		!`(./animation1.png) 		<figcaption>Animation states specified by keyframes</figcaption> 	</figure>
  The following is the grammar for the keyframes rule:
  <pre>  keyframes_rule: KEYFRAMES_SYM S+ IDENT S* '{' S* keyframes_blocks '}' S*;
 
@@ -221,10 +317,10 @@ A keyframe style rule may also declare the timing function that is to be used as
     		top: 100px;
   		}
 	}
-	
-Five keyframes are specified for the animation named "bounce". Between the first and second 	keyframe (i.e., between 0% and 25%) an ease-out timing function is used. Between the second  and third keyframe (i.e., between 25% and 50%) an ease-in timing function is used. And so on. 
 
-The effect will appear as an element that moves up the page 50px, slowing down as it reaches its highest point then speeding up as it falls back to 100px. The second half of the animation behaves in a similar manner, but only moves the element 25px up the page. 
+Five keyframes are specified for the animation named "bounce". Between the first and second 	keyframe (i.e., between 0% and 25%) an ease-out timing function is used. Between the second  and third keyframe (i.e., between 25% and 50%) an ease-in timing function is used. And so on.
+
+The effect will appear as an element that moves up the page 50px, slowing down as it reaches its highest point then speeding up as it falls back to 100px. The second half of the animation behaves in a similar manner, but only moves the element 25px up the page.
 
 A timing function specified on the `to` or `100%` keyframe is ignored.
 
@@ -538,7 +634,7 @@ Attributes`(#interface-csskeyframerule-attributes)
  <dl data-dfn-for=csskeyframerule data-dfn-type=attribute>
  	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-keytext>keyText`(#dom-csskeyframesrule-keytext)</dfn>, of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		This attribute represents the keyframe selector as a comma-separated list of 		percentage values. The `from>from` and `to>to` keywords map to 0% and 100%, 		respectively.
 
-<p>            If `keyText`(#dom-csskeyframesrule-keytext title=keytext "keytext") is updated with an invalid keyframe selector, 
+<p>            If `keyText`(#dom-csskeyframesrule-keytext title=keytext "keytext") is updated with an invalid keyframe selector,
             a `SyntaxError`(http://dom.spec.whatwg.org/#syntaxerror title=syntaxerror "syntaxerror") exception must be thrown.
  	<dt><dfn class=idl-code data-dfn-for=csskeyframerule data-dfn-type=attribute data-export="" id=dom-csskeyframerule-style>style`(#dom-csskeyframerule-style)</dfn>, of type `CSSStyleDeclaration`(http://dev.w3.org/csswg/cssom-1/#cssstyledeclaration title=cssstyledeclaration "cssstyledeclaration") 	<dd> 		This attribute represents the style associated with this keyframe. </dl>
 
@@ -585,8 +681,8 @@ The <dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-
 
 Parameters:
  <dl>
- 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/deleteRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruledeleterule-key>key`(#dom-csskeyframesruledeleterule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between 
-            0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and 
+ 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/deleteRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruledeleterule-key>key`(#dom-csskeyframesruledeleterule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between
+            0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and
             100%, respectively. </dl>
 
 No Return Value
@@ -599,9 +695,9 @@ The `findRule` method`
 The <dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-findrule title=findrule()>findRule()`(#dom-csskeyframesrule-findrule)</dfn> returns the rule with a key matching the passed key. If no such rule exists, a null value is returned.
 
 Parameters:
- <dl> 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/findRule() data-dfn-type=argument data-export="" id=dom-csskeyframesrulefindrule-key>key`(#dom-csskeyframesrulefindrule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between 
-            0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and 
-            100%, respectively.	
+ <dl> 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/findRule() data-dfn-type=argument data-export="" id=dom-csskeyframesrulefindrule-key>key`(#dom-csskeyframesrulefindrule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between
+            0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and
+            100%, respectively.
     </dl>
 
 Return Value:
