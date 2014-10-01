@@ -307,7 +307,7 @@ Functions	skewX(), skewY()Permitted value	<angle>Function	skew()Perm
 
 ### Matrix functions
 
-
+much math here (yikes)
 
 ### The perspective function
 
