@@ -108,7 +108,7 @@ Figure 6. A transformed div element.
 The functions are processed one at a time, starting with the first (leftmost) and proceeding to the last (rightmost). This first-to-last processing order is important, because changing the order can lead to drastically different results. Consider the following two rules, which have the results shown in Figure 7.
 
 	img#one {transform: translateX(200px) rotate(45deg);}
-
+	
 	img#two {transform: rotate(45deg) translateX(200px);}
 
 [[]]
@@ -120,7 +120,7 @@ In the first instance, an image is translated (moved) 200 pixels along its X axi
 Compare this to a situation where an element is translated and then scaled, or vice versa; it doesn't matter which is which, because the end result is the same.
 
 	img#one {transform: translateX(100px) scale(1.2);}
-
+	
 	img#two {transform: scale(1.2) translateX(100px);}
 
 The situations where the order doesn't matter are far outnumbered by the situations where it does, so in general it's a good idea to just assume the order always matters, even when it technically doesn't.
@@ -161,7 +161,7 @@ What makes this interesting is that even if you don't explicitly specify a trans
 
 This would rotate the translated, scaled image 45 degrees to its left on hover. The rotation would take place over zero seconds, because no transition interval was declared, but it's still an implicit transition. Thus, any state change can be thought of as a transition, and thus any transforms that are applied as a result of those state changes are additive with previous transforms.
 
-> As of mid-2014, transform still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
+> As of mid-2014, `transform` still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
 
 ## Transform functions
 
@@ -307,7 +307,7 @@ Functions	skewX(), skewY()Permitted value	<angle>Function	skew()Perm
 
 ### Matrix functions
 
-
+much math here (yikes)
 
 ### The perspective function
 
