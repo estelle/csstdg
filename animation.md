@@ -144,7 +144,7 @@ animation-name
 
  **Values:**
 
-  <@keyframes_identifier> | none | inherit | initial
+  &lt;@keyframes_identifier> | none | inherit | initial
 
  **Initial value:**
 
@@ -174,7 +174,7 @@ animation-duration
 
  **Values:**
 
-  <time>
+  &lt;time>
 
  **Initial value:**
 
@@ -199,7 +199,7 @@ animation-iteration-count
 
  **Values:**
 
-  <number> | infinite
+  &lt;number> | infinite
 
  **Initial value:**
 
@@ -257,7 +257,7 @@ animation-delay
 
  **Values:**
 
-  <time>
+  &lt;time>
 
  **Initial value:**
 
@@ -297,7 +297,7 @@ animation-timing-function
  **Values:**
 
   ease | linear | ease-in | ease-out | |ease-in-out | step-start | step-end | 
-  steps(<integer>, <start|end>), cubic-bezier(<number>, <number>, <number>, <number>)
+  steps(&lt;integer>, &lt;start|end>), cubic-bezier(&lt;number>, &lt;number>, &lt;number>, &lt;number>)
 
  **Initial value:**
 
@@ -326,29 +326,29 @@ The step timing function step-start
 The step-start function is equivalent to steps(1, start).
 step-end
 The step-end function is equivalent to steps(1, end).
-steps(<integer>[, [ start | end ] ]?)
+steps(&lt;integer>[, [ start | end ] ]?)
 
 
 Specifies a stepping function, described above, taking two parameters. The first parameter specifies the number of intervals in the function. It must be a positive integer (greater than 0). The second parameter, which is optional, is either the value ‘start’ or ‘end’, and specifies the point at which the change of values occur within the interval. If the second parameter is omitted, it is given the value ‘end’.
-cubic-bezier(<number>, <number>, <number>, <number>)
+cubic-bezier(&lt;number>, &lt;number>, &lt;number>, &lt;number>)
 Specifies a cubic-bezier curve. The four values specify points P1 and P2 of the curve as (x1, y1, x2, y2). Both x values must be in the range [0, 1] or the definition is invalid. The y values can exceed this range.
-<table>
-<tr><th>Name:<td>`animation-timing-function`
-<tr><th>Value:<td>`&lt;single-timing-function&gt;`
-<tr><th>Initial:<td>ease
-<tr><th>Applies to:<td>all elements, ::before and ::after pseudo-elements
-<tr><th>Inherited:<td>no
-<tr><th>Media:<td>interactive
-<tr><th>Computed value:<td>As specified
-<tr><th>Canonical order:<td>per grammar
-<tr><th>Percentages:<td>N/A
-<tr><th>Animatable:<td>no
-</table>
-The values and meaning of <dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-timing-function>&lt;single-timing-function&gt;`(#typedef-single-timing-function)</dfn> are identical to those of `">&lt;single-transition-timing-function&gt;`(http://dev.w3.org/csswg/css-transitions-1/#single-transition-timing-function title= "<single-transition-timing-function") `CSS3-TRANSITIONS`(#css3-transitions title=css3-transitions "css3-transitions").
+&lt;table>
+&lt;tr>&lt;th>Name:&lt;td>`animation-timing-function`
+&lt;tr>&lt;th>Value:&lt;td>`&lt;single-timing-function&gt;`
+&lt;tr>&lt;th>Initial:&lt;td>ease
+&lt;tr>&lt;th>Applies to:&lt;td>all elements, ::before and ::after pseudo-elements
+&lt;tr>&lt;th>Inherited:&lt;td>no
+&lt;tr>&lt;th>Media:&lt;td>interactive
+&lt;tr>&lt;th>Computed value:&lt;td>As specified
+&lt;tr>&lt;th>Canonical order:&lt;td>per grammar
+&lt;tr>&lt;th>Percentages:&lt;td>N/A
+&lt;tr>&lt;th>Animatable:&lt;td>no
+&lt;/table>
+The values and meaning of &lt;dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-timing-function>&lt;single-timing-function&gt;`(#typedef-single-timing-function)&lt;/dfn> are identical to those of `">&lt;single-transition-timing-function&gt;`(http://dev.w3.org/csswg/css-transitions-1/#single-transition-timing-function title= "&lt;single-transition-timing-function") `CSS3-TRANSITIONS`(#css3-transitions title=css3-transitions "css3-transitions").
 
 The timing function specified applies to e ach iteration of the animation, not the entire animation in full. For example, if an animation has `animation-timing-function: ease-in-out; animation-iteration-count: 2;`, it will ease in at the start, ease out as it approaches the end of its first iteration, ease in at the start of its second iteration, and ease out again as it approaches the end of the animation.
 
-<p class=note>  Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
+&lt;p class=note>  Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
 
 
 ### The `animation-play-state` property
@@ -356,7 +356,7 @@ The timing function specified applies to e ach iteration of the animation, not t
 The `animation-play-state` property defines whether the animation is running or paused.
 
 Name: animation-play-state
-Value:  <single-animation-play-state>#
+Value:  &lt;single-animation-play-state>#
 Initial:  running
 Applies to: all elements, ::before and ::after pseudo-elements
 Inherited:  no
@@ -365,7 +365,7 @@ Computed value: As specified
 Canonical order:  per grammar
 Percentages:  N/A
 Animatable: no
-<single-animation-play-state> = running | paused
+&lt;single-animation-play-state> = running | paused
 
 running
 While this property is set to running, the animation proceeds as normal.
@@ -383,7 +383,7 @@ The `animation-fill-mode` property defines what values are applied by the animat
 The animation-fill-mode property defines what values are applied by the animation outside the time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the animation-delay property). Also, by default an animation does not affect property values after the animation ends (determined by the animation-duration and animation-iteration-count properties). The animation-fill-mode property can override this behavior.
 
 Name: animation-fill-mode
-Value:  <single-animation-fill-mode>#
+Value:  &lt;single-animation-fill-mode>#
 Initial:  none
 Applies to: all elements, ::before and ::after pseudo-elements
 Inherited:  no
@@ -392,7 +392,7 @@ Computed value: As specified
 Canonical order:  per grammar
 Percentages:  N/A
 Animatable: no
-<single-animation-fill-mode> = none | forwards | backwards | both
+&lt;single-animation-fill-mode> = none | forwards | backwards | both
 
 none
 The animation has no effect when it is applied but not executing.
@@ -415,7 +415,7 @@ The `animation` shorthand property is a comma-separated list of animation defini
 
 
 Name: animation
-Value:  <single-animation>#
+Value:  &lt;single-animation>#
 Initial:  see individual properties
 Applies to: all elements, ::before and ::after pseudo-elements
 Inherited:  no
@@ -424,11 +424,11 @@ Computed value: As specified
 Canonical order:  per grammar
 Percentages:  N/A
 Animatable: no
-<single-animation> = <time> || <single-timing-function> || <time> || <single-animation-iteration-count> || <single-animation-direction> || <single-animation-fill-mode> || <single-animation-play-state> || <single-animation-name>
+&lt;single-animation> = &lt;time> || &lt;single-timing-function> || &lt;time> || &lt;single-animation-iteration-count> || &lt;single-animation-direction> || &lt;single-animation-fill-mode> || &lt;single-animation-play-state> || &lt;single-animation-name>
 
-Note that order is important within each animation definition: the first value in each <single-animation> that can be parsed as a <time> is assigned to the animation-duration, and the second value in each <single-animation> that can be parsed as a <time> is assigned to animation-delay.
+Note that order is important within each animation definition: the first value in each &lt;single-animation> that can be parsed as a &lt;time> is assigned to the animation-duration, and the second value in each &lt;single-animation> that can be parsed as a &lt;time> is assigned to animation-delay.
 
-Note that order is also important within each animation definition for distinguishing <single-animation-name> values from other keywords. When parsing, keywords that are valid for properties other than animation-name whose values were not found earlier in the shorthand must be accepted for those properties rather than for animation-name. Furthermore, when serializing, default values of other properties must be output in at least the cases necessary to distinguish an animation-name that could be a value of another property, and may be output in additional cases.
+Note that order is also important within each animation definition for distinguishing &lt;single-animation-name> values from other keywords. When parsing, keywords that are valid for properties other than animation-name whose values were not found earlier in the shorthand must be accepted for those properties rather than for animation-name. Furthermore, when serializing, default values of other properties must be output in at least the cases necessary to distinguish an animation-name that could be a value of another property, and may be output in additional cases.
 
 For example, a value parsed from animation: 3s none backwards (where animation-fill-mode is none and animation-name is backwards) must not be serialized as animation: 3s backwards (where animation-fill-mode is backwards and animation-name is none).
 
@@ -441,7 +441,7 @@ For example, a value parsed from animation: 3s none backwards (where animation-f
 
 ## Animation, Specificity and Precedence Order
 
-In terms of specificity, and which property values get applied: when an animation is attached to an element, it is as if the property values of that keyframe animation were set inline, `<div style="keyframe properties here">`. In general, the weight of a property attached with an ID selector 1-0-0 should take precedence over a property applied by an element selector 0-0-1. However, if that property value was changed via a keyframe animation, it will be applied as if that property/value pair were added as an inline style. A property added via a CSS animation, even if that animation was added on a CSS block that had very low specificity, will be applied to the element, in-spite of there being the same property applied to the same element via a more specific selector. Similar to when a property value is added with style="", if an !important is declared on a property value within the cascade, that will override the style that was added with an animation. (ex. http://codepen.io/estelle/pen/iDvBz). There is discussion in the CSS Working group of making animations override even `!important` property values.
+In terms of specificity, and which property values get applied: when an animation is attached to an element, it is as if the property values of that keyframe animation were set inline, `&lt;div style="keyframe properties here">`. In general, the weight of a property attached with an ID selector 1-0-0 should take precedence over a property applied by an element selector 0-0-1. However, if that property value was changed via a keyframe animation, it will be applied as if that property/value pair were added as an inline style. A property added via a CSS animation, even if that animation was added on a CSS block that had very low specificity, will be applied to the element, in-spite of there being the same property applied to the same element via a more specific selector. Similar to when a property value is added with style="", if an !important is declared on a property value within the cascade, that will override the style that was added with an animation. (ex. http://codepen.io/estelle/pen/iDvBz). There is discussion in the CSS Working group of making animations override even `!important` property values.
 
 That being said, don't include `!important` within your animation declaration block: the property/value upon which it is declared will be ignored.
 
@@ -452,7 +452,7 @@ If there are multiple animations specifying values for the same property, the pr
       animation-duration: 11s, 9s, 6s;
     }
 
-In the code example above, if red, green and blue are all keyframe animations that change the color property to their respective names, once the `animation-name` and `animation duration` properties are applied to all a <div>, for the first 6 seconds the color will be blue, then green for 3 seconds, then red for 2 seconds, before returning to its default color. If `animation-fill-mode: both;` were added to the mix, the color would always be blue, as the last animation, or blue, overrides the previous green animation, which overrides the red first animation.
+In the code example above, if red, green and blue are all keyframe animations that change the color property to their respective names, once the `animation-name` and `animation duration` properties are applied to all a &lt;div>, for the first 6 seconds the color will be blue, then green for 3 seconds, then red for 2 seconds, before returning to its default color. If `animation-fill-mode: both;` were added to the mix, the color would always be blue, as the last animation, or blue, overrides the previous green animation, which overrides the red first animation.
 
 The default properties of an element are not impacted before the animation starts, and the properties return to their original values after the animation ends unless an `animation-fill-mode` value other than the default `none` has been set.
 
@@ -639,165 +639,165 @@ Any animation for which a valid keyframe rule is defined will run and generate e
 
 The time the animation has been running is sent with each event generated. This allows the event handler to determine the current iteration of a looping animation or the current position of an alternating animation. This time does not include any time the animation was in the `paused` play state.
 
-### <span class=secno>5.1 `
+### &lt;span class=secno>5.1 `
 The `AnimationEvent` Interface`(#interface-animationevent)
 
 The `AnimationEvent` interface provides specific contextual information associated with Animation events.
 
-#### <span class=secno>5.1.1 `
+#### &lt;span class=secno>5.1.1 `
 IDL Definition`(#interface-animationevent-idl)
- <pre class=idl>`Constructor(DOMString <dfn class=idl-code data-dfn-for=AnimationEvent/AnimationEvent() data-dfn-type=argument data-export="" data-global-name="AnimationEvent<interface>/AnimationEvent()<method>/type<argument>" id=dom-animationeventanimationevent-type>type`(#dom-animationeventanimationevent-type)</dfn>, optional `AnimationEventInit`(#dictdef-animationeventinit title=animationeventinit "animationeventinit") <dfn class=idl-code data-dfn-for=AnimationEvent/AnimationEvent() data-dfn-type=argument data-export="" data-global-name="AnimationEvent<interface>/AnimationEvent()<method>/animationeventinitdict<argument>" id=dom-animationeventanimationevent-animationeventinitdict>animationEventInitDict`(#dom-animationeventanimationevent-animationeventinitdict)</dfn>)`
-  interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-animationevent>AnimationEvent`(#dom-animationevent)</dfn> : `Event`(http://dom.spec.whatwg.org/#event title=event "event") {
-    readonly attribute DOMString <dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent<interface>/animationname<attribute>" id=dom-animationevent-animationname0>animationName`(#dom-animationevent-animationname0)</dfn>;
-    readonly attribute float <dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent<interface>/elapsedtime<attribute>" id=dom-animationevent-elapsedtime0>elapsedTime`(#dom-animationevent-elapsedtime0)</dfn>;
-    readonly attribute DOMString <dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent<interface>/pseudoelement<attribute>" id=dom-animationevent-pseudoelement0>pseudoElement`(#dom-animationevent-pseudoelement0)</dfn>;
+ &lt;pre class=idl>`Constructor(DOMString &lt;dfn class=idl-code data-dfn-for=AnimationEvent/AnimationEvent() data-dfn-type=argument data-export="" data-global-name="AnimationEvent&lt;interface>/AnimationEvent()&lt;method>/type&lt;argument>" id=dom-animationeventanimationevent-type>type`(#dom-animationeventanimationevent-type)&lt;/dfn>, optional `AnimationEventInit`(#dictdef-animationeventinit title=animationeventinit "animationeventinit") &lt;dfn class=idl-code data-dfn-for=AnimationEvent/AnimationEvent() data-dfn-type=argument data-export="" data-global-name="AnimationEvent&lt;interface>/AnimationEvent()&lt;method>/animationeventinitdict&lt;argument>" id=dom-animationeventanimationevent-animationeventinitdict>animationEventInitDict`(#dom-animationeventanimationevent-animationeventinitdict)&lt;/dfn>)`
+  interface &lt;dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-animationevent>AnimationEvent`(#dom-animationevent)&lt;/dfn> : `Event`(http://dom.spec.whatwg.org/#event title=event "event") {
+    readonly attribute DOMString &lt;dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent&lt;interface>/animationname&lt;attribute>" id=dom-animationevent-animationname0>animationName`(#dom-animationevent-animationname0)&lt;/dfn>;
+    readonly attribute float &lt;dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent&lt;interface>/elapsedtime&lt;attribute>" id=dom-animationevent-elapsedtime0>elapsedTime`(#dom-animationevent-elapsedtime0)&lt;/dfn>;
+    readonly attribute DOMString &lt;dfn class=idl-code data-dfn-for=AnimationEvent data-dfn-type=attribute data-export="" data-global-name="AnimationEvent&lt;interface>/pseudoelement&lt;attribute>" id=dom-animationevent-pseudoelement0>pseudoElement`(#dom-animationevent-pseudoelement0)&lt;/dfn>;
   };
-  dictionary <dfn class=idl-code data-dfn-type=dictionary data-export="" data-global-name="" id=dictdef-animationeventinit>AnimationEventInit`(#dictdef-animationeventinit)</dfn> : `EventInit`(http://dom.spec.whatwg.org/#eventinit title=eventinit "eventinit") {
-    DOMString <dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit<dictionary>/animationname<dict-member>" id=dom-animationeventinit-animationname>animationName`(#dom-animationeventinit-animationname)</dfn> = "";
-    float <dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit<dictionary>/elapsedtime<dict-member>" id=dom-animationeventinit-elapsedtime>elapsedTime`(#dom-animationeventinit-elapsedtime)</dfn> = 0.0;
-    DOMString <dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit<dictionary>/pseudoelement<dict-member>" id=dom-animationeventinit-pseudoelement>pseudoElement`(#dom-animationeventinit-pseudoelement)</dfn> = "";
+  dictionary &lt;dfn class=idl-code data-dfn-type=dictionary data-export="" data-global-name="" id=dictdef-animationeventinit>AnimationEventInit`(#dictdef-animationeventinit)&lt;/dfn> : `EventInit`(http://dom.spec.whatwg.org/#eventinit title=eventinit "eventinit") {
+    DOMString &lt;dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit&lt;dictionary>/animationname&lt;dict-member>" id=dom-animationeventinit-animationname>animationName`(#dom-animationeventinit-animationname)&lt;/dfn> = "";
+    float &lt;dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit&lt;dictionary>/elapsedtime&lt;dict-member>" id=dom-animationeventinit-elapsedtime>elapsedTime`(#dom-animationeventinit-elapsedtime)&lt;/dfn> = 0.0;
+    DOMString &lt;dfn class=idl-code data-dfn-for=AnimationEventInit data-dfn-type=dict-member data-export="" data-global-name="AnimationEventInit&lt;dictionary>/pseudoelement&lt;dict-member>" id=dom-animationeventinit-pseudoelement>pseudoElement`(#dom-animationeventinit-pseudoelement)&lt;/dfn> = "";
   };
-</pre>
+&lt;/pre>
 
-#### <span class=secno>5.1.2 `
+#### &lt;span class=secno>5.1.2 `
 Attributes`(#interface-animationevent-attributes)
- <dl data-dfn-for=animationevent data-dfn-type=attribute> 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-animationname>animationName`(#dom-animationevent-animationname)</dfn>, of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a>, readonly 	<dd> 		The value of the `animation-name` property of the animation that fired the event. 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-elapsedtime>elapsedTime`(#dom-animationevent-elapsedtime)</dfn>, of type float, readonly 	<dd> 		The amount of time the animation has been running, in seconds, when this event fired, 		excluding any time the animation was paused. For an `animationstart>animationstart` event, the 		elapsedTime is zero unless there was a negative value for `animation-delay`, in which 		case the event will be fired with an elapsedTime of (-1 * delay). 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-pseudoelement>pseudoElement`(#dom-animationevent-pseudoelement)</dfn>, of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a>, readonly 	<dd> 		The name (beginning with two colons) of the CSS pseudo-element on which the animation 		runs (in which case the target of the event is that pseudo-element’s corresponding 		element), or the empty string if the animation runs on an element (which means the 		target of the event is that element). </dl>
+ &lt;dl data-dfn-for=animationevent data-dfn-type=attribute> 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-animationname>animationName`(#dom-animationevent-animationname)&lt;/dfn>, of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a>, readonly 	&lt;dd> 		The value of the `animation-name` property of the animation that fired the event. 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-elapsedtime>elapsedTime`(#dom-animationevent-elapsedtime)&lt;/dfn>, of type float, readonly 	&lt;dd> 		The amount of time the animation has been running, in seconds, when this event fired, 		excluding any time the animation was paused. For an `animationstart>animationstart` event, the 		elapsedTime is zero unless there was a negative value for `animation-delay`, in which 		case the event will be fired with an elapsedTime of (-1 * delay). 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=attribute data-export="" id=dom-animationevent-pseudoelement>pseudoElement`(#dom-animationevent-pseudoelement)&lt;/dfn>, of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a>, readonly 	&lt;dd> 		The name (beginning with two colons) of the CSS pseudo-element on which the animation 		runs (in which case the target of the event is that pseudo-element’s corresponding 		element), or the empty string if the animation runs on an element (which means the 		target of the event is that element). &lt;/dl>
 
-<dfn class=css-code data-dfn-type=function data-export="" id=funcdef-animationevent title=animationevent()>AnimationEvent(type, animationEventInitDict)`(#funcdef-animationevent)</dfn> is an `event constructor`(http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#constructing-events).
+&lt;dfn class=css-code data-dfn-type=function data-export="" id=funcdef-animationevent title=animationevent()>AnimationEvent(type, animationEventInitDict)`(#funcdef-animationevent)&lt;/dfn> is an `event constructor`(http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#constructing-events).
 
-### <span class=secno>5.2 `
+### &lt;span class=secno>5.2 `
 Types of `AnimationEvent`(#event-animationevent)
 
 The different types of animation events that can occur are:
- <dl data-dfn-for=animationevent data-dfn-type=event> 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationstart>animationstart`(#dom-animationevent-animationstart)</dfn> 	<dd> 		The `animationstart`(#dom-animationevent-animationstart title=animationstart "animationstart") event occurs at the start of the animation. 		If there is an `animation-delay` then this event will fire once the delay 		period has expired. A negative delay will cause the event to fire with 		an elapsedTime equal to the absolute value of the delay; in this case the 		event will fire whether `animation-play-state` is set to `running`(#valuedef-running title=running "running") or `paused`(#valuedef-paused title=paused "paused").
+ &lt;dl data-dfn-for=animationevent data-dfn-type=event> 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationstart>animationstart`(#dom-animationevent-animationstart)&lt;/dfn> 	&lt;dd> 		The `animationstart`(#dom-animationevent-animationstart title=animationstart "animationstart") event occurs at the start of the animation. 		If there is an `animation-delay` then this event will fire once the delay 		period has expired. A negative delay will cause the event to fire with 		an elapsedTime equal to the absolute value of the delay; in this case the 		event will fire whether `animation-play-state` is set to `running`(#valuedef-running title=running "running") or `paused`(#valuedef-paused title=paused "paused").
 
 *   Bubbles: Yes
 *   Cancelable: No
 *   Context Info: animationName, pseudoElement
- 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationend>animationend`(#dom-animationevent-animationend)</dfn> 	<dd> 		The `animationend`(#dom-animationevent-animationend title=animationend "animationend") event occurs when the animation finishes.
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationend>animationend`(#dom-animationevent-animationend)&lt;/dfn> 	&lt;dd> 		The `animationend`(#dom-animationevent-animationend title=animationend "animationend") event occurs when the animation finishes.
 
 *   Bubbles: Yes
 *   Cancelable: No
 *   Context Info: animationName, elapsedTime, pseudoElement
- 	<dt><dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationiteration>animationiteration`(#dom-animationevent-animationiteration)</dfn> 	<dd> 		The `animationiteration`(#dom-animationevent-animationiteration title=animationiteration "animationiteration") event occurs at the end of each iteration of an 		animation, except when an animationend event would fire at the same time. 		This means that this event does not occur for animations with an iteration 		count of one or less.
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=animationevent data-dfn-type=event data-export="" id=dom-animationevent-animationiteration>animationiteration`(#dom-animationevent-animationiteration)&lt;/dfn> 	&lt;dd> 		The `animationiteration`(#dom-animationevent-animationiteration title=animationiteration "animationiteration") event occurs at the end of each iteration of an 		animation, except when an animationend event would fire at the same time. 		This means that this event does not occur for animations with an iteration 		count of one or less.
 
 *   Bubbles: Yes
 *   Cancelable: No
-*   Context Info: animationName, elapsedTime, pseudoElement </dl>
+*   Context Info: animationName, elapsedTime, pseudoElement &lt;/dl>
 
-## <span class=secno>6 `
+## &lt;span class=secno>6 `
 DOM Interfaces`(#interface-dom)
 
 CSS animations are exposed to the CSSOM through a pair of new interfaces describing the keyframes.
 
-### <span class=secno>6.1 `
+### &lt;span class=secno>6.1 `
 The `CSSRule` Interface`(#interface-cssrule)
 
 The following two rule types are added to the `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") interface. They provide identification for the new keyframe and keyframes rules.
 
-#### <span class=secno>6.1.1 `
+#### &lt;span class=secno>6.1.1 `
 IDL Definition`(#interface-cssrule-idl)
- <pre class=idl>partial interface `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
-    const unsigned short <dfn class=idl-code data-dfn-for=CSSRule data-dfn-type=const data-export="" data-global-name="CSSRule<interface>/keyframes_rule<const>" id=dom-cssrule-keyframes_rule>KEYFRAMES_RULE`(#dom-cssrule-keyframes_rule)</dfn> = 7;
-    const unsigned short <dfn class=idl-code data-dfn-for=CSSRule data-dfn-type=const data-export="" data-global-name="CSSRule<interface>/keyframe_rule<const>" id=dom-cssrule-keyframe_rule>KEYFRAME_RULE`(#dom-cssrule-keyframe_rule)</dfn> = 8;
+ &lt;pre class=idl>partial interface `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
+    const unsigned short &lt;dfn class=idl-code data-dfn-for=CSSRule data-dfn-type=const data-export="" data-global-name="CSSRule&lt;interface>/keyframes_rule&lt;const>" id=dom-cssrule-keyframes_rule>KEYFRAMES_RULE`(#dom-cssrule-keyframes_rule)&lt;/dfn> = 7;
+    const unsigned short &lt;dfn class=idl-code data-dfn-for=CSSRule data-dfn-type=const data-export="" data-global-name="CSSRule&lt;interface>/keyframe_rule&lt;const>" id=dom-cssrule-keyframe_rule>KEYFRAME_RULE`(#dom-cssrule-keyframe_rule)&lt;/dfn> = 8;
 };
-</pre>
+&lt;/pre>
 
-### <span class=secno>6.2 `
+### &lt;span class=secno>6.2 `
 The `CSSKeyframeRule` Interface`(#interface-csskeyframerule)
 
 The `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") interface represents the style rule for a single key.
 
-#### <span class=secno>6.2.1 `
+#### &lt;span class=secno>6.2.1 `
 IDL Definition`(#interface-csskeyframerule-idl)
- <pre class=idl>interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-csskeyframerule>CSSKeyframeRule`(#dom-csskeyframerule)</dfn> : `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
-           attribute DOMString           <dfn class=idl-code data-dfn-for=CSSKeyframeRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframeRule<interface>/keytext<attribute>" id=dom-csskeyframerule-keytext>keyText`(#dom-csskeyframerule-keytext)</dfn>;
-  readonly attribute `CSSStyleDeclaration`(http://dev.w3.org/csswg/cssom-1/#cssstyledeclaration title=cssstyledeclaration "cssstyledeclaration") <dfn class=idl-code data-dfn-for=CSSKeyframeRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframeRule<interface>/style<attribute>" id=dom-csskeyframerule-style0>style`(#dom-csskeyframerule-style0)</dfn>;
+ &lt;pre class=idl>interface &lt;dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-csskeyframerule>CSSKeyframeRule`(#dom-csskeyframerule)&lt;/dfn> : `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
+           attribute DOMString           &lt;dfn class=idl-code data-dfn-for=CSSKeyframeRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframeRule&lt;interface>/keytext&lt;attribute>" id=dom-csskeyframerule-keytext>keyText`(#dom-csskeyframerule-keytext)&lt;/dfn>;
+  readonly attribute `CSSStyleDeclaration`(http://dev.w3.org/csswg/cssom-1/#cssstyledeclaration title=cssstyledeclaration "cssstyledeclaration") &lt;dfn class=idl-code data-dfn-for=CSSKeyframeRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframeRule&lt;interface>/style&lt;attribute>" id=dom-csskeyframerule-style0>style`(#dom-csskeyframerule-style0)&lt;/dfn>;
 };
-</pre>
+&lt;/pre>
 
-#### <span class=secno>6.2.2 `
+#### &lt;span class=secno>6.2.2 `
 Attributes`(#interface-csskeyframerule-attributes)
- <dl data-dfn-for=csskeyframerule data-dfn-type=attribute>
- 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-keytext>keyText`(#dom-csskeyframesrule-keytext)</dfn>, of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		This attribute represents the keyframe selector as a comma-separated list of 		percentage values. The `from>from` and `to>to` keywords map to 0% and 100%, 		respectively.
+ &lt;dl data-dfn-for=csskeyframerule data-dfn-type=attribute>
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-keytext>keyText`(#dom-csskeyframesrule-keytext)&lt;/dfn>, of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a> 	&lt;dd> 		This attribute represents the keyframe selector as a comma-separated list of 		percentage values. The `from>from` and `to>to` keywords map to 0% and 100%, 		respectively.
 
-<p>            If `keyText`(#dom-csskeyframesrule-keytext title=keytext "keytext") is updated with an invalid keyframe selector,
+&lt;p>            If `keyText`(#dom-csskeyframesrule-keytext title=keytext "keytext") is updated with an invalid keyframe selector,
             a `SyntaxError`(http://dom.spec.whatwg.org/#syntaxerror title=syntaxerror "syntaxerror") exception must be thrown.
- 	<dt><dfn class=idl-code data-dfn-for=csskeyframerule data-dfn-type=attribute data-export="" id=dom-csskeyframerule-style>style`(#dom-csskeyframerule-style)</dfn>, of type `CSSStyleDeclaration`(http://dev.w3.org/csswg/cssom-1/#cssstyledeclaration title=cssstyledeclaration "cssstyledeclaration") 	<dd> 		This attribute represents the style associated with this keyframe. </dl>
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=csskeyframerule data-dfn-type=attribute data-export="" id=dom-csskeyframerule-style>style`(#dom-csskeyframerule-style)&lt;/dfn>, of type `CSSStyleDeclaration`(http://dev.w3.org/csswg/cssom-1/#cssstyledeclaration title=cssstyledeclaration "cssstyledeclaration") 	&lt;dd> 		This attribute represents the style associated with this keyframe. &lt;/dl>
 
-### <span class=secno>6.3 `
+### &lt;span class=secno>6.3 `
 The `CSSKeyframesRule` Interface`(#interface-csskeyframesrule)
 
 The `CSSKeyframesRule`(#dom-csskeyframesrule title=csskeyframesrule "csskeyframesrule") interface represents a complete set of keyframes for a single animation.
 
-#### <span class=secno>6.3.1 `
+#### &lt;span class=secno>6.3.1 `
 IDL Definition`(#interface-csskeyframesrule-idl)
- <pre class=idl>interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-csskeyframesrule>CSSKeyframesRule`(#dom-csskeyframesrule)</dfn> : `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
-           attribute DOMString   <dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframesRule<interface>/name<attribute>" id=dom-csskeyframesrule-name0>name`(#dom-csskeyframesrule-name0)</dfn>;
-  readonly attribute `CSSRuleList`(http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist "cssrulelist") <dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframesRule<interface>/cssrules<attribute>" id=dom-csskeyframesrule-cssrules0>cssRules`(#dom-csskeyframesrule-cssrules0)</dfn>;
+ &lt;pre class=idl>interface &lt;dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-csskeyframesrule>CSSKeyframesRule`(#dom-csskeyframesrule)&lt;/dfn> : `CSSRule`(http://dev.w3.org/csswg/cssom-1/#cssrule title=cssrule "cssrule") {
+           attribute DOMString   &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframesRule&lt;interface>/name&lt;attribute>" id=dom-csskeyframesrule-name0>name`(#dom-csskeyframesrule-name0)&lt;/dfn>;
+  readonly attribute `CSSRuleList`(http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist "cssrulelist") &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=attribute data-export="" data-global-name="CSSKeyframesRule&lt;interface>/cssrules&lt;attribute>" id=dom-csskeyframesrule-cssrules0>cssRules`(#dom-csskeyframesrule-cssrules0)&lt;/dfn>;
 
-  void            <dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule<interface>/appendrule()<method>" id=dom-csskeyframesrule-appendrule0 title=appendRule()>appendRule`(#dom-csskeyframesrule-appendrule0)</dfn>(DOMString <dfn class=idl-code data-dfn-for=CSSKeyframesRule/appendRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule<interface>/appendRule()<method>/rule<argument>" id=dom-csskeyframesruleappendrule-rule0>rule`(#dom-csskeyframesruleappendrule-rule0)</dfn>);
-  void            <dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule<interface>/deleterule()<method>" id=dom-csskeyframesrule-deleterule0 title=deleteRule()>deleteRule`(#dom-csskeyframesrule-deleterule0)</dfn>(DOMString <dfn class=idl-code data-dfn-for=CSSKeyframesRule/deleteRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule<interface>/deleteRule()<method>/key<argument>" id=dom-csskeyframesruledeleterule-key0>key`(#dom-csskeyframesruledeleterule-key0)</dfn>);
-  `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") <dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule<interface>/findrule()<method>" id=dom-csskeyframesrule-findrule0 title=findRule()>findRule`(#dom-csskeyframesrule-findrule0)</dfn>(DOMString <dfn class=idl-code data-dfn-for=CSSKeyframesRule/findRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule<interface>/findRule()<method>/key<argument>" id=dom-csskeyframesrulefindrule-key0>key`(#dom-csskeyframesrulefindrule-key0)</dfn>);
+  void            &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule&lt;interface>/appendrule()&lt;method>" id=dom-csskeyframesrule-appendrule0 title=appendRule()>appendRule`(#dom-csskeyframesrule-appendrule0)&lt;/dfn>(DOMString &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule/appendRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule&lt;interface>/appendRule()&lt;method>/rule&lt;argument>" id=dom-csskeyframesruleappendrule-rule0>rule`(#dom-csskeyframesruleappendrule-rule0)&lt;/dfn>);
+  void            &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule&lt;interface>/deleterule()&lt;method>" id=dom-csskeyframesrule-deleterule0 title=deleteRule()>deleteRule`(#dom-csskeyframesrule-deleterule0)&lt;/dfn>(DOMString &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule/deleteRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule&lt;interface>/deleteRule()&lt;method>/key&lt;argument>" id=dom-csskeyframesruledeleterule-key0>key`(#dom-csskeyframesruledeleterule-key0)&lt;/dfn>);
+  `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule data-dfn-type=method data-export="" data-global-name="CSSKeyframesRule&lt;interface>/findrule()&lt;method>" id=dom-csskeyframesrule-findrule0 title=findRule()>findRule`(#dom-csskeyframesrule-findrule0)&lt;/dfn>(DOMString &lt;dfn class=idl-code data-dfn-for=CSSKeyframesRule/findRule() data-dfn-type=argument data-export="" data-global-name="CSSKeyframesRule&lt;interface>/findRule()&lt;method>/key&lt;argument>" id=dom-csskeyframesrulefindrule-key0>key`(#dom-csskeyframesrulefindrule-key0)&lt;/dfn>);
 };
-</pre>
+&lt;/pre>
 
-#### <span class=secno>6.3.2 `
+#### &lt;span class=secno>6.3.2 `
 Attributes`(#interface-csskeyframesrule-attributes)
- <dl data-dfn-for=csskeyframesrule data-dfn-type=attribute>
- 	<dt><dfn class=idl-code data-dfn-for=csskeyframesrule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-name>name`(#dom-csskeyframesrule-name)</dfn>, of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		This attribute is the name of the keyframes, used by the `animation-name` property.
- 	<dt><dfn class=idl-code data-dfn-for=csskeyframesrule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-cssrules>cssRules`(#dom-csskeyframesrule-cssrules)</dfn>, of type `CSSRuleList`(http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist "cssrulelist") 	<dd> 		This attribute gives access to the keyframes in the list. </dl>
+ &lt;dl data-dfn-for=csskeyframesrule data-dfn-type=attribute>
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=csskeyframesrule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-name>name`(#dom-csskeyframesrule-name)&lt;/dfn>, of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a> 	&lt;dd> 		This attribute is the name of the keyframes, used by the `animation-name` property.
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=csskeyframesrule data-dfn-type=attribute data-export="" id=dom-csskeyframesrule-cssrules>cssRules`(#dom-csskeyframesrule-cssrules)&lt;/dfn>, of type `CSSRuleList`(http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist "cssrulelist") 	&lt;dd> 		This attribute gives access to the keyframes in the list. &lt;/dl>
 
-#### <span class=secno>6.3.3 `
+#### &lt;span class=secno>6.3.3 `
 The `appendRule` method`(#interface-csskeyframesrule-appendrule)
 
-The <dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-appendrule title=appendrule()>appendRule()`(#dom-csskeyframesrule-appendrule)</dfn> method appends the passed `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") into the list at the passed key.
+The &lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-appendrule title=appendrule()>appendRule()`(#dom-csskeyframesrule-appendrule)&lt;/dfn> method appends the passed `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") into the list at the passed key.
 
 Parameters:
- <dl>
- 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/appendRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruleappendrule-rule>rule`(#dom-csskeyframesruleappendrule-rule)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The rule to be appended, expressed in the same syntax as one entry in the 		`@keyframes`(#at-ruledef-keyframes title=@keyframes "@keyframes") rule. </dl>
+ &lt;dl>
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule/appendRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruleappendrule-rule>rule`(#dom-csskeyframesruleappendrule-rule)&lt;/dfn> of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a> 	&lt;dd> 		The rule to be appended, expressed in the same syntax as one entry in the 		`@keyframes`(#at-ruledef-keyframes title=@keyframes "@keyframes") rule. &lt;/dl>
 
 No Return Value
 
 No Exceptions
 
-#### <span class=secno>6.3.4 `
+#### &lt;span class=secno>6.3.4 `
 The `deleteRule` method`(#interface-csskeyframesrule-deleterule)
 
-The <dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-deleterule title=deleterule()>deleteRule()`(#dom-csskeyframesrule-deleterule)</dfn> deletes the `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") with the passed key. If a rule with this key does not exist, the method does nothing.
+The &lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-deleterule title=deleterule()>deleteRule()`(#dom-csskeyframesrule-deleterule)&lt;/dfn> deletes the `CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") with the passed key. If a rule with this key does not exist, the method does nothing.
 
 Parameters:
- <dl>
- 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/deleteRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruledeleterule-key>key`(#dom-csskeyframesruledeleterule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between
+ &lt;dl>
+ 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule/deleteRule() data-dfn-type=argument data-export="" id=dom-csskeyframesruledeleterule-key>key`(#dom-csskeyframesruledeleterule-key)&lt;/dfn> of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a> 	&lt;dd> 		The key which describes the rule to be deleted. A percentage value between
             0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and
-            100%, respectively. </dl>
+            100%, respectively. &lt;/dl>
 
 No Return Value
 
 No Exceptions
 
-#### <span class=secno>6.3.5 `
+#### &lt;span class=secno>6.3.5 `
 The `findRule` method`
 
-The <dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-findrule title=findrule()>findRule()`(#dom-csskeyframesrule-findrule)</dfn> returns the rule with a key matching the passed key. If no such rule exists, a null value is returned.
+The &lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule data-dfn-type=method data-export="" id=dom-csskeyframesrule-findrule title=findrule()>findRule()`(#dom-csskeyframesrule-findrule)&lt;/dfn> returns the rule with a key matching the passed key. If no such rule exists, a null value is returned.
 
 Parameters:
- <dl> 	<dt><dfn class=idl-code data-dfn-for=CSSKeyFramesRule/findRule() data-dfn-type=argument data-export="" id=dom-csskeyframesrulefindrule-key>key`(#dom-csskeyframesrulefindrule-key)</dfn> of type <a class=idl-code data-link-type=interface title=domstring>DOMString</a> 	<dd> 		The key which describes the rule to be deleted. A percentage value between
+ &lt;dl> 	&lt;dt>&lt;dfn class=idl-code data-dfn-for=CSSKeyFramesRule/findRule() data-dfn-type=argument data-export="" id=dom-csskeyframesrulefindrule-key>key`(#dom-csskeyframesrulefindrule-key)&lt;/dfn> of type &lt;a class=idl-code data-link-type=interface title=domstring>DOMString&lt;/a> 	&lt;dd> 		The key which describes the rule to be deleted. A percentage value between
             0% and 100%, or one of the keywords `fro>fro` or `to>to` which resolve to 0% and
             100%, respectively.
-    </dl>
+    &lt;/dl>
 
 Return Value:
- <dl> 	<dt>`CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") 	<dd> 		The found rule. </dl>
+ &lt;dl> 	&lt;dt>`CSSKeyframeRule`(#dom-csskeyframerule title=csskeyframerule "csskeyframerule") 	&lt;dd> 		The found rule. &lt;/dl>
 
 No Exceptions
 
-## <span class=secno>7 `
+## &lt;span class=secno>7 `
 Acknowledgements`(#acknowledgements)
 
 Thanks especially to the feedback from Tab Atkins, Carine Bournez, Christian Budde, Anne van Kesteren, Øyvind Stenhaug, Estelle Weyl, and all the rest of the www-style community.
 
-## <span class=secno>8 `
+## &lt;span class=secno>8 `
 Working Group Resolutions that are pending editing`(#wg-resolutions-pending)
 
 _This section is informative and temporary._
@@ -807,4 +807,4 @@ The editors are currently behind on editing this spec. The following working gro
 
 
 ## Issues Index`(#issues-index)
-<div style="counter-reset: issue"><div class=issue>If similar to animation-duration:0s, also relates to whether 		animation events fire? ` ↵ `(#issue-ef1c522a)
+&lt;div style="counter-reset: issue">&lt;div class=issue>If similar to animation-duration:0s, also relates to whether 		animation events fire? ` ↵ `(#issue-ef1c522a)
