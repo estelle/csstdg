@@ -21,13 +21,13 @@ To define our CSS animation, we need to declare its keyframes using the @keyfram
 
 The @keyframes at-rule includes the animation identifier and one or more keyframe blocks. Each keyframe block includes one or more keyframe selectors and a declaration block of zero or more property / value pairs.
 
-@keyframes animation_identifier {
-  keyframe_selector {
-    properties: values;
-  }
-}
+    @keyframes animation_identifier {
+      keyframe_selector {
+        properties: values;
+      }
+    }
 
-The animation_identfier is the name you give your animation for future reference. The keyframe block includes the keyframe_selector is the keyframe time position along the duration of the animation in either percentages or the keyterms `from` or `two`, and the declaration block, which includes the series of zero or more property value pairs enclosed in curly braces.
+The animation identfier is the name you give your animation for future reference. The keyframe block includes the keyframe selector is the keyframe time position along the duration of the animation in either percentages or the keyterms `from` or `two`, and the declaration block, which includes the series of zero or more property value pairs enclosed in curly braces.
 
 ## Setting up your keyframe animation
 
@@ -36,7 +36,7 @@ We create a `@keyframes` at-rule, with an animation name, and a series of keyfra
 Start with the at-rule declaration, followed by a name you create, and brackets:
 
 	@keyframes the_name_you want {
-
+    ...
 	}
 
 The name, which you create, is an identifier, not a string, which we later reference by the `animation-name` property. Identifiers have specific rules. First, they can't be quoted. You can use any characters [a-zA-Z0-9], the hyphen (-), underscore (_), and and any ISO 10646 character U+00A0 and higher.
@@ -44,7 +44,7 @@ ISO 10646 is the universal character set. This means you can use any character i
 
 There are some limitations on the name. As mentioned above, do not quote your animation name. The name can't start with a digit [0-9], two hyphens, though one hyphen is fine as long as it is not followed by a digit, unless it's escaped with a back slash. Make sure to escape them any escape characters. For example, Q&A must be written as Q\&A\!. âœŽ can be left as âœŽ, but if you are going to use any keyboard characters that aren't letters or digits, like !, @, #, $, %, ^, &, *, (, ), +, =, ~, `, ,, ., ', ", ;, :, [, ], {, }, |, \ and /, escape it with a back slash.
 
-Also, don't use any of the keyterms covered in this chapter as the name for your animation. For example, possible values for the animation properties include `paused`, `running`, `infinite`, `backwards`, and `forwards`, among others. Using an animation property keyterms, while not prohibited by the spec, will likely break your animation when using the `animation` shorthand property discussed below.
+Also, don't use any of the keyterms covered in this chapter as the name for your animation. For example, possible values for the animation properties include `none`, `paused`, `running`, `infinite`, `backwards`, and `forwards`, among others. Using an animation property keyterm, while not prohibited by the spec, will likely break your animation when using the `animation` shorthand property discussed below, or even the `animation-name` property in the case of `none`.
 
 After declaring the name of our @keyframe animation, we encompass all the rules of our at-rule in curly braces. This is where we will put all our keyframes.
 
@@ -54,22 +54,22 @@ Keyframes selectors provide points during our animation where we set the values 
 
 The keyframe selectors consist of a comma-separated list of one or more percentage values or the keywords `from` or `to`. The keyword `from` is equal to `0%`. The keyword `to` equals `100%`.  The selector is used to specify the percentage along the duration of the animation that the keyframe represents. The keyframe itself is specified by the block of property values declared on the selector. The `%` unit must be used on percentage values: in other words, `0` is invalid as a keyframe selector.
 
-  @keyframes W {
-  	from {
-  	 	left: 0;
-  	  top: 0;
-  	}
-  	25%, 75% {
-  	 	top: 100%;
-  	}
-  	50% {
-  		top: 50%;
-  	}
-  	to {
-  	left: 100%;
-  		top: 0;
-  	}
-  }
+    @keyframes W {
+    	from {
+    	 	left: 0;
+    	  top: 0;
+    	}
+    	25%, 75% {
+    	 	top: 100%;
+    	}
+    	50% {
+    		top: 50%;
+    	}
+    	to {
+    	left: 100%;
+    		top: 0;
+    	}
+    }
 
 In the above example, which would move a relatively or absolutely positioned element along a W shaped path if applied, has 5 keyframes at the 0%, 25%, 50%, 75% and 100% mark. The `from` is the 0% mark, the `to` is the 100% mark, and, as the property values we set for both the 25% and 75% mark is the same, we put two together as a comma-separated list of keyframe selectors.
 
@@ -80,45 +80,45 @@ If a `0%` or `from` keyframe is not specified, then the user agent constructs a 
 Assuming we have a background color change animation:
 
 	@keyframes change_bgcolor {
-  		45% { background-color: green; }
-  		55% { background-color: blue; }
+    45% { background-color: green; }
+    55% { background-color: blue; }
 	}
 
 And the element originally had it's background-color set to red, it would be as if the animation were written as:
 
 	@keyframes change_bgcolor {
-	   0% { background-color: red;}
-		45% { background-color: green; }
-		55% { background-color: blue; }
-	  100% { background-color: red;}
+    0%   { background-color: red;}
+    45%  { background-color: green; }
+    55%  { background-color: blue; }
+    100% { background-color: red;}
 	}
 or, remembering that we can including multiple, identical keyframes as a comma separated list :
 
 	@keyframes change_bgcolor {
-	   0%, 100% { background-color: red;}
-		45% { background-color: green; }
-		55% { background-color: blue; }
+    0%, 100% { background-color: red;}
+    45% { background-color: green; }
+    55% { background-color: blue; }
 	}
 
 Negative values or values greater than `100%` are not valid and will be ignored.
 
 In the original -webkit- implementation of animation, each keyframe could only be declared once: if declared more than once, only the last declaration would be applied, and the previous keyframe selector block was ignored. This has been updated. Now, similar to the rest of CSS, the values in the keyframe declaration blocks with identical keyframe values cascade. In the standard (non prefixed) syntax, the `W` animation above can be written with the `to`, or `100%`, declared twice, overriding the value of the left property:
 
- @keyframes W {
-    from, to {
-      top: 0;
-      left: 0;
+    @keyframes W {
+      from, to {
+        top: 0;
+        left: 0;
+      }
+      25%, 75% {
+        top: 100%;
+      }
+      50% {
+        top: 50%;
+      }
+      to {
+        left: 100%;
+      }
     }
-    25%, 75% {
-      top: 100%;
-    }
-    50% {
-      top: 50%;
-    }
-    to {
-      left: 100%;
-    }
-  }
 
 Only animate animatable properties. Like the rest of CSS, properties and values in a keyframe declaration block that are not understood, are ignored. Properties that are not animatable are also ignored (with the exception of `animation-timing-function`).
 
@@ -132,6 +132,312 @@ Different browsers behave in differently for different properties when there is 
 
 That being said, not all the properties need to be included in each keyframe block. As long as an animatable property is included in at-least one block with a value that is different then the non-animated attribute value, and there is a possible midpoint between those two values, that property will animate.
 
+## Animated Elements
+
+Once you have created a keyframe animation, you need to apply that animation to an element or pseudo element for anything to actually animate. CSS Animation provides us with numerous animation properties to attach a keyframe animation to an element and control its progression. At minimum, we need to include the name of the animation for element to animate, and a duration if we want the animation to actually be visible.
+
+### The `animation-name` property
+
+The `animation-name` property takes as it's value the name or comma-separated names of the keyframe animation(s) you want to apply to that element.  The names are the unquoted identifiers you created in your @keyframes rule.
+
+animation-name
+
+ **Values:**
+
+  <@keyframes_identifier> | none | inherit | initial
+
+ **Initial value:**
+
+  none
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+The default value is `none`, which means then there is no animation. This value can be used to override any animation applied elsewhere in the CSS cascade. To apply an animation, include the @keyframe identifier. To apply more than one animation, include more than one comma-separated @keyframe identifiers. If one of the included keyframe identifiers does not exist, the series of animation will not fail: rather, the failed animation will be ignored (and will be applied if that identifier does come into existance as a valid animation), and the other ones will be applied. 
+
+If more than one animation is applied to an element that have repeated properties, the latter animations override the property values in the preceding animations. See Animation, Specificity and Precedence Order.
+
+If you include three animation names, all the following properties such as `animation-duration` and `animation-iteration-count` should have three values as well, so that there are corresponding values for each attached animation. If there are too many values, the extra values are ignored. If there are too few comma separated values, the provided values will be repeated.
+
+> If an included keyframe identifiers doesn't exist, the animation doesn't fail. Any other animations attached via the animation-name property will proceed normally. If that non-existant animation comes into existance, the animation will be attached to that element when the identifier becomes valid and will start iterating immediately or after the expiration of any `animation-delay`.
+
+### The `animation-duration` property`
+
+The `animation-duration` property defines how long a single animation iteration should take in seconds or milliseconds.
+
+animation-duration
+
+ **Values:**
+
+  <time>
+
+ **Initial value:**
+
+  0s
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+The `animation-duration` property takes as it's value the length of time, in seconds (s) or milliseconds (ms), it should take to complete one cycle thru all the keyframes. If omitted, the animation will still be applied with a duration of 0s, with animationStart and animationEnd being fired. However, as the animation will take 0s to complete, it will be imperceptible. Negative values are invalid, and will behave as if the default of 0s were applied.
+
+
+### The `animation-iteration-count` property
+
+Include the `animation-iteration-count` property if you want to iterate through the animation more than the default one time. By default, if you simply include the required `animation-name`, the animation will play once.  
+
+animation-iteration-count
+
+ **Values:**
+
+  <number> | infinite
+
+ **Initial value:**
+
+  1
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+
+By default, the animation will occur once. If included, the animation will repeat the number of times specified by the value if the `animation-iteration-count` property, which can be any number or the keyterm `infinite`. If the number is not an integer, the animation will end partway through its last cycle. Negative numbers are not valid, leading to a default single iteration.
+
+Interestingly, 0 is a valid value for the `animation-iteration-count` property When set to 0, the animation still occurs over 0s, similar to setting `animation-duration: 0s;`, throwing both an `animationstart` and an `animationend` event. 
+
+If the animation is not an integer, the animation will still run, but will cut off mid iteration on the final iteration. For example, `animation-iteration-count: 1.25` will iterate thru the animation 1.25 times, cutting off 25% thru the second iteration.
+
+
+### The `animation-direction` property
+
+With the `animation-direction` property you can control whether the animation progresses from the 0% keyframe to the 100% keyframe, or from the 100% keyframe to the 0% keyframe. You can control whether all the iterations progress in the same direction or set every other animation cycle to progress in the reverse direction. 
+
+animation-iteration-direction
+
+ **Values:**
+
+  normal | reverse | alternate | alternate-reverse
+
+ **Initial value:**
+
+  normal
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+When set to `normal`, each iteration of the animation progress from the 0% keyframe to the 100% keyframe.  are played as specified.
+The `reverse` value sets each iteration to play in reverse keyframe order, progressing from the 100% keyframe to the 0% keyframe. The `alternate` value means that the first iteration (and each subsequent odd count iteration) should proceed from 0% to 100%, the second iteration (and each subsequent even numbered cycle) should reverse direction, proceeding from 100% to 0%. The `alternate-reverse` value is similar to the `alternate` value, except the odd numbered iterations are in the reverse direction, and the even numbered animation iterations are in the normal, or 0% to 100%; direction.
+
+When an animation is played in reverse the timing functions is reversed. For example, when played in reverse an `ease-in` animation would appear to be an `ease-out` animation, progressing from the 100% keyframe to the 0% keyframe.
+
+
+### The `animation-delay` property
+
+The `animation-delay` property how long the browser waits after the animation is attached to the element before beginning the first animation iteration. The default value is 0s, meaning the animation will commence immediately when it is applied. A positive value will delay the start of the animation until the prescribed time listed as the value of the `animation-delay` property as elapsed. A negative value will cause the animation to begin immediately part way thru the animation.
+
+animation-delay
+
+ **Values:**
+
+  <time>
+
+ **Initial value:**
+
+  0s
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+
+The time, defined in seconds (s) or milliseconds (ms) defines the delay between the application of the animation to the element and when the animation begins executing. By default, the animation begins iterating as soon as it is applied to the element, with a 0s delay. 
+
+Including a negative value for the `animation-delay` property is valid, and can create interesting effects. A negative delay will execute the animation  immediately, but will begin the animating the element part way thru the attached animation. For example, if `animation-delay: -4s;` and `animation-duration: 10s;` are set on an element, the animation will begin immediately, but will start 40% of the way thru the first animation, which is not necessarily the 40% keyframe block: this depends on the value of the `animation-timing-function`. 
+
+    div {
+      animation-name: move;
+      animation-duration: 10s;
+      animation-delay: -4s;
+    }
+    @keyframes move {
+      from { transform: translateX(0); }
+      to { transform: translateX(1000px); }
+    }
+
+In the above example, for a `linear` animation, the animation would start with the div translated 400px to the right of its original position. 
+
+### The `animation-timing-function` property
+
+Similar to the  `transition-timing-function` property, the `animation-timing-function` property describes how the animation will progress over one cycle of its duration. 
+
+animation-timing-function
+
+ **Values:**
+
+  ease | linear | ease-in | ease-out | |ease-in-out | step-start | step-end | 
+  steps(<integer>, <start|end>), cubic-bezier(<number>, <number>, <number>, <number>)
+
+ **Initial value:**
+
+  ease
+
+ **Applies to:**
+
+all elements, ::before and ::after pseudo-elements
+
+ **Inherited:**
+
+No
+
+
+Other than the step timing functions, the timing functions are Bezier curves. Bezier curves are mathematically defined curves used in two-dimensional graphic applications. The curve is defined by four points: the initial position and the terminating position (which are called "anchors") and two separate middle points (which are called "handles"). In CSS, the anchors are at 0, 0 and 1, 1. While you can define your own bezier curve, there are 5 pre-defined bezier curvers. 
+
+[PUT PICS OF BEZIER CURVES HERE]
+
+The default `ease` is equal to cubic-bezier(0.25, 0.1, 0.25, 1), which This function is similar to `ease-in-out` at cubic-bezier(0.42, 0, 0.58, 1), though it accelerates more sharply at the beginning. `linear`is equal to cubic-bezier(0, 0, 1, 1), and, as the name describes, creates an animation that animates at a constant speed..  `ease-in` is equal to cubic-bezier(0.42, 0, 1, 1) which creates an animation that is slow to start, but gains speed, then stops  abruptly. The opposite `ease-out` timing function is equal to cubic-bezier(0, 0, 0.58, 1), starting and full spped, then slowing progressively as it reaches the conclusion of the animation iteration. If none of these work for you, you can create your own bezier curve timing function by passing 4 values:
+
+    cubic-bezier(0.2, 0.4, 0.6, 0.8)
+
+A bezier-curve takes four values. The first two at the x and y of the first point on the curve, and the last two are the x and y of the second point on the curve. The x values must between 0 and 1, or the cubic bezier is invalid. 
+
+The step timing function step-start
+The step-start function is equivalent to steps(1, start).
+step-end
+The step-end function is equivalent to steps(1, end).
+steps(<integer>[, [ start | end ] ]?)
+
+
+Specifies a stepping function, described above, taking two parameters. The first parameter specifies the number of intervals in the function. It must be a positive integer (greater than 0). The second parameter, which is optional, is either the value ‘start’ or ‘end’, and specifies the point at which the change of values occur within the interval. If the second parameter is omitted, it is given the value ‘end’.
+cubic-bezier(<number>, <number>, <number>, <number>)
+Specifies a cubic-bezier curve. The four values specify points P1 and P2 of the curve as (x1, y1, x2, y2). Both x values must be in the range [0, 1] or the definition is invalid. The y values can exceed this range.
+<table>
+<tr><th>Name:<td>`animation-timing-function`
+<tr><th>Value:<td>`&lt;single-timing-function&gt;`
+<tr><th>Initial:<td>ease
+<tr><th>Applies to:<td>all elements, ::before and ::after pseudo-elements
+<tr><th>Inherited:<td>no
+<tr><th>Media:<td>interactive
+<tr><th>Computed value:<td>As specified
+<tr><th>Canonical order:<td>per grammar
+<tr><th>Percentages:<td>N/A
+<tr><th>Animatable:<td>no
+</table>
+The values and meaning of <dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-timing-function>&lt;single-timing-function&gt;`(#typedef-single-timing-function)</dfn> are identical to those of `">&lt;single-transition-timing-function&gt;`(http://dev.w3.org/csswg/css-transitions-1/#single-transition-timing-function title= "<single-transition-timing-function") `CSS3-TRANSITIONS`(#css3-transitions title=css3-transitions "css3-transitions").
+
+The timing function specified applies to e ach iteration of the animation, not the entire animation in full. For example, if an animation has `animation-timing-function: ease-in-out; animation-iteration-count: 2;`, it will ease in at the start, ease out as it approaches the end of its first iteration, ease in at the start of its second iteration, and ease out again as it approaches the end of the animation.
+
+<p class=note>  Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
+
+
+### The `animation-play-state` property
+
+The `animation-play-state` property defines whether the animation is running or paused.
+
+Name: animation-play-state
+Value:  <single-animation-play-state>#
+Initial:  running
+Applies to: all elements, ::before and ::after pseudo-elements
+Inherited:  no
+Media:  interactive
+Computed value: As specified
+Canonical order:  per grammar
+Percentages:  N/A
+Animatable: no
+<single-animation-play-state> = running | paused
+
+running
+While this property is set to running, the animation proceeds as normal.
+paused
+While this property is set to paused, the animation is paused. The animation continues to apply to the element with the progress it had made before being paused. When unpaused (set back to running), it restarts from where it left off, as if the "clock" that controls the animation had stopped and started again.
+If the property is set to paused during the delay phase of the animation, the delay clock is also paused and resumes as soon as animation-play-state is set back to running.
+
+
+
+
+### The `animation-fill-mode` property
+
+The `animation-fill-mode` property defines what values are applied by the animation outside the  time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the `animation-delay` property). Also, by default an animation does not affect property values after the animation ends (determined by the `animation-duration` and `animation-iteration-count` properties). The `animation-fill-mode` property can override this behavior.
+
+The animation-fill-mode property defines what values are applied by the animation outside the time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the animation-delay property). Also, by default an animation does not affect property values after the animation ends (determined by the animation-duration and animation-iteration-count properties). The animation-fill-mode property can override this behavior.
+
+Name: animation-fill-mode
+Value:  <single-animation-fill-mode>#
+Initial:  none
+Applies to: all elements, ::before and ::after pseudo-elements
+Inherited:  no
+Media:  interactive
+Computed value: As specified
+Canonical order:  per grammar
+Percentages:  N/A
+Animatable: no
+<single-animation-fill-mode> = none | forwards | backwards | both
+
+none
+The animation has no effect when it is applied but not executing.
+forwards
+After the animation is done executing (has played the number of times specified by its animation-iteration-count value) it continues to apply the values that it ended its last complete iteration with. This will be the values specified or implied for either its 100% or 0% keyframe, depending on the direction that the last complete iteration was executing in (per animation-direction). If the animation didn’t complete an entire iteration (if the iteration count was 0 or a value less than 1) the values specified or implied for its 0% keyframe are used.
+Note: If animation-iteration-count is a non-integer value, the animation will stop executing partway through its animation cycle, but a forwards fill will still apply the values of the 100% keyframe, not whatever values were being applied at the time the animation stopped executing.
+
+Issue: Why does it ignore the progress made by a non-integer iteration count?
+
+Issue: What happens with animation-duration: 0; animation-iteration-count: infinite;? The animation is instantaneous, but there is no "last complete iteration". In particular, you can’t tell whether to use the 0% or 100% keyframe.
+
+backwards
+Before the animation has begun executing (during the period specified by animation-delay), the animation applies the values that it will start the first iteration with. If the animation-direction is normal or alternate, the values specified or implied for its 0% keyframe are used; if the animation-direction is reverse or alternate-reverse, the values specified or implied for its 100% keyframe are used.
+both
+The effects of both forwards and backwards fill apply.
+
+### The `animation` shorthand property
+
+The `animation` shorthand property is a comma-separated list of animation definitions. Each item in the list gives one item of the value for all of the subproperties of the shorthand, which are known as the animation properties. (See the definition of `animation-name` for what happens when these properties have lists of different lengths, a problem that cannot occur when they are defined using only the `animation` shorthand.)
+
+
+Name: animation
+Value:  <single-animation>#
+Initial:  see individual properties
+Applies to: all elements, ::before and ::after pseudo-elements
+Inherited:  no
+Media:  interactive
+Computed value: As specified
+Canonical order:  per grammar
+Percentages:  N/A
+Animatable: no
+<single-animation> = <time> || <single-timing-function> || <time> || <single-animation-iteration-count> || <single-animation-direction> || <single-animation-fill-mode> || <single-animation-play-state> || <single-animation-name>
+
+Note that order is important within each animation definition: the first value in each <single-animation> that can be parsed as a <time> is assigned to the animation-duration, and the second value in each <single-animation> that can be parsed as a <time> is assigned to animation-delay.
+
+Note that order is also important within each animation definition for distinguishing <single-animation-name> values from other keywords. When parsing, keywords that are valid for properties other than animation-name whose values were not found earlier in the shorthand must be accepted for those properties rather than for animation-name. Furthermore, when serializing, default values of other properties must be output in at least the cases necessary to distinguish an animation-name that could be a value of another property, and may be output in additional cases.
+
+For example, a value parsed from animation: 3s none backwards (where animation-fill-mode is none and animation-name is backwards) must not be serialized as animation: 3s backwards (where animation-fill-mode is backwards and animation-name is none).
+
+
+
+
+
+
+
 
 ## Animation, Specificity and Precedence Order
 
@@ -141,10 +447,10 @@ That being said, don't include `!important` within your animation declaration bl
 
 If there are multiple animations specifying values for the same property, the property value from the last animation applied will override the previous animations.
 
-  div {
-    animation-name: red, green, blue;
-    animation-duration: 11s, 9s, 6s;
-  }
+    div {
+      animation-name: red, green, blue;
+      animation-duration: 11s, 9s, 6s;
+    }
 
 In the code example above, if red, green and blue are all keyframe animations that change the color property to their respective names, once the `animation-name` and `animation duration` properties are applied to all a <div>, for the first 6 seconds the color will be blue, then green for 3 seconds, then red for 2 seconds, before returning to its default color. If `animation-fill-mode: both;` were added to the mix, the color would always be blue, as the last animation, or blue, overrides the previous green animation, which overrides the red first animation.
 
@@ -152,8 +458,22 @@ The default properties of an element are not impacted before the animation start
 
 When an animation is attached to an element, the properties of animation keyframes only effect the element on which they are applied while the animation is iterating, which is the time after the `animation-delay` has expired, through the completion of the last animation iteration. Again, you can ensure the keyframe animation properties impact the element before the expiration of the `animation-delay` and after the last iteration ends with the `animation-fill-mode` property.
 
+If the `display` property is set to `none` on an element, any animation iterating on that element or its descencdants will cease, as if the animation were detached from the element. Updating the `display` property back to a visible value will reattach all the animation properties, restarting the animation from scratch. 
+
+    .snowflake {
+      animation: spin 2s linear 5s 20;
+    }
+
+The snowflake will spin 20 times, each spin takes 2 seconds, with the first spin starting after 5 seconds. If the snowflake element's `display` property gets set to none after 15 seconds, it would have completed 5 spins before disappearing (5 second delay, then 5 spins at 2 seconds each). If the snowflake display property changes, making it visible again, a 5 second delay will elapse before it starts spinning 20 times. It makes no differnce how many animation cycles iterated before it disappeared from view the first time.
+
+Note that CSS animations have the lowest priority on the UI thread. If you attach multiple animation on page load with positive values for `animation-delay`, the delays expire as prescribed, but the animations will not begin until the UI thread is available to animate. For example, if you have 20 animations set with an animation delays to start animating at one second intervals over 20 seconds, with their `animation-delay` properties set to 1s, 2s, 3s, 4s and so on, if the document or application takes a long time to load, with 11 seconds between the time the animated elements were loaded and the UI thread has finished drawing the page, the animation delays of the first 11 animations will have expired, and will all commence when the UI thread has become available. The remaining animations will each then begin animating at one second intervals.
 
 
+> *** While you can use animations to create changing content, dynamically changing content can lead to seizures in some users. Always keep accessibility in mind, including the accessibility of your website to people with epilepsy and other seizure disorders. 
+
+#### Printing Animations
+
+While not actually "animating" on a printed piece of paper, when an animated element is printed, the relevant property values will be printed. When it comes to print, obviously you can't see the element animating on a piece of paper, but if the animation causes an element to have a border-radius of 50%, the printed element will have a border-radius of 50%. 
 
 ============
 ABOVE IS WHAT ESTELLE WROTE,
@@ -162,9 +482,20 @@ BELOW IS THE SPECIFICATION
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 In addition to the property-specific values listed in their definitions, all properties defined in this specification also accept the `initial` and `inherit` keyword as their property value.
-
-
 
 
 
@@ -194,21 +525,6 @@ The end of the animation is defined by the combination of the `animation-duratio
     }
 
 This will produce an animation that moves an element from (0, 0) to   (100px, 100px) over five seconds and repeats itself nine times  (for a total of ten iterations).
-
-
-
-Setting the `display` property to `none` will terminate any running animation applied to the element and its descendants. If an element has a `display` of `none`, updating `display` to a value other than `none` will start all animations applied to the element by the `animation-name` property, as well as all animations applied to descendants with `display` other than `none`.
-
-While authors can use animations to create dynamically changing content, dynamically changing content can lead to seizures in some users. For information on how to avoid content that can lead to seizures, see Guideline 2.3: Seizures: Do not design content in a way that is known to cause seizures.
-
-Implementations may ignore animations when the rendering medium is not interactive e.g. when printed. A future version of this specification may define how to render animations for these media.
-
-
-
-
-
-
-
 
 
 
@@ -257,8 +573,6 @@ At the 1s mark, the slide-right animation will have the same state as if we had 
  }
 
 
-Note: Since empty @keyframes rules are valid, they may hide the keyframes of those preceding animation definitions with a matching name.
-
 To determine the set of keyframes, all of the values in the selectors are sorted in increasing order by time. The rules within the @keyframes rule then cascade; the properties of a keyframe may thus derive from more than one @keyframes rule with the same selector value.
 
 If a property is not specified for a keyframe, or is specified but invalid, the animation of that  property proceeds as if that keyframe did not exist. Conceptually, it is as if a set of keyframes is constructed for each property that is present in any of the keyframes, and an animation is run independently for each property.
@@ -280,18 +594,6 @@ If a property is not specified for a keyframe, or is specified but invalid, the 
   		} }
   Four keyframes are specified for the animation named "wobble". In the first keyframe, 	shown at the beginning of the animation cycle, the value of the `left` property being animated is `100px`. By 40% of the animation duration, `left` has animated to `150px`. 	At 60% of the animation duration, `left` has animated back to `75px`. At the end of the animation cycle, the value of `left` has returned to `100px`. The diagram below shows the state of the animation if it were given a duration of `10s`.
 
-<figure> 		!`(./animation1.png) 		<figcaption>Animation states specified by keyframes</figcaption> 	</figure>
- The following is the grammar for the keyframes rule:
- <pre>  keyframes_rule: KEYFRAMES_SYM S+ IDENT S* '{' S* keyframes_blocks '}' S*;
-
-  keyframes_blocks: ` keyframe_selector '{' S* declaration? ` ';' S* declaration? `* '}' S* `* ;
-
-  keyframe_selector: ` FROM_SYM | TO_SYM | PERCENTAGE ` S* ` ',' S* ` FROM_SYM | TO_SYM | PERCENTAGE ` S* `*;
-
-  @{K}{E}{Y}{F}{R}{A}{M}{E}{S}   {return KEYFRAMES_SYM;}
-  {F}{R}{O}{M}                   {return FROM_SYM;}
-  {T}{O}                         {return TO_SYM;}
-</pre>
 
 ### Timing functions for keyframes
 
@@ -326,223 +628,8 @@ A timing function specified on the `to` or `100%` keyframe is ignored.
 
 See the `animation-timing-function` property for more information.
 
-### The `animation-name` property
-
-The `animation-name` property defines a list of animations that apply. Each name is used to select  the keyframe at-rule that provides the property values for the animation. If the name does not match  any keyframe at-rule, there are no properties to be animated and the animation will not execute.  Furthermore, if the animation name is `none` then there will be no animation. This can be  used to override any animations coming from the cascade. If multiple animations are attempting to  modify the same property, then the animation closest to the end of the list of names wins.
-
-Each animation listed by name should have a corresponding value for the other animation properties listed below. If the lists of values for the other animation properties do not have the same length, the length of the `animation-name` list determines the number of items in each list examined when starting animations. The lists are matched up from the first value: excess values at the end are not used. If one of the other properties doesn’t have enough comma-separated values to match the number of values of `animation-name`, the UA must calculate its used value by repeating the list of values until there are enough. This truncation or repetition does not affect the computed value.
-
->Note: This is analogous to the behavior of the ‘background-*’properties, with ‘background-image’ analogous to `animation-name`.
-
-<table>
-<tr><th>Name:<td>`animation-name`</dfn>
-<tr><th>Value:<td>`">&lt;single-animation-name&gt;`#
-<tr><th>Initial:<td>none
-<tr><th>Applies to:<td>all elements, ::before and ::after pseudo-elements
-<tr><th>Inherited:<td>none
-<tr><th>Media:<td>interactive
-<tr><th>Computed value:<td>As specified
-<tr><th>Canonical order:<td>per grammar
-<tr><th>Percentages:<td>N/A
-<tr><th>Animatable:<td>no
-</table>
-<dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-animation-name>&lt;single-animation-name&gt;`(#typedef-single-animation-name)</dfn> = none | `">&lt;custom-ident&gt;`(http://dev.w3.org/csswg/css-values-3/#identifier-value title= "<custom-ident")
-
-The values of `animation-name` have the following meanings:
- <dl data-dfn-for=animation-name data-dfn-type=value> 	<dt><dfn class=css-code data-dfn-for=animation-name data-dfn-type=value data-export="" id=valuedef-none0>none`(#valuedef-none0)</dfn> 	<dd> 		No keyframes are specified at al l, so there will be no animation. 		Any other animations properties specified for this animation have no effect.
- 	<dt><dfn class=css-code data-dfn-for=animation-name data-dfn-type=value data-export="" id=valuedef-custom-ident>`">&lt;custom-ident&gt;`(http://dev.w3.org/csswg/css-values-3/#identifier-value title= "<custom-ident")`(#valuedef-custom-ident)</dfn> 	<dd> 		The animation will use the keyframes with the name specified by the `">&lt;custom-ident&gt;`(http://dev.w3.org/csswg/css-values-3/#identifier-value title= "<custom-ident"), 		if they exist. 		If no such keyframes exist, 		there is no animation. </dl>
-
-### The `animation-duration` property`
-
-The `animation-duration` property defines duration of a single animation cycle.
-
-<table><tr><th>Name:<td>`animation-duration`
-<tr><th>Value:<td>`&lt;time&gt;`#
-<tr><th>Initial:<td>0s
-<tr><th>Applies to:<td>all elements, ::before and ::after pseudo-elements
-<tr><th>Inherited:<td>no
-<tr><th>Media:<td>interactive
-<tr><th>Computed value:<td>As specified<tr><th>Canonical order:<td>per grammar<tr><th>Percentages:<td>N/A<tr><th>Animatable:<td>no</table> <dl> 	<dt><dfn class=css-code data-dfn-for=animation-duration data-dfn-type=value data-export="" id=valuedef-time0>`">&lt;time&gt;`(http://dev.w3.org/csswg/css-values-3/#time-value title= "<time")`(#valuedef-time0)</dfn> 	<dd> 		The `">&lt;time&gt;`(http://dev.w3.org/csswg/css-values-3/#time-value title= "<time") specifies the length of time that an animation takes to complete one cycle. 		A negative `">&lt;time&gt;`(http://dev.w3.org/csswg/css-values-3/#time-value title= "<time") is invalid.
- 	If the `">&lt;time&gt;`(http://dev.w3.org/csswg/css-values-3/#time-value title= "<time") is `0s>0s`, like the initial value, 		the keyframes of the animation have no effect, 		but the animation itself still occurs instantaneously. 		That is, `animation-fill-mode` applies as normal, 		filling backwards or forwards as appropriate; 		start and end events are fired. </dl>
-
-### The `animation-timing-function` property
-
-The `animation-timing-function` property describes how the animation will progress over one cycle of its duration. See the `transition-timing-function` property `CSS3-TRANSITIONS` for a complete description of timing function calculation.
-
-<table>
-<tr><th>Name:<td>`animation-timing-function`
-<tr><th>Value:<td>`&lt;single-timing-function&gt;`
-<tr><th>Initial:<td>ease
-<tr><th>Applies to:<td>all elements, ::before and ::after pseudo-elements
-<tr><th>Inherited:<td>no
-<tr><th>Media:<td>interactive
-<tr><th>Computed value:<td>As specified
-<tr><th>Canonical order:<td>per grammar
-<tr><th>Percentages:<td>N/A
-<tr><th>Animatable:<td>no
-</table>
-The values and meaning of <dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-timing-function>&lt;single-timing-function&gt;`(#typedef-single-timing-function)</dfn> are identical to those of `">&lt;single-transition-timing-function&gt;`(http://dev.w3.org/csswg/css-transitions-1/#single-transition-timing-function title= "<single-transition-timing-function") `CSS3-TRANSITIONS`(#css3-transitions title=css3-transitions "css3-transitions").
-
-The timing function specified applies to e ach iteration of the animation, not the entire animation in full. For example, if an animation has `animation-timing-function: ease-in-out; animation-iteration-count: 2;`, it will ease in at the start, ease out as it approaches the end of its first iteration, ease in at the start of its second iteration, and ease out again as it approaches the end of the animation.
-
-<p class=note>	Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
-
-### The `animation-iteration-count` property
-
-The `animation-iteration-count` property specifies the number of times an animation cycle is played. The initial value is `1`, meaning the animation will play from beginning to end once.  This property is often used in conjunction with an `animation-direction` value of `alternate`, which will cause the animation to play in reverse on alternate cycles.
-
-<table>
-<tr><th>Name:</th><td>animation-iteration-count</td></tr>
-<tr><th>Value:</th><td>`">&lt;single-animation-iteration-count&gt;`
-<tr><th>Initial:</th><td>1
-<tr><th>Applies to:</th><td>all elements, ::before and ::after pseudo-elements
-<tr><th>Inherited:</th><td>no
-<tr><th>Media:</th><td>interactive<tr><th>Computed value:<td>As specified
-<tr><th>Canonical order:</th><td>per grammar
-<tr><th>Percentages:</th><td>N/A
-<tr><th>Animatable:</th><td>no
-</table>
 
 
-
-&lt;single-animation-iteration-count&gt; = infinite | `<number>`
-infinite
-The animation will repeat forever.
-<number>
-The animation will repeat the specified number of times. If the number is not an integer, the animation will end partway through its last cycle. Negative numbers are invalid.
-
-A value of 0 is valid and, similar to an animation-duration of 0s, causes the animation to occur instantaneously. Specifically, if animation-fill-mode is set to backwards or both, the first frame of the animation, as defined by animation-direction, will be displayed during the animation-delay. Then the last frame of the animation, as defined by animation-direction, will be displayed if animation-fill-mode is set to forwards or both. If animation-fill-mode is set to none then the animation has no effect.
-
-If similar to animation-duration:0s, also relates to whether animation events fire?
-
-
-
-### The `animation-direction` property
-
-The `animation-direction` property defines whether or not the animation should play in reverse on some or all cycles. When an animation is played in reverse the timing functions are also reversed. For example, when played in reverse an `ease-in` animation would appear to be an `ease-out` animation.
-
-
-
-Name:	animation-direction
-Value:	<single-animation-direction>#
-Initial:	normal
-Applies to:	all elements, ::before and ::after pseudo-elements
-Inherited:	no
-Media:	interactive
-Computed value:	As specified
-Canonical order:	per grammar
-Percentages:	N/A
-Animatable:	no
-<single-animation-direction> = normal | reverse | alternate | alternate-reverse
-
-normal
-All iterations of the animation are played as specified.
-reverse
-All iterations of the animation are played in the reverse direction from the way they were specified.
-alternate
-The animation cycle iterations that are odd counts are played in the normal direction, and the animation cycle iterations that are even counts are played in a reverse direction.
-alternate-reverse
-The animation cycle iterations that are odd counts are played in the reverse direction, and the animation cycle iterations that are even counts are played in a normal direction.
-Note: For the purpose of determining whether an iteration is even or odd, iterations start counting from 1.
-
-### The `animation-play-state` property
-
-The `animation-play-state` property defines whether the animation is running or paused.
-
-Name:	animation-play-state
-Value:	<single-animation-play-state>#
-Initial:	running
-Applies to:	all elements, ::before and ::after pseudo-elements
-Inherited:	no
-Media:	interactive
-Computed value:	As specified
-Canonical order:	per grammar
-Percentages:	N/A
-Animatable:	no
-<single-animation-play-state> = running | paused
-
-running
-While this property is set to running, the animation proceeds as normal.
-paused
-While this property is set to paused, the animation is paused. The animation continues to apply to the element with the progress it had made before being paused. When unpaused (set back to running), it restarts from where it left off, as if the "clock" that controls the animation had stopped and started again.
-If the property is set to paused during the delay phase of the animation, the delay clock is also paused and resumes as soon as animation-play-state is set back to running.
-
-
-
-### The `animation-delay` property
-
-The `animation-delay` property defines when the animation will start. It allows an animation to begin execution some time after it is applied, or to appear to have begun execution some time _before_ it is applied.
-
-
-Name:	animation-delay
-Value:	<time>#
-Initial:	0s
-Applies to:	all elements, ::before and ::after pseudo-elements
-Inherited:	no
-Media:	interactive
-Computed value:	As specified
-Canonical order:	per grammar
-Percentages:	N/A
-Animatable:	no
-<time>
-The <time> defines how long of a delay there is between the start of the animation (when the animation is applied to the element via these properties) and when it begins executing. A delay of 0s (the initial value) means that the animation will execute as soon as it is applied.
-A negative delay is valid. Similar to a delay of 0s, it means that the animation executes immediately, but is automatically progressed by the absolute value of the delay, as if the animation had started the specified time in the past, and so it appears to start partway through its play-cycle already. If an animation’s keyframes have an implied starting value, the values are taken from the time the animation starts, not some time in the past.
-
-### The `animation-fill-mode` property
-
-The `animation-fill-mode` property defines what values are applied by the animation outside the  time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the `animation-delay` property). Also, by default an animation does not affect property values after the animation ends (determined by the `animation-duration` and `animation-iteration-count` properties). The `animation-fill-mode` property can override this behavior.
-
-The animation-fill-mode property defines what values are applied by the animation outside the time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the animation-delay property). Also, by default an animation does not affect property values after the animation ends (determined by the animation-duration and animation-iteration-count properties). The animation-fill-mode property can override this behavior.
-
-Name:	animation-fill-mode
-Value:	<single-animation-fill-mode>#
-Initial:	none
-Applies to:	all elements, ::before and ::after pseudo-elements
-Inherited:	no
-Media:	interactive
-Computed value:	As specified
-Canonical order:	per grammar
-Percentages:	N/A
-Animatable:	no
-<single-animation-fill-mode> = none | forwards | backwards | both
-
-none
-The animation has no effect when it is applied but not executing.
-forwards
-After the animation is done executing (has played the number of times specified by its animation-iteration-count value) it continues to apply the values that it ended its last complete iteration with. This will be the values specified or implied for either its 100% or 0% keyframe, depending on the direction that the last complete iteration was executing in (per animation-direction). If the animation didn’t complete an entire iteration (if the iteration count was 0 or a value less than 1) the values specified or implied for its 0% keyframe are used.
-Note: If animation-iteration-count is a non-integer value, the animation will stop executing partway through its animation cycle, but a forwards fill will still apply the values of the 100% keyframe, not whatever values were being applied at the time the animation stopped executing.
-
-Issue: Why does it ignore the progress made by a non-integer iteration count?
-
-Issue: What happens with animation-duration: 0; animation-iteration-count: infinite;? The animation is instantaneous, but there is no "last complete iteration". In particular, you can’t tell whether to use the 0% or 100% keyframe.
-
-backwards
-Before the animation has begun executing (during the period specified by animation-delay), the animation applies the values that it will start the first iteration with. If the animation-direction is normal or alternate, the values specified or implied for its 0% keyframe are used; if the animation-direction is reverse or alternate-reverse, the values specified or implied for its 100% keyframe are used.
-both
-The effects of both forwards and backwards fill apply.
-
-### The `animation` shorthand property
-
-The `animation` shorthand property is a comma-separated list of animation definitions. Each item in the list gives one item of the value for all of the subproperties of the shorthand, which are known as the animation properties. (See the definition of `animation-name` for what happens when these properties have lists of different lengths, a problem that cannot occur when they are defined using only the `animation` shorthand.)
-
-
-Name:	animation
-Value:	<single-animation>#
-Initial:	see individual properties
-Applies to:	all elements, ::before and ::after pseudo-elements
-Inherited:	no
-Media:	interactive
-Computed value:	As specified
-Canonical order:	per grammar
-Percentages:	N/A
-Animatable:	no
-<single-animation> = <time> || <single-timing-function> || <time> || <single-animation-iteration-count> || <single-animation-direction> || <single-animation-fill-mode> || <single-animation-play-state> || <single-animation-name>
-
-Note that order is important within each animation definition: the first value in each <single-animation> that can be parsed as a <time> is assigned to the animation-duration, and the second value in each <single-animation> that can be parsed as a <time> is assigned to animation-delay.
-
-Note that order is also important within each animation definition for distinguishing <single-animation-name> values from other keywords. When parsing, keywords that are valid for properties other than animation-name whose values were not found earlier in the shorthand must be accepted for those properties rather than for animation-name. Furthermore, when serializing, default values of other properties must be output in at least the cases necessary to distinguish an animation-name that could be a value of another property, and may be output in additional cases.
-
-For example, a value parsed from animation: 3s none backwards (where animation-fill-mode is none and animation-name is backwards) must not be serialized as animation: 3s backwards (where animation-fill-mode is backwards and animation-name is none).
 
 ## Animation Events
 
