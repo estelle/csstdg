@@ -1,6 +1,6 @@
 # X
 
-## Transforms
+# Transforms
 
 introduction
 
@@ -10,15 +10,14 @@ Before embarking on this journey, let's take a moment to orient ourselves. There
 
 The first is the Cartesian coordinate system, or what's often called the X/Y/Z coordinate system. This system is a way of describing the position of a point in space using two numbers (for two-dimensional placement) or three numbers (for three-dimensional placement). In CSS, the system uses three axes: the X or horizontal axis, the Y or vertical axis, and the Z or depth axis. This is illustrated in Figure 1.
 
-[[]]
-
-Figure . The three Cartesian axes used in CSS transforms.
+[[]]  
+Figure 1. The three Cartesian axes used in CSS transforms.
 
 For any 2D (two-dimensional) transform, you only need to worry about the X and Y axes. By convention, positive X values go to the right, and negative to the left. Similarly, positive Y values go downward along the Y axis, while negative values go upward. That might seem a little weird, since we tend to think that higher numbers should place something higher up, not lower down. If it helps to remember, you can visualize this as being the same as the X axis, just rotated a quarter-turn clockwise. It's also the same behavior seen with the `top` property in positioning, if you're used to that.
 
 Given this, in order to move an element leftward and down, you would give it a negative X and a positive Y value, like this:
 
-	translateX(-5em) translateY(33px)
+	translateX(-5em) translateY(33px)		
 
 That is in fact a valid transform value, as we'll see in just a bit. Its effect is to translate (move) the element five ems to the left, and 33 pixels down.
 

@@ -3,7 +3,7 @@
 Third Edition TOC
 ================================
 
-* 	CSS and Documents 
+1. 	CSS and Documents 
 * 	Selectors 
 * 	Structure and the Cascade 
 * 	Values and Units 
@@ -24,7 +24,7 @@ Third Edition TOC
 Fourth Edition (notional) TOC
 --------------------------------
 
-* 	CSS and Documents 
+1. 	CSS and Documents 
 * 	Selectors 
 * 	Specificity and the Cascade 
 * 	Values and Units (incl. color values) 
@@ -54,7 +54,7 @@ Fourth Edition (notional) Writing Schedule
 
 
 * 	~CSS and Documents~
-* ~Selectors~
+*	~Selectors~
 * 	~Specificity and the Cascade~
 * 	~Values and Units (incl. color values)~
 * 	~Variables~
