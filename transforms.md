@@ -144,7 +144,7 @@ What makes this interesting is that even if you don't explicitly specify a trans
 
 This would rotate the translated, scaled image 45 degrees to its left on hover. The rotation would take place over zero seconds, because no transition interval was declared, but it's still an implicit transition. Thus, any state change can be thought of as a transition, and thus any transforms that are applied as a result of those state changes are additive with previous transforms.
 
-> As of mid-2014, transform still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
+> As of mid-2014, `transform` still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
 
 ## The transform functions
 
