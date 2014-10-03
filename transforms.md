@@ -137,7 +137,7 @@ There is an exception to this, which is that animated transforms, whether using 
 
 If you then animate the element's rotation angle, it will rotate from its translated, scaled state to the new angle, and its translation and scale will remain in place.
 
-What makes this interesting is that even if you don't explicitly specify a transition or animation, you can still create additive transforms via the user-interaction psuedo-classes, such as `:hover`. That's because things like hover effects are types of transitions—they're just not invoked using the transition properties. Thus, you could declare:
+What makes this interesting is that even if you don't explicitly specify a transition or animation, you can still create additive transforms via the user-interaction pseudo-classes, such as `:hover`. That's because things like hover effects are types of transitions—they're just not invoked using the transition properties. Thus, you could declare:
 
 	img#one {transform: translateX(100px) scale(1.2);}
 	img#one:hover {transform: rotate(-45deg);}
@@ -245,7 +245,7 @@ Unlike `translate()`, there is no fallback for situations where `translate3d()` 
 
 ### Scale functions
 
-A scale transform makes an element larger or smaller, depending on what value you use. These values are unitless real numbers, and are always positive. On the 2D palne, you can scale along the X and Y axes individually, or scale them together.
+A scale transform makes an element larger or smaller, depending on what value you use. These values are unitless real numbers, and are always positive. On the 2D plane, you can scale along the X and Y axes individually, or scale them together.
 
 Functions
 
@@ -256,7 +256,7 @@ Permitted value
 	<number>
 
 
-The number value supplied to a scale function is a multipler; thus, `scaleX(2)` will make an element twice as wide as it was before the transformation, whereas `scaleY(0.5)` will make it half as tall. Given this, you might expect that percantage values are permissible as scaling values, but they aren't.
+The number value supplied to a scale function is a multiplier; thus, `scaleX(2)` will make an element twice as wide as it was before the transformation, whereas `scaleY(0.5)` will make it half as tall. Given this, you might expect that percentage values are permissible as scaling values, but they aren't.
 
 Function
 
@@ -302,7 +302,7 @@ If a value’s number runs outside the usual range for the given unit, it will b
 
 That is to say, animating a rotation of `1100deg` will spin the element around several times before coming to rest at a tilt of -20 degrees (or 340 degrees, if you like).  By contrast, animating a rotation of `-20deg` will tilt the element a bit to the left, with no spinning; and of course animating a rotation of `340deg` will animate an almost-full spin to the right.  All three animations come to the same end state, but the process of getting there is very different in each case.
 
-The function `rotate()` is a straight 2D rotation, and the one you’re most likely to use.  It is equivalent to `rotateZ()` because it rotates the element around the Z axis (the one that shoots straight out of your display and through your eyeballs).  In a like manner, `rotateX()` causes rotation around the X axis, thus causing the element to tilt toward or away from you; and `rotateY()` rotates the elmeent around its Y axis, as though it were a door.  These are all illustrated in Figure XX.
+The function `rotate()` is a straight 2D rotation, and the one you’re most likely to use.  It is equivalent to `rotateZ()` because it rotates the element around the Z axis (the one that shoots straight out of your display and through your eyeballs).  In a like manner, `rotateX()` causes rotation around the X axis, thus causing the element to tilt toward or away from you; and `rotateY()` rotates the element around its Y axis, as though it were a door.  These are all illustrated in Figure XX.
 
 > [[Figure XX. Rotations around the three axes.]]
 
@@ -325,7 +325,7 @@ A little more complicated is something like `rotate3d(-0.25,0.35,0.66667,45deg)`
 
 > [[Figure XX. Rotation around a 3D vector, and how that vector is determined.]]
 
-If you’re no comfortable with vectors, that’s okay; most people aren’t.  You’ll really only ever need to use them if you’re doing precise 3D calculations, at wwhich point you’ll be getting very familiar with vectors whether you want to or not.
+If you’re no comfortable with vectors, that’s okay; most people aren’t.  You’ll really only ever need to use them if you’re doing precise 3D calculations, at which point you’ll be getting very familiar with vectors whether you want to or not.
 
 ### Skew functions
 
@@ -383,7 +383,7 @@ In the documentation for Safari, Apple writes that perspective values below `300
 
 > [[ Figure XX. The effects of varying perspective values. ]]
 
-Perspecitve values must always be positive, non-zero lengths.  Any other value will cause the perspective to be ignored.
+Perspective values must always be positive, non-zero lengths.  Any other value will cause the perspective to be ignored.
 
 > !! Note that `perspective()` is very similar to the property `perspective`, which will be covered later, but they are applied in critically different ways.
 
