@@ -385,15 +385,92 @@ In the documentation for Safari, Apple writes that perspective values below `300
 
 Perspective values must always be positive, non-zero lengths.  Any other value will cause the perspective to be ignored.
 
-> !! Note that `perspective()` is very similar to the property `perspective`, which will be covered later, but they are applied in critically different ways.
+> !! Note that the function `perspective()` is very similar to the property `perspective`, which will be covered later, but they are applied in critically different ways.
 
 
 ### Matrix functions
 
+If you’re a particular fan of advanced math, or stale jokes derived from Wachowski Brothers movies, then these functions will be your favorites.
 
+Function
 
-much math here (yikes)
+	matrix()
 
+Permitted values
+
+	 <number> [, <number> ]{5,5}
+
+In the CSS Transforms specification, we find the trenchant description of `matrix()` as a function that “specifies a 2D transformation in the form of a transformation matrix of the six values *a*-*f*.”
+
+First things first: a valid `matrix()` value is a list of six comma-separated numbers.  No more, no less.  The values can be positive or negative.  Second, the number describe the final transformed state of the element, combining all of the other transform types (rotation, skewing, etc.) into a very compact syntax.  Third, very few people actually use this syntax.
+
+Here’s a brief rundown of how it works.  Say you have this function applied to an element:
+
+	matrix(0.838671, 0.544639, -0.692519, 0.742636, 6.51212, 34.0381)
+
+That’s the CSS syntax used to describe this transformation matrix:
+
+	0.838671	-0.692519	0	6.51212
+	0.544639	 0.742636	0	34.0381
+	0			 0			1	0
+	0			 0			0	1
+
+Right.  So what does that do?  It has the result shown in Figure XX, which is exactly the same result as writing this:
+
+	rotate(33deg) translate(24px,25px) skewX(-10deg)
+
+> [[ Figure XX. A matrix-transformed element. ]]
+
+What this comes down to is, if you’re familiar with or need to make use of matrix calculations, you can and should absolutely use them.  If not, you can chain much more human-readable transform functions together and get the element to the same end state.
+
+Now, that was for plain old 2D transforms.  What if you want to use a matrix to transform through three dimensions?
+
+Function
+
+	matrix3d()
+
+Permitted values
+
+	<number> [, <number> ]{15,15}
+
+Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS Transforms specification: “specifies a 3D transformation as a 4x4 homogeneous matrix of 16 values in column-major order.”  This means the value of `matrix3d` _must_ be a list of 16 comma separated numbers, no more or less.  Those numbers are arranged in a 4x4 grid in column order, so the first column is the first set of four numbers in the value, the second column the second set of four numbers, the third column the third set, and so on.  Thus, you can take the following function:
+
+	matrix3d(
+		0.838671, 0.544639, 0, 0,
+		-0.692519, 0.742636, 0, 0,
+		-0.0130242, -0.0680762, 1, -0.002,
+		6.51212, 34.0381, 0, 1)
+
+…and write it out as this matrix:
+
+	0.838671	-0.692519	-0.0130242	6.51212
+	0.544639	 0.742636	-0.0680762	34.0381
+	0			 0			 1			0
+	0			 0			-0.002		1
+
+…both of which have an end state equivalent to:
+
+	rotate(33deg) translate(24px,25px) skewX(-10deg) perspective(500px)
+
+### End-state equivalence
+
+Only the end states of a `matrix()` function and an equivalent chain of transform functions can be considered identical, and for the same reason that was discussed in the section on rotation: because a rotation angle of `393deg` will end with the same visible rotation as an angle of `33deg`.  This matters if you are animating the transformation, since the former will cause the element to do a barrel roll in the animation, whereas the second will not.  The `matrix()` version of this end state won’t include the barrel roll; in other words, it will use the shortest possible rotation to reach the end state.
+
+To illustrate what this means, consider the following, a transform chain and its `matrix()` equivalent:
+
+	rotate(200deg) translate(24px,25px) skewX(-10deg)
+	matrix(-0.939693, -0.34202, 0.507713, -0.879385, -14.0021, -31.7008)
+
+Note the rotation of 200 degrees.  We naturally interpret this to mean a clockwise rotation of 200 degrees, which it does.  If these two transforms are animated, however, they will have act differently: the chained-functions version will indeed rotate 200 degrees clockwise, whereas the `matrix()` version will rotate 160 degrees anti-clockwise.  Both will end up in the same place, but will get there in different ways.
+
+There are similar differences that arise even when the rotations are smaller.  Consider these apparently equivalent transforms:
+
+	rotate(160deg) translate(24px,25px) rotate(-30deg) translate(-100px)
+	matrix(-0.642788, 0.766044, -0.766044, -0.642788, 33.1756, -91.8883)
+
+As ever, they end up in the same place.  When animated, though, the elements will take different paths to reach that end state.  They might not be obviously different at first glance, but the difference is still there.
+
+Of course, none of this matters if you aren’t animating the transformation, but it’s an important distinction to make nevertheless, because you never know when you’ll decide to start animating things.  (Hopefully after reading the companion text on animations!)
 
 
 # More Transform Properties
