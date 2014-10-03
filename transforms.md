@@ -301,7 +301,21 @@ Permitted value
 
 ### Skew functions
 
-Functions	skewX(), skewY()Permitted value	<angle>Function	skew()Permitted values	<angle> [, <angle> ]?
+Functions
+
+	skewX(), skewY()
+
+Permitted value
+
+	<angle>
+
+Function
+
+	skew()
+
+Permitted values
+
+	<angle> [, <angle> ]?
 
 
 
@@ -320,3 +334,4 @@ Function
 Permitted values
 
 	<length>
+ 
