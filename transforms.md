@@ -102,7 +102,10 @@ The functions are processed one at a time, starting with the first (leftmost) an
 
 	img#one {transform: translateX(200px) rotate(45deg);}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
+=======
+>>>>>>> eric
 =======
 >>>>>>> eric
 	img#two {transform: rotate(45deg) translateX(200px);}
@@ -115,7 +118,10 @@ Compare this to a situation where an element is translated and then scaled, or v
 
 	img#one {transform: translateX(100px) scale(1.2);}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
+=======
+>>>>>>> eric
 =======
 >>>>>>> eric
 	img#two {transform: scale(1.2) translateX(100px);}
@@ -152,7 +158,11 @@ What makes this interesting is that even if you don't explicitly specify a trans
 
 This would rotate the translated, scaled image 45 degrees to its left on hover. The rotation would take place over zero seconds, because no transition interval was declared, but it's still an implicit transition. Thus, any state change can be thought of as a transition, and thus any transforms that are applied as a result of those state changes are additive with previous transforms.
 
+<<<<<<< HEAD
 > As of mid-2014, `transform` still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
+=======
+> As of mid-2014, transform still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
+>>>>>>> eric
 
 ## The transform functions
 
@@ -326,9 +336,15 @@ Permitted value
 If you’re comfortable with vectors and want to rotate an element through 3D space, then `rotate3d()` is for you.  The first three numbers specify the X, Y, and Z components of a vector in 3D space, and the degree value determines the amount of rotation around the declared 3D vector.
 
 To start with a simple example, the 3D equivalent to `rotate(45deg)` is `rotate3d(0,0,1,45deg)`.  That specifies a vector of zero magnitude on the X and Y axes, and a magnitude of 1 along the Z axis.  In other words, it describes the Z axis.  The element is thus rotated 45 degrees around that vector, as shown in Figure XX.  That figure also shows the appropriate `rotate3d()` values to rotate an element by 45 degrees around the X and Y axes.
+<<<<<<< HEAD
 
 > [[Figure XX. Rotations around 3D vectors.]]
 
+=======
+
+> [[Figure XX. Rotations around 3D vectors.]]
+
+>>>>>>> eric
 A little more complicated is something like `rotate3d(-0.25,0.35,0.66667,45deg)`, where the described vector points off in to 3D space between the axes.  This has the result shown (and illustrated via schematic) in Figure XX.
 
 > [[Figure XX. Rotation around a 3D vector, and how that vector is determined.]]
@@ -345,6 +361,7 @@ Functions
 
 Permitted value
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 much math here (yikes)
 =======
@@ -366,10 +383,35 @@ Permitted values
 
 The `skew()` function is just a shorthand for `skewX()` and `skewY()`, accepting either one degree value or two comma-separated degree values.  If you have two values, the X skew angle is always first, and the Y skew angle comes second.  If you leave out a Y skew angle, then it’s treated as zero.  This means `skew(45deg)` is functionally equivalent to `skewX(45deg)`.  Figure XX shows some double-skewed elements.
 >>>>>>> eric
+=======
+	<angle>
 
+In both cases, you supply an angle value, and the element is skewed to match that angle.  It’s much easier to show skewing rather than try to explain it in words, so Figure XX shows a number of skew examples along the X and Y axes.
+
+> [[Figure XX. Skewing along the X and Y axes.]]
+
+
+Function
+
+	skew()
+
+Permitted values
+
+	<angle> [, <angle> ]?
+
+
+The `skew()` function is just a shorthand for `skewX()` and `skewY()`, accepting either one degree value or two comma-separated degree values.  If you have two values, the X skew angle is always first, and the Y skew angle comes second.  If you leave out a Y skew angle, then it’s treated as zero.  This means `skew(45deg)` is functionally equivalent to `skewX(45deg)`.  Figure XX shows some double-skewed elements.
+
+>>>>>>> eric
 
 > [[Figure XX. Skewed elements.]]
 
+> [[Figure XX. Skewed elements.]]
+
+
+### The perspective function
+
+If you’re transforming an element in 3D space, you most likely want it to have some perspective.  Perspective gives the appearance of front-to-back depth, and you can vary the amount of perspective applied to an element.
 
 ### The perspective function
 
