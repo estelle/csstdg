@@ -355,7 +355,7 @@ The `steps()` function is most useful when it comes to character animation: for 
 
 A flip book is a book with a series of pictures, each containing a single drawing or picture, that vary gradually from one page to the next: like one frame from a movie or cartoon stampe onto each page. When the pages of a flip book are flipped thru rapidly (hence the name), the pictures appear as an animated motion. You can create similar animations with CSS using an image sprite, the `background-position` property and the `steps()` timing function. 
 
-[[images/psy.tif]]
+![Sprite of dancing](images/psy.tif)
 
 In our image sprite we have several images that change just slightly: like the drawings on the individual pages of our flip book. 
 
@@ -373,9 +373,17 @@ Our sprite has 22 images, for a total size of 100px by 1232px. That means each o
 
 The trick is to use steps() to change the background position so that each frame is a view of a separate image within the sprite. Instead of sliding in the background image from the left, the steps() timing function will pop in the background image in the number of steps we declared.
 
-We declare our animation to simply be a change in the background position. While the image is 1232px, we move the background image from the top left (0px from the top and 0px from the left), to the left, allowing for one extra frame's width, since steps() doesn't show either the 0% mark or the 100% keyframe depending on the direction keyterm used.
+We declare our animation to simply be a change in the background position. While the image is 1232px, we move the background image from the top left (0px from the top and 0px from the left), to the left, allowing for one extra frame's width, since steps() won't show either the 0% mark or the 100% keyframe depending on the direction keyterm used.
 
 XXXXXXXXXXXXXXX
+
+    .dancer {
+        height: 100px;
+        width: 56px;
+        background-image: url(../images/dancer.png);
+    }
+
+
 
 to the Our keyframe animation simply moves the background  In our CSS, we start out with a width and height assigned to our div which match the dimensions of a single frame of our animation, and set the background image to the sprite we created.
 
