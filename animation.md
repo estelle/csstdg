@@ -369,35 +369,61 @@ Our sprite has 22 images, for a total size of 100px by 1232px. That means each o
         height: 100px;
         width: 56px;
         background-image: url(../images/dancer.png);
+        ....
     }
 
 The trick is to use steps() to change the background position so that each frame is a view of a separate image within the sprite. Instead of sliding in the background image from the left, the steps() timing function will pop in the background image in the number of steps we declared.
 
-We declare our animation to simply be a change in the background position. While the image is 1232px, we move the background image from the top left (0px from the top and 0px from the left), to the left, allowing for one extra frame's width, since steps() won't show either the 0% mark or the 100% keyframe depending on the direction keyterm used.
+We declare our animation to simply be a change in the background position. The image is 1230px: so we move the background image from the top left (0px from the top and 0px from the left), to negative 1230px. While -1230px will move the image completely out to the left, no longer showing as a background image in our 100px by 56px div at the 100% mark unless background-repeat repeats it, we remember that with the steps(n, end) syntax, the 100% keyframe never gets hit as the animation runs. Had we used start, the 0% keyframe wouldn't show. As we used `end`, the 100% keyframe doesn't show. This is what we want.
 
-XXXXXXXXXXXXXXX
-
-    .dancer {
-        height: 100px;
-        width: 56px;
-        background-image: url(../images/dancer.png);
-    }
-
-
-
-to the Our keyframe animation simply moves the background  In our CSS, we start out with a width and height assigned to our div which match the dimensions of a single frame of our animation, and set the background image to the sprite we created.
-
-    @keyframes dancearound {
+    @keyframes danceinplace {
         from {
             background-position: 0 0;
         }
         to {
-            background-position: -1288
+            background-position: -1230px
         }
     }
 
-Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
+    .dancer {
+        ....
+        background-image: url(../images/dancer.png);
+        animation: danceinplace 1s steps(22, end) infinite;
+    }
 
+We used steps(22, end). We use the `end` direction to show the 0% keyframe but not the 100% keyframe. What may have seemed like a complex animation is very simple: just like a flip book we see one frame of the sprite at a time. Our keyframe animation simply moves the background.
+
+#### Animating the `animation-timing-function`
+
+The animation-timing-function is not an animatable property: it won't slowly change from one value to another if included within keyframe selector blocks. However, unlike other animation properties, it does have an effect when specified on individual keyframes.
+
+    @keyframes bouncing {
+         40%, 70%, 90%, 100%{
+            bottom: 0;
+            animation-timing-function: ease-out;    
+        }
+        0%, 55%, 80%, 95% {
+            animation-timing-function: ease-in;
+        }
+        0% {
+            bottom: 200px;
+            left: 0;
+        }
+        55% {
+            bottom: 50px;
+        }
+        80% {
+            bottom: 25px;
+        }
+        95% {
+            bottom: 10px;
+        }
+        100% {
+            left: 110px;   
+        }
+    }
+
+Bouncing balls accelerate as they fall, and decelerate as they go upwards. In our bouncing keyframe animation, animation-timing-function changes from ease-in to ease-out when the ball bounces, and from ease-out to ease-in at the apexes. The timing-function isn't animated in the sense of changing from one value to another over time. Rather, it changes from one value to the next when the it reaches a keyframe selector delcaring a change to that value.
 
 ### The `animation-play-state` property
 
