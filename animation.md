@@ -361,20 +361,15 @@ The `animation-play-state` property defines whether the animation is running or 
 
     No
 
-running
-While this property is set to running, the animation proceeds as normal.
-paused
-While this property is set to paused, the animation is paused. The animation continues to apply to the element with the progress it had made before being paused. When unpaused (set back to running), it restarts from where it left off, as if the "clock" that controls the animation had stopped and started again.
+When set to the default `running`, the animation proceeds as normal. If set to 
+`paused`, the animation will be paused. When paused, the animation is still applied to the element. If The animation continues to apply to the element with the progress it had made before being paused. When unpaused (set back to running), it restarts from where it left off, as if the "clock" that controls the animation had stopped and started again.
 If the property is set to paused during the delay phase of the animation, the delay clock is also paused and resumes as soon as animation-play-state is set back to running.
-
-
-
 
 ### The `animation-fill-mode` property
 
-The `animation-fill-mode` property defines what values are applied by the animation outside the  time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the `animation-delay` property). Also, by default an animation does not affect property values after the animation ends (determined by the `animation-duration` and `animation-iteration-count` properties). The `animation-fill-mode` property can override this behavior.
+The `animation-fill-mode` property defines what values are applied by the animation before and after the animation iterations are executed.  With this property we are able to define what values are applied by the animation outside the time it is executing.  By default, an animation will not affect property values of the element on which it is attached until after the animation delay has expired up until the last iteration has completed. We can control this with the  `animation-fill-mode` property. 
 
-The animation-fill-mode property defines what values are applied by the animation outside the time it is executing. By default, an animation will not affect property values between the time it is applied (the ‘animation-name’ property is set on an element) and the time it begins execution (which is determined by the animation-delay property). Also, by default an animation does not affect property values after the animation ends (determined by the animation-duration and animation-iteration-count properties). The animation-fill-mode property can override this behavior.
+The  `animation-fill-mode` property enables us to apply the property values of the first keyframe to an element as soon as the animation is applied to that element thru the animation delay. It also enables us to maintain the property values of the last keyframe after the last animation cycle is complete.
 
 #### animation-fill-mode
 
@@ -397,24 +392,39 @@ The animation-fill-mode property defines what values are applied by the animatio
 
 none | forwards | backwards | both
 
-none
-The animation has no effect when it is applied but not executing.
-forwards
-After the animation is done executing (has played the number of times specified by its animation-iteration-count value) it continues to apply the values that it ended its last complete iteration with. This will be the values specified or implied for either its 100% or 0% keyframe, depending on the direction that the last complete iteration was executing in (per animation-direction). If the animation didn’t complete an entire iteration (if the iteration count was 0 or a value less than 1) the values specified or implied for its 0% keyframe are used.
-Note: If animation-iteration-count is a non-integer value, the animation will stop executing partway through its animation cycle, but a forwards fill will still apply the values of the 100% keyframe, not whatever values were being applied at the time the animation stopped executing.
+The default value is `none`, which means the animation has no effect when it is not executing. The value of `forwards` means when the animation is done executing -- has concluded the later iteration as defined by the animation-iteration-count value - it continues to apply the values of the last keyframe. this is either the 100% keyframe, or, if the last iteration was reversed, the 0% keyframe. 
 
-Issue: Why does it ignore the progress made by a non-integer iteration count?
+If the `animation-iteration-count` is a float value, and the last iteration doesn't end on the 0% or 100% keyframe, which means the animation ended its execution partway through an animation cycle, in Safari, as per the current specification, a forwards fill will apply the values of the 100% keyframe. In the specification, and in Safari, it doesn't matter whether the last iteration was normal or reverse, or whether the animation ends on the 1% or 99% keyframe, `animation-fill-mode: forward;` will cause the animation to jump to the 100% frame, and stay there, no matter where the partial animation concluded. It doesn't matter if the animation direction of that last iteration was normal or reverse. 
 
-Issue: What happens with animation-duration: 0; animation-iteration-count: infinite;? The animation is instantaneous, but there is no "last complete iteration". In particular, you can’t tell whether to use the 0% or 100% keyframe.
+XXXX check the specs to see if this has been updated.
 
-backwards
-Before the animation has begun executing (during the period specified by animation-delay), the animation applies the values that it will start the first iteration with. If the animation-direction is normal or alternate, the values specified or implied for its 0% keyframe are used; if the animation-direction is reverse or alternate-reverse, the values specified or implied for its 100% keyframe are used.
-both
-The effects of both forwards and backwards fill apply.
+Not according to the specification, but likely the specification will change, Firefox, IE, Chrome and Opera all stop and hold on the property values the element had when the animation stopped. For example, if we take the following code:
+
+    @keyframes moveMe {
+      0% {
+        transform: translatex(0);
+      }
+      100% {
+        transform: translatex(1000px);
+      }
+    }
+    .moved {
+      animation: moveMe 10s linear 0.6 forwards;
+    }
+
+The animation will only go thru 0.6 iterations. Being a linear, 10 second animation, it will stop at the 60% mark 6 seconds into the animation, when the element is translated 600px to the right. With animation-fill-mode set to forwards, as per the spec, the element should jump to being translated by 400px to be 1000px to the right of where it normally would have been, and stay there indefinitely or until the animation is detached from the moved element. Firefox, IE, Chrome and Opera will also stop the animation when it is translated 600px to the right. But, contrary to the current state of the specification, though logically and likely following the final state of the specification, those browsers will hold the moved element 600px to the right of it's original position, keeping it translated indefinitely, or until the animation is detached from the element.
+
+The backwards value controls what happens to the element after the animation was attached to the element, and up until the animation delay expires and the animation starts executing. Before the animation starts executing (during the period specified by animation-delay), the animation applies the values that it will start the first iteration with. The values specified in the animation's 0% keyframe are applied if the animation-direction is normal or alternate immediately when the animation is attached. If the animation-direction is reverse or alternate-reverse, the property values of the 100% keyframe are used.
+
+If the 0% or 100% keyframes are not explicitly defined, the browser uses the implied values for those keyframes.
+
+The value of `both` simply means that both `forwards` and `backwards` fill will be applied. As soon as the animation is attached to an element, that element will assume the properties provided in the 0% keyframe (or 100% keyframe in animation direction is set to `reverse` or `alternate-reverse`). When the last iteration concludes, it will be as if the animation-fill-mode were set to forwards: if it was a full iteration in the normal direction, the property values of the 100% keyframe will be applied, etc.
+
+XXXX Issue: What happens with animation-duration: 0; animation-iteration-count: infinite;? The animation is instantaneous, but there is no "last complete iteration". In particular, you can’t tell whether to use the 0% or 100% keyframe.
 
 ### The `animation` shorthand property
 
-The `animation` shorthand property is a comma-separated list of animation definitions. Each item in the list gives one item of the value for all of the subproperties of the shorthand, which are known as the animation properties. (See the definition of `animation-name` for what happens when these properties have lists of different lengths, a problem that cannot occur when they are defined using only the `animation` shorthand.)
+The `animation` shorthand property enables us to use one line instead of eight to define all the animation properties on an element. The animation properties are space separated, with the animation shorthand being a comma-separated list of space separated animation properties.
 
 
 #### animation
@@ -453,21 +463,77 @@ is the equivalent of:
     animation-direction: normal;
     animation-play-state: running;
 
-We didn't have to declare all of the values in the animation shorthand: any values that aren't declared are set to the default values.
+or 
 
-The order is partially important. There are two time properties: the first is always interpreted as the duration, the second, if present, is interpreted as the delay.
+    animation: 200ms ease-in 50ms 1 normal running forwards slidedown;
 
-The rest of the order is also partially important. If you use an animation-property value as your animation identifier, which you shouldn't, that should be placed as the _last_ property value in the animation shorthand. The first occurence of keywords that are valid for properties other than animation-name, such as `ease`, and `running` are assumed to be part of the shorthand of the animation property they're normally associated with rather than the `animation-name`. 
+We didn't have to declare all of the values in the animation shorthand: any values that aren't declared are set to the default values. The above line is long, and in this case, 3 of the properties are set to default, so are not necessary. 
 
-    animation: 2s 4s 6s;
+It's important to remember that if you don't declare all 8 values, the ones you don't declare will get the default value for that property. The default values are:
 
-The above is the equivalent of 
+    animation-name: none;
+    animation-duration: 0s;
+    animation-timing-function: ease;
+    animation-delay: 0;
+    animation-iteration-count: 1;
+    animation-fill-mode: none;
+    animation-direction: normal;
+    animation-play-state: running;
 
+The order of the shorthand is partially important. For example, there are two time properties: the first is always interpreted as the duration, the second, if present, is interpreted as the delay.
 
+The placement of the `animation-name` can also be important. If you use an animation-property value as your animation identifier, which you shouldn't, the  animation-name should be placed as the _last_ property value in the animation shorthand. The first occurence of a keyword that is a valid value for any property other than animation-name, such as `ease`, and `running`, will be assumed to be part of the shorthand of the animation property they're normally associated with rather than the `animation-name`. 
 
+    animation: paused 2s;
 
+The above is the equivalent to 
 
+    animation-name: none;
+    animation-duration: 2s;
+    animation-delay: 0;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+    animation-fill-mode: none;
+    animation-direction: normal;
+    animation-play-state: paused; 
 
+Paused is a valid animation name. While it may seem that the animation named `paused` with a duration of 2s is being attached to the element or psuedo element, that is not what is happening. Because words within the shorthand animation are first checked against possible valid values of all animation properties other than animation-name first, the `paused` is being set as the value of the animation-play-state property. 
+
+    animation: running 2s ease-in-out forwards;
+
+The above is the equivalent to 
+
+    animation-name: none;
+    animation-duration: 2s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-play-state: running; 
+
+Likely the developer has a keyframe animation called running. The browser, however, sees the term and assigns it to the animation-play-state property rather than the animation-name property. With no animation name declared, there is no animation attached to the element. 
+
+In light of this, `animation: 2s 3s 4s;` may seem valid, as if the following were being set:
+
+    animation-name: 4s;
+    animation-duration: 2s;
+    animation-delay: 3s;
+
+If we remembember from the keyframe identifier section above, 4s is _not_ a valid identifier. Identifiers can not start with a digit unless escaped. For this animation be valid, it would have had to be written as `animation: 2s 3s \34 s;`
+
+To attach multiple animations to a single element or pseudo element, comma separate the animation declarations.
+
+    .snowflake {
+      animation: falling 3s ease-in 200ms 32 forwards,
+                 spinning 1.5s linear 200ms 64;
+    }
+
+Our snowflake with fall while spinning for 96 seconds, spinning twice during each 3s fall. At the end of the last animation cycle, the snowflake will stay fixed on the last keyframe of the falling @keyframes animation. We declared 6 of the 8 animation properties for the falling animation and 5 for the spinng animation, separating the two animations with a comma.
+
+We put the animation name first as it's easier to read that way, but because of the issue with animation property keywords being valid keyframe identifiers, it may not be best practices.  
+
+It is fine, even a good idea, to use the animation shorthand. Just remember  the placement of animation-duration, delay and name within that shorthand are important and ommitted values default to their default values. Also, it is a good idea to not use any animation keyterms as your keyframe identifier. 
 
 
 ## Animation, Specificity and Precedence Order
