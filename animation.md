@@ -120,15 +120,17 @@ In the original -webkit- implementation of animation, each keyframe could only b
       }
     }
 
-Only animate animatable properties. Like the rest of CSS, properties and values in a keyframe declaration block that are not understood, are ignored. Properties that are not animatable are also ignored (with the exception of `animation-timing-function`).
+Only animate animatable properties. Like the rest of CSS, properties and values in a keyframe declaration block that are not understood, are ignored. Properties that are not animatable are also ignored (with the exception of `animation-timing-function`). There is a fairly exhaustive list of animatable properties at [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties], including which property value types are animatable.
 
 > Note: The `animation-timing-function`, described in greater detail below, white not an animatable property, is not ignored. If you include the `animation-timing-function` as a keyframe style rule within a keyframe selector block, the `animation-timing-function` will change to that timing function when the animation moves to the next keyframe.
 
-Do not try to animate between non-numeric values. You can animate between values that are written in a non-numeric way, as long as they can be extrapolated into a numberic value, like named colors which are extrapolated to hexadecimal color values.
+Other than a few exceptions, do not try to animate between non-numeric values. You can animate between values that are written in a non-numeric way, as long as they can be extrapolated into a numeric value, like named colors which are extrapolated to hexadecimal color values.
 
-If the animation is set between two property values that don't have a mid-point, as the results may not be what you expect: the property will not animated correctly or at all. For example, you can't animate between height: auto; and height: 300px; There is no mid-point between auto and 300px. The element may still animate, but different browsers handle this differently: Firefox does not animate the element. Safari may animate as if auto is equal to 0, and both Opera and Chrome currently jump from the pre animated state to the post animated state half way thru the animation, which may or may not be at the 50% keyframe selector, depending on your animation timing function.
+If the animation is set between two property values that don't have a mid-point the results may not be what you expect: the property will not animated correctly or at all. For example, you can't animate between height: auto; and height: 300px; There is no mid-point between auto and 300px. The element may still animate, but different browsers handle this differently: Firefox does not animate the element. Safari may animate as if auto is equal to 0, and both Opera and Chrome currently jump from the pre animated state to the post animated state half way thru the animation, which may or may not be at the 50% keyframe selector, depending on your animation timing function.
 
-Different browsers behave in differently for different properties when there is no midpoint, the behavior of your animation will be most predictable if you declare both a 0% and a 100% for every property you animate. For example, if you declare `border-radius: 50%;` in your animation, declare `border-radius: 0;` as-well, because there is no mid-point between `none` and anything: the default value of `border-radius` is `none`, not `0`.
+Different browsers behave in differently for different properties when there is no midpoint. The behavior of your animation will be most predictable if you declare both a 0% and a 100% for every property you animate. For example, if you declare `border-radius: 50%;` in your animation, declare `border-radius: 0;` as-well, because there is no mid-point between `none` and anything: the default value of `border-radius` is `none`, not `0`.
+
+One excetption to the midpoint rule is `visibility`. You can animation from hidden to visible: the effect is that it jumps from one value to the next at the keyframe upon which it is declared.
 
 That being said, not all the properties need to be included in each keyframe block. As long as an animatable property is included in at-least one block with a value that is different then the non-animated attribute value, and there is a possible midpoint between those two values, that property will animate.
 
@@ -188,7 +190,7 @@ The `animation-duration` property defines how long a single animation iteration 
 
     No
 
-The `animation-duration` property takes as it's value the length of time, in seconds (s) or milliseconds (ms), it should take to complete one cycle thru all the keyframes. If omitted, the animation will still be applied with a duration of 0s, with animationStart and animationEnd being fired. However, as the animation will take 0s to complete, it will be imperceptible. Negative values are invalid, and will behave as if the default of 0s were applied.
+The `animation-duration` property takes as it's value the length of time, in seconds (s) or milliseconds (ms), it should take to complete one cycle thru all the keyframes. If omitted, the animation will still be applied with a duration of 0s, with animationstart, animationend and animationinteration being fired. However, as the animation will take 0s to complete, it will be imperceptible. Negative values are invalid, and will behave as if the default of 0s were applied.
 
 
 ### The `animation-iteration-count` property
@@ -319,7 +321,7 @@ The default `ease` is equal to cubic-bezier(0.25, 0.1, 0.25, 1), which This func
 
     animation-timing-function: cubic-bezier(0.2, 0.4, 0.6, 0.8);
 
-A bezier-curve takes four values. The first two at the x and y of the first point on the curve, and the last two are the x and y of the second point on the curve. The x values must between 0 and 1, or the cubic bezier is invalid.
+A bezier-curve takes four values. The first two at the x and y of the first point on the curve, and the last two are the x and y of the second point on the curve. The x values must between 0 and 1, or the cubic bezier is invalid. When creating your own bezier curve, remember the steeper the curve the faster the motion. The flatter the curve, the slower the motion.
 
 By using values for Y that are greater than 1 or less than 0, you can create a bouncing effect, making the animation bouced up and down between values, rather than going consistently in a single direction. 
 
@@ -348,6 +350,43 @@ If the animation does that, it either draws the animation at 0%, 20%, 40%,  60%,
 The _direction_ parameter takes one of two values: either `start` or `end`. The direction keyword determines if the function is left- or right-continuous: if the 0% or the 100% keyframe is going to be skipped. Including `start` as the second parameter will create a left-continuous function. This means the first step happens when the animation begins, skipping the 0%, but including the 100%. Including `end`, or ommitting a second parameter (`end` is the default direction) will create a right-continuous function. This mean the first step will be at the 0% mark, and the last step will be before the 100% mark. With `end`, the 100% keyframe will not be seen unless animation-timing-function of either forwards or both is set. 
 
 The step-start value is equal to steps(1, start), with only a single step being the 100% keyframe. The step-end value is equal to steps(1, end), which displays only the 0% keyframe.
+
+The `steps()` function is most useful when it comes to character animation: for a simple game of pong, the cubic-bezier timing functions suffice. But, if you want to animate complex shapes that subtley change, like the drawings or pictures in a flip book, the `steps()` timing function is the solution.
+
+A flip book is a book with a series of pictures, each containing a single drawing or picture, that vary gradually from one page to the next: like one frame from a movie or cartoon stampe onto each page. When the pages of a flip book are flipped thru rapidly (hence the name), the pictures appear as an animated motion. You can create similar animations with CSS using an image sprite, the `background-position` property and the `steps()` timing function. 
+
+[[images/psy.tif]]
+
+In our image sprite we have several images that change just slightly: like the drawings on the individual pages of our flip book. 
+
+We put all of our slightly differing images into a single image: this image is called a sprite. Each image in our sprite is a frame the the single animated image we're creating. 
+
+We create a container element (maybe a &lt;div>) that is the size of a single image of our sprite. We attach the sprite as the background image of our div. We then animate the background-position, using the steps() timing function so we only see a single instance of the changing image of our sprite at a time. The number of steps in our steps() timing function is one more than the number of occurences of the image in our sprite.  The number of steps defines how many stops our background image makes to complete a single animation.
+
+Our sprite has 22 images, for a total size of 100px by 1232px. That means each of our images within the sprite is 100px tall by 56px wide. We set our container to that size: 56px X 100px. We set our sprite as our background image: by default the image will appear at 0 0, which is a good default for older browsers that don't support CSS animation. 
+
+    .dancer {
+        height: 100px;
+        width: 56px;
+        background-image: url(../images/dancer.png);
+    }
+
+The trick is to use steps() to change the background position so that each frame is a view of a separate image within the sprite. Instead of sliding in the background image from the left, the steps() timing function will pop in the background image in the number of steps we declared.
+
+We declare our animation to simply be a change in the background position. While the image is 1232px, we move the background image from the top left (0px from the top and 0px from the left), to the left, allowing for one extra frame's width, since steps() doesn't show either the 0% mark or the 100% keyframe depending on the direction keyterm used.
+
+XXXXXXXXXXXXXXX
+
+to the Our keyframe animation simply moves the background  In our CSS, we start out with a width and height assigned to our div which match the dimensions of a single frame of our animation, and set the background image to the sprite we created.
+
+    @keyframes dancearound {
+        from {
+            background-position: 0 0;
+        }
+        to {
+            background-position: -1288
+        }
+    }
 
 Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
 
