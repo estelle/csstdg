@@ -313,30 +313,43 @@ Similar to the  `transition-timing-function` property, the `animation-timing-fun
 
 Other than the step timing functions, the timing functions are Bezier curves. Bezier curves are mathematically defined curves used in two-dimensional graphic applications. The curve is defined by four points: the initial position and the terminating position (which are called "anchors") and two separate middle points (which are called "handles"). In CSS, the anchors are at 0, 0 and 1, 1. While you can define your own bezier curve, there are 5 pre-defined bezier curvers. 
 
-[PUT PICS OF BEZIER CURVES HERE]
+XXXX [PUT PICS OF BEZIER CURVES HERE] XXXX
 
 The default `ease` is equal to cubic-bezier(0.25, 0.1, 0.25, 1), which This function is similar to `ease-in-out` at cubic-bezier(0.42, 0, 0.58, 1), though it accelerates more sharply at the beginning. `linear`is equal to cubic-bezier(0, 0, 1, 1), and, as the name describes, creates an animation that animates at a constant speed..  `ease-in` is equal to cubic-bezier(0.42, 0, 1, 1) which creates an animation that is slow to start, but gains speed, then stops  abruptly. The opposite `ease-out` timing function is equal to cubic-bezier(0, 0, 0.58, 1), starting and full spped, then slowing progressively as it reaches the conclusion of the animation iteration. If none of these work for you, you can create your own bezier curve timing function by passing 4 values:
 
-    cubic-bezier(0.2, 0.4, 0.6, 0.8)
+    animation-timing-function: cubic-bezier(0.2, 0.4, 0.6, 0.8);
 
-A bezier-curve takes four values. The first two at the x and y of the first point on the curve, and the last two are the x and y of the second point on the curve. The x values must between 0 and 1, or the cubic bezier is invalid. 
+A bezier-curve takes four values. The first two at the x and y of the first point on the curve, and the last two are the x and y of the second point on the curve. The x values must between 0 and 1, or the cubic bezier is invalid.
 
-The step timing function step-start
-The step-start function is equivalent to steps(1, start).
-step-end
-The step-end function is equivalent to steps(1, end).
-steps(&lt;integer>[, [ start | end ] ]?)
+By using values for Y that are greater than 1 or less than 0, you can create a bouncing effect, making the animation bouced up and down between values, rather than going consistently in a single direction. 
 
+    .snake {
+      animation: shrink 10s cubic-bezier(0, 4, 1, -4) 2s both;
+    }
+    @-webkit-keyframes shrink {
+      0% {width: 500px;}
+      100% {width: 100px;}
+    }
 
-Specifies a stepping function, described above, taking two parameters. The first parameter specifies the number of intervals in the function. It must be a positive integer (greater than 0). The second parameter, which is optional, is either the value ‘start’ or ‘end’, and specifies the point at which the change of values occur within the interval. If the second parameter is omitted, it is given the value ‘end’.
-cubic-bezier(&lt;number>, &lt;number>, &lt;number>, &lt;number>)
-Specifies a cubic-bezier curve. The four values specify points P1 and P2 of the curve as (x1, y1, x2, y2). Both x values must be in the range [0, 1] or the definition is invalid. The y values can exceed this range.
+The above animation-timing-function value makes the property values go outside the boundaries of the 0% and 100% keyframes. In this example we are shrinking an element from 500px to 100px. However, because of the cubic-bezier values, the element we're shrinking will actually grow to be wider than the 500px defined in the 0% keyframe, and smaller than 100px defined in the 100% keyframe. In this scenario, the snake sits the width at 500px, the 0% keyframe, thru the expiration of the animation delay. It then quicky shrinks down to about 25px wide, which is smaller than the 100px declared in the 100% keyframe, before slowly expanding to about 750px wide, which is larger than the originating 500px width.  It then quickly shrinks back down to 100px, which is the value defined in the 100% keyframe, staying there because the animation-fill-mode value is set to both.
 
-The values and meaning of &lt;dfn class=css-code data-dfn-type=type data-export="" id=typedef-single-timing-function>&lt;single-timing-function&gt;`(#typedef-single-timing-function)&lt;/dfn> are identical to those of `">&lt;single-transition-timing-function&gt;`(http://dev.w3.org/csswg/css-transitions-1/#single-transition-timing-function title= "&lt;single-transition-timing-function") `CSS3-TRANSITIONS`(#css3-transitions title=css3-transitions "css3-transitions").
+XXXX [[ image of cubic bezier(0, 4, 1, -4) ]] XXXX
 
-The timing function specified applies to e ach iteration of the animation, not the entire animation in full. For example, if an animation has `animation-timing-function: ease-in-out; animation-iteration-count: 2;`, it will ease in at the start, ease out as it approaches the end of its first iteration, ease in at the start of its second iteration, and ease out again as it approaches the end of the animation.
+The bezier curve has the appearence of a snake, going up and down and up again because one Y coordinate is positive and the other negative. If both are positive values greater than 1 or both negative less than -1, the bezier curve is arced shaped, going above or below one value, but not bouncing like the s-curve above. 
 
-&lt;p class=note>  Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
+The step timing functions, `step-start`, `step-end` and `steps()`, are the only animation timing functions that are not cubic bezier curves. The steps() function divides the animation into a series of equal length steps. 
+
+The steps() timing function takes two parameters: the number of steps, and the direction.
+
+The number of steps is the first parameter. The value must be a positive integer. The animation will be divided equally into the number of steps provided. For example, if the animation duration is 1 second, and the number of steps is 5, the animation will be divided into 5 200ms steps, with the element being redrawn to the page 5 times, at 200ms intervals, moving 20% thru the animation at each interval.
+
+If the animation does that, it either draws the animation at 0%, 20%, 40%,  60%, and 80% keyframes or at the 20%, 40%, 60%, 80% and 100% keyframes. It will either skip drawing the 100% or the 0% keyframe. That is where the direction parameter comes in.
+
+The _direction_ parameter takes one of two values: either `start` or `end`. The direction keyword determines if the function is left- or right-continuous: if the 0% or the 100% keyframe is going to be skipped. Including `start` as the second parameter will create a left-continuous function. This means the first step happens when the animation begins, skipping the 0%, but including the 100%. Including `end`, or ommitting a second parameter (`end` is the default direction) will create a right-continuous function. This mean the first step will be at the 0% mark, and the last step will be before the 100% mark. With `end`, the 100% keyframe will not be seen unless animation-timing-function of either forwards or both is set. 
+
+The step-start value is equal to steps(1, start), with only a single step being the 100% keyframe. The step-end value is equal to steps(1, end), which displays only the 0% keyframe.
+
+Note: Unlike other animation properties, `animation-timing-function` has an effect when specified on an individual keyframe.
 
 
 ### The `animation-play-state` property
