@@ -355,7 +355,7 @@ The `steps()` function is most useful when it comes to character animation: for 
 
 A flip book is a book with a series of pictures, each containing a single drawing or picture, that vary gradually from one page to the next: like one frame from a movie or cartoon stampe onto each page. When the pages of a flip book are flipped thru rapidly (hence the name), the pictures appear as an animated motion. You can create similar animations with CSS using an image sprite, the `background-position` property and the `steps()` timing function. 
 
-![Sprite of dancing](images/psy.tif)
+![Sprite of dancing](images/psy.png)
 
 In our image sprite we have several images that change just slightly: like the drawings on the individual pages of our flip book. 
 
