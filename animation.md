@@ -574,9 +574,9 @@ The `animation` shorthand property enables us to use one line instead of eight t
 
  **Values:**
 
-    none | &lt;series of individual animation properties>
+    none | <series of individual animation properties>
 
-    &lt;animation-duration> || &lt;animation-timing-function> || &lt;animation-delay> || &lt;animation-iteration-count> || &lt;animation-direction> || &lt;animation-fill-mode> || &lt;animation-play-state> || &lt;animation-name>
+    <animation-duration> || <animation-timing-function> || <animation-delay> || <animation-iteration-count> || <animation-direction> || <animation-fill-mode> || <animation-play-state> || <animation-name>
 
  **Initial value:**
 
