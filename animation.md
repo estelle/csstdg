@@ -264,6 +264,16 @@ If the animation is not an integer, the animation will still run, but will cut o
 
 If you are attaching more than one animation to an element or pseudo-element, include a comma separated list of values for animation-name, animation-duration and animation-iteration-count. The iteraction count values, and all other animation property values, will be assigned to the animation in the order of the animation-name property values. Extra values will be ignored. Missing values will cause the existing values to be repeated. In the above example, red and blue will go thru 3 cyles, and white will iterate 5 times.
 
+If we wanted all three animations to end at the same time, even though their durations differ, we can control that with animation-iteration-count.
+
+
+    .flag {
+        animation-name: red, white, blue;
+        animation-duration: 2s, 4s, 6s;
+        animation-iteration-count: 6, 3, 2;
+    }
+
+In the above example, the red, white and blue animations will last for a total of 12 seconds each: red lasts 2s, iterating 6 times, for a total of 12 seconds, white lasts 4s, iterating 3 times, for a total of 12 seconds, and blue lasts 6s, iterating 2 times, for a total of 12 seconds. With simple artithmatic you can figure out how many interations you need to make one effect last as long as another, remembering that iteration count doesn't need to be an integer.
 
 ### The `animation-direction` property
 
@@ -372,7 +382,7 @@ Similar to the  `transition-timing-function` property, the `animation-timing-fun
 
 Other than the step timing functions, the timing functions are Bezier curves. Bezier curves are mathematically defined curves used in two-dimensional graphic applications. The curve is defined by four points: the initial position and the terminating position (which are called "anchors") and two separate middle points (which are called "handles"). In CSS, the anchors are at 0, 0 and 1, 1. While you can define your own bezier curve, there are 5 pre-defined bezier curvers. 
 
-XXXX [PUT PICS OF BEZIER CURVES HERE] XXXX
+![Cubic Bezier Named Functions](images/bezier_curves_by_name.tiff)
 
 The default `ease` is equal to cubic-bezier(0.25, 0.1, 0.25, 1), which This function is similar to `ease-in-out` at cubic-bezier(0.42, 0, 0.58, 1), though it accelerates more sharply at the beginning. `linear`is equal to cubic-bezier(0, 0, 1, 1), and, as the name describes, creates an animation that animates at a constant speed..  `ease-in` is equal to cubic-bezier(0.42, 0, 1, 1) which creates an animation that is slow to start, but gains speed, then stops  abruptly. The opposite `ease-out` timing function is equal to cubic-bezier(0, 0, 0.58, 1), starting and full spped, then slowing progressively as it reaches the conclusion of the animation iteration. If none of these work for you, you can create your own bezier curve timing function by passing 4 values:
 
@@ -382,6 +392,8 @@ A bezier-curve takes four values. The first two at the x and y of the first poin
 
 By using values for Y that are greater than 1 or less than 0, you can create a bouncing effect, making the animation bouced up and down between values, rather than going consistently in a single direction. 
 
+![Bouncing oscillation in a Bezier curve](images/cb_0_4_1_-4.tiff)
+
     .snake {
       animation: shrink 10s cubic-bezier(0, 4, 1, -4) 2s both;
     }
@@ -390,9 +402,14 @@ By using values for Y that are greater than 1 or less than 0, you can create a b
       100% {width: 100px;}
     }
 
-The above animation-timing-function value makes the property values go outside the boundaries of the 0% and 100% keyframes. In this example we are shrinking an element from 500px to 100px. However, because of the cubic-bezier values, the element we're shrinking will actually grow to be wider than the 500px defined in the 0% keyframe, and smaller than 100px defined in the 100% keyframe. In this scenario, the snake sits the width at 500px, the 0% keyframe, thru the expiration of the animation delay. It then quicky shrinks down to about 25px wide, which is smaller than the 100px declared in the 100% keyframe, before slowly expanding to about 750px wide, which is larger than the originating 500px width.  It then quickly shrinks back down to 100px, which is the value defined in the 100% keyframe, staying there because the animation-fill-mode value is set to both.
+The above animation-timing-function value makes the property values go outside the boundaries of the 0% and 100% keyframes. In this example we are shrinking an element from 500px to 100px. However, because of the cubic-bezier values, the element we're shrinking will actually grow to be wider than the 500px defined in the 0% keyframe, and smaller than 100px defined in the 100% keyframe. 
 
-XXXX [[ image of cubic bezier(0, 4, 1, -4) ]] XXXX
+![Effect of outlandish Bezier Curve](images/crazy_cubic_bezier2.tif)
+
+
+In this scenario, the snake sits the width at 500px, the 0% keyframe, thru the expiration of the animation delay. It then quicky shrinks down to about 25px wide, which is smaller than the 100px declared in the 100% keyframe, before slowly expanding to about 750px wide, which is larger than the originating 500px width.  It then quickly shrinks back down to 100px, which is the value defined in the 100% keyframe, staying there because the animation-fill-mode value is set to both.
+
+You may note the curve created by our animation is the same curve as our bezier curve. Just like our s-curve goes below and above our bounding box, the width of our animation goes below the 100px minimum width set and above the 500px maximum width we set up.
 
 The bezier curve has the appearence of a snake, going up and down and up again because one Y coordinate is positive and the other negative. If both are positive values greater than 1 or both negative less than -1, the bezier curve is arced shaped, going above or below one value, but not bouncing like the s-curve above. 
 
@@ -480,7 +497,11 @@ The animation-timing-function is not an animatable property: it won't slowly cha
         }
     }
 
-Bouncing balls accelerate as they fall, and decelerate as they go upwards. In our bouncing keyframe animation, animation-timing-function changes from ease-in to ease-out when the ball bounces, and from ease-out to ease-in at the apexes. The timing-function isn't animated in the sense of changing from one value to another over time. Rather, it changes from one value to the next when the it reaches a keyframe selector delcaring a change to that value.
+Bouncing balls accelerate as they fall, and decelerate as they go upwards. Under `animation-direction` we learned animation-timing-functions invert when the animation is proceeding in the reverse direction. However, the bouncing ball we created bounced forever. In reality, the ball will lose momentum when gravitational potential energy is converted to kinetic energy: the ball will eventually stop bouncing. That animation, therefore, was really not realistic.
+
+Therefore, we need to ensure that with each bounce, the ball loses momentum. However, we still want it to speed up with gravity, and slow down as it reaches it's apex. In our bouncing keyframe animation, animation-timing-function changes from ease-in to ease-out when the ball bounces, and from ease-out to ease-in at the apexes. The timing-function isn't animated in the sense of changing from one value to another over time. Rather, it changes from one value to the next when the it reaches a keyframe selector delcaring a change to that value.
+
+Specifying a timing-function within the `to` or `100%` keyframe will have not effect on the animation.
 
 ### The `animation-play-state` property
 
@@ -593,22 +614,28 @@ The `animation` shorthand property enables us to use one line instead of eight t
 
 The animation shorthand takes as it value all the other animation properties above, including &lt;animation-name>, &lt;animation-duration>, &lt;animation-timing-function>, &lt;animation-delay>, &lt;animation-iteration-count>, &lt;animation-direction>, &lt;animation-fill-mode>, and &lt;animation-play-state>. 
 
-    animation: 200ms ease-in 50ms forwards slidedown;
+    #animated {
+        animation: 200ms ease-in 50ms forwards slidedown;
+    }
 
 is the equivalent of:
 
-    animation-name: slidedown;
-    animation-duration: 200ms;
-    animation-timing-function: ease-in;
-    animation-delay: 50ms;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-direction: normal;
-    animation-play-state: running;
+    #animated {
+        animation-name: slidedown;
+        animation-duration: 200ms;
+        animation-timing-function: ease-in;
+        animation-delay: 50ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+        animation-play-state: running;
+    }
 
 or 
 
-    animation: 200ms ease-in 50ms 1 normal running forwards slidedown;
+    #animated {
+        animation: 200ms ease-in 50ms 1 normal running forwards slidedown;
+    }
 
 We didn't have to declare all of the values in the animation shorthand: any values that aren't declared are set to the default values. The above line is long, and in this case, 3 of the properties are set to default, so are not necessary. 
 
@@ -627,41 +654,51 @@ The order of the shorthand is partially important. For example, there are two ti
 
 The placement of the `animation-name` can also be important. If you use an animation-property value as your animation identifier, which you shouldn't, the  animation-name should be placed as the _last_ property value in the animation shorthand. The first occurence of a keyword that is a valid value for any property other than animation-name, such as `ease`, and `running`, will be assumed to be part of the shorthand of the animation property they're normally associated with rather than the `animation-name`. 
 
-    animation: paused 2s;
+    #failedAnimation {
+        animation: paused 2s;
+    }
 
 The above is the equivalent to 
 
-    animation-name: none;
-    animation-duration: 2s;
-    animation-delay: 0;
-    animation-timing-function: ease;
-    animation-iteration-count: 1;
-    animation-fill-mode: none;
-    animation-direction: normal;
-    animation-play-state: paused; 
+     #failedAnimation {
+        animation-name: none;
+        animation-duration: 2s;
+        animation-delay: 0;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        animation-fill-mode: none;
+        animation-direction: normal;
+        animation-play-state: paused;
+    } 
 
 Paused is a valid animation name. While it may seem that the animation named `paused` with a duration of 2s is being attached to the element or psuedo element, that is not what is happening. Because words within the shorthand animation are first checked against possible valid values of all animation properties other than animation-name first, the `paused` is being set as the value of the animation-play-state property. 
 
-    animation: running 2s ease-in-out forwards;
+    #anotherFailedAnimation {
+        animation: running 2s ease-in-out forwards;
+    }
 
 The above is the equivalent to 
 
-    animation-name: none;
-    animation-duration: 2s;
-    animation-delay: 0s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-direction: normal;
-    animation-play-state: running; 
+    #anotherFailedAnimation {
+        animation-name: none;
+        animation-duration: 2s;
+        animation-delay: 0s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+        animation-play-state: running;
+    } 
 
 Likely the developer has a keyframe animation called running. The browser, however, sees the term and assigns it to the animation-play-state property rather than the animation-name property. With no animation name declared, there is no animation attached to the element. 
 
 In light of this, `animation: 2s 3s 4s;` may seem valid, as if the following were being set:
 
-    animation-name: 4s;
-    animation-duration: 2s;
-    animation-delay: 3s;
+    #invalidName {
+        animation-name: 4s;
+        animation-duration: 2s;
+        animation-delay: 3s;
+    }
 
 If we remembember from the keyframe identifier section above, 4s is _not_ a valid identifier. Identifiers can not start with a digit unless escaped. For this animation be valid, it would have had to be written as `animation: 2s 3s \34 s;`
 
@@ -816,22 +853,22 @@ At the 1s mark, the slide-right animation will have the same state as if we had 
 To determine the set of keyframes, all of the values in the selectors are sorted in increasing order by time. The rules within the @keyframes rule then cascade; the properties of a keyframe may thus derive from more than one @keyframes rule with the same selector value.
 
 If a property is not specified for a keyframe, or is specified but invalid, the animation of that  property proceeds as if that keyframe did not exist. Conceptually, it is as if a set of keyframes is constructed for each property that is present in any of the keyframes, and an animation is run independently for each property.
- @keyframes wobble {
-  		0% {
-    		left: 100px;
-  		}
 
-  		40% {
-    		left: 150px;
-  		}
-
-  		60% {
-    		left: 75px;
-  		}
-
-  		100% {
-    		left: 100px;
-  		} }
+    @keyframes wobble {
+    	0% {
+    	   left: 100px;
+    	}
+    	40% {
+    	   left: 150px;
+    	}
+    	60% {
+    	   left: 75px;
+    	}
+    	100% {
+    	   left: 100px;
+    	} 
+    }
+  
   Four keyframes are specified for the animation named "wobble". In the first keyframe, 	shown at the beginning of the animation cycle, the value of the `left` property being animated is `100px`. By 40% of the animation duration, `left` has animated to `150px`. 	At 60% of the animation duration, `left` has animated back to `75px`. At the end of the animation cycle, the value of `left` has returned to `100px`. The diagram below shows the state of the animation if it were given a duration of `10s`.
 
 
@@ -864,9 +901,6 @@ Five keyframes are specified for the animation named "bounce". Between the first
 
 The effect will appear as an element that moves up the page 50px, slowing down as it reaches its highest point then speeding up as it falls back to 100px. The second half of the animation behaves in a similar manner, but only moves the element 25px up the page.
 
-A timing function specified on the `to` or `100%` keyframe is ignored.
-
-See the `animation-timing-function` property for more information.
 
 
 
