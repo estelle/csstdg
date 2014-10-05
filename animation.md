@@ -128,9 +128,28 @@ Other than a few exceptions, do not try to animate between non-numeric values. Y
 
 If the animation is set between two property values that don't have a mid-point the results may not be what you expect: the property will not animated correctly or at all. For example, you can't animate between height: auto; and height: 300px; There is no mid-point between auto and 300px. The element may still animate, but different browsers handle this differently: Firefox does not animate the element. Safari may animate as if auto is equal to 0, and both Opera and Chrome currently jump from the pre animated state to the post animated state half way thru the animation, which may or may not be at the 50% keyframe selector, depending on your animation timing function.
 
-Different browsers behave in differently for different properties when there is no midpoint. The behavior of your animation will be most predictable if you declare both a 0% and a 100% for every property you animate. For example, if you declare `border-radius: 50%;` in your animation, declare `border-radius: 0;` as-well, because there is no mid-point between `none` and anything: the default value of `border-radius` is `none`, not `0`.
+Different browsers behave in differently for different properties when there is no midpoint. The behavior of your animation will be most predictable if you declare both a 0% and a 100% for every property you animate. For example, if you declare `border-radius: 50%;` in your animation, you may want to declare `border-radius: 0;` as-well, because there is no mid-point between `none` and anything: the default value of `border-radius` is `none`, not `0`. 
 
-One excetption to the midpoint rule is `visibility`. You can animation from hidden to visible: the effect is that it jumps from one value to the next at the keyframe upon which it is declared.
+    @keyframes round {
+        100% {
+            border-radius: 50%;
+        }
+    }
+
+The above will animate an element using the original value of the border-radius of that element to a border-radius fof 50% over the duration of the animation cycle. 
+
+    @keyframes square_to_round {
+        0% {
+            border-radius: 0%;
+        }
+        100% {
+            border-radius: 50%;
+        }
+    }
+
+While including a 0% keyframe will ensure that your animation runs smoothly, the element may have had rounded corners to begin with. By adding  `border-radius: 0%;` in the `from` keyframe, if the element was originally rounded, it will jump to rectangular corners before it starts animating. This might not be what you want. The best way to resolve this issue is to use the _round_ animation instead of _square\_to\_round_, but make sure any element that gets animated with the _round_ keyframe animation has its border-radius explicitly set.
+
+One exceptions to the midpoint rule are `visibility` and `animation-timing-function`. You can animation from `hidden` to `visible`: the effect is that it jumps from one value to the next at the keyframe upon which it is declared. Similarly, the animation-timing-function will jump to the new value when at the keyframe that declares the new value is reached. This is discussed below.
 
 That being said, not all the properties need to be included in each keyframe block. As long as an animatable property is included in at-least one block with a value that is different then the non-animated attribute value, and there is a possible midpoint between those two values, that property will animate.
 
@@ -160,9 +179,22 @@ The `animation-name` property takes as it's value the name or comma-separated na
 
     No
 
-The default value is `none`, which means then there is no animation. This value can be used to override any animation applied elsewhere in the CSS cascade. To apply an animation, include the @keyframe identifier. To apply more than one animation, include more than one comma-separated @keyframe identifiers. If one of the included keyframe identifiers does not exist, the series of animation will not fail: rather, the failed animation will be ignored (and will be applied if that identifier does come into existance as a valid animation), and the other ones will be applied. 
+The default value is `none`, which means then there is no animation. This value can be used to override any animation applied elsewhere in the CSS cascade. To apply an animation, include the @keyframe identifier. 
 
-If more than one animation is applied to an element that have repeated properties, the latter animations override the property values in the preceding animations. See Animation, Specificity and Precedence Order.
+        div {
+            animation-name: change_bgcolor;
+        }
+
+To apply more than one animation, include more than one comma-separated @keyframe identifiers. 
+
+
+        div {
+            animation-name: change_bgcolor, round, W;
+        }
+
+If one of the included keyframe identifiers does not exist, the series of animation will not fail: rather, the failed animation will be ignored -- and will be applied if that identifier does come into existance as a valid animation -- and the other ones will be applied. 
+
+To include more than one animation you must include each @keyframe animation identifier as a list of comma seperated values on the `animation-name` property. If more than one animation is applied to an element that have repeated properties, the latter animations override the property values in the preceding animations. See Animation, Specificity and Precedence Order.
 
 If you include three animation names, all the following properties such as `animation-duration` and `animation-iteration-count` should have three values as well, so that there are corresponding values for each attached animation. If there are too many values, the extra values are ignored. If there are too few comma separated values, the provided values will be repeated.
 
@@ -190,7 +222,9 @@ The `animation-duration` property defines how long a single animation iteration 
 
     No
 
-The `animation-duration` property takes as it's value the length of time, in seconds (s) or milliseconds (ms), it should take to complete one cycle thru all the keyframes. If omitted, the animation will still be applied with a duration of 0s, with animationstart, animationend and animationinteration being fired. However, as the animation will take 0s to complete, it will be imperceptible. Negative values are invalid, and will behave as if the default of 0s were applied.
+The `animation-duration` property takes as it's value the length of time, in seconds (s) or milliseconds (ms), it should take to complete one cycle thru all the keyframes. If omitted, the animation will still be applied with a duration of 0s, with `animationstart`, `animationend` and `animationinteration`still being fired even though the animation, taking 0s, is imperceptible.  Negative values are invalid, and will behave as if the default of 0s were applied.
+
+Generally, you will want to include an `animation-duration` value for each `animation-name` provide. If you have only one duration, all the animations will last the same amount of time. Having fewer animation-durations values than animation-name values in your comma separated property value lists will not fail: rather, the values that are included will be repeated. If you have a greater number of duration values than name values, the extra values will be ignored.
 
 
 ### The `animation-iteration-count` property
@@ -222,6 +256,14 @@ Interestingly, 0 is a valid value for the `animation-iteration-count` property W
 
 If the animation is not an integer, the animation will still run, but will cut off mid iteration on the final iteration. For example, `animation-iteration-count: 1.25` will iterate thru the animation 1.25 times, cutting off 25% thru the second iteration.
 
+    .flag {
+        animation-name: red, white, blue;
+        animation-duration: 2s, 4s, 6s;
+        animation-iteration-count: 3, 5;
+    }
+
+If you are attaching more than one animation to an element or pseudo-element, include a comma separated list of values for animation-name, animation-duration and animation-iteration-count. The iteraction count values, and all other animation property values, will be assigned to the animation in the order of the animation-name property values. Extra values will be ignored. Missing values will cause the existing values to be repeated. In the above example, red and blue will go thru 3 cyles, and white will iterate 5 times.
+
 
 ### The `animation-direction` property
 
@@ -245,10 +287,25 @@ With the `animation-direction` property you can control whether the animation pr
 
     No
 
-When set to `normal`, each iteration of the animation progress from the 0% keyframe to the 100% keyframe.  are played as specified.
-The `reverse` value sets each iteration to play in reverse keyframe order, progressing from the 100% keyframe to the 0% keyframe. The `alternate` value means that the first iteration (and each subsequent odd count iteration) should proceed from 0% to 100%, the second iteration (and each subsequent even numbered cycle) should reverse direction, proceeding from 100% to 0%. The `alternate-reverse` value is similar to the `alternate` value, except the odd numbered iterations are in the reverse direction, and the even numbered animation iterations are in the normal, or 0% to 100%; direction.
+When set to `normal`, each iteration of the animation progresses from the 0% keyframe to the 100% keyframe. The `reverse` value sets each iteration to play in reverse keyframe order, progressing from the 100% keyframe to the 0% keyframe. The `alternate` value means that the first iteration (and each subsequent odd count iteration) should proceed from 0% to 100%, the second iteration (and each subsequent even numbered cycle) should reverse direction, proceeding from 100% to 0%. The `alternate-reverse` value is similar to the `alternate` value, except the odd numbered iterations are in the reverse direction, and the even numbered animation iterations are in the normal, or 0% to 100%; direction.
 
-When an animation is played in reverse the timing functions is reversed. For example, when played in reverse an `ease-in` animation would appear to be an `ease-out` animation, progressing from the 100% keyframe to the 0% keyframe.
+    .ball {
+        animation-name: bouncing;
+        animation-duration: 400ms;
+        animation-iteration-count: infinite;
+        animation-direction: alternate-reverse;
+        animation-timing-function: ease-in;
+    }
+    @keyframes bouncing {
+        from {
+            transforms: translateY(0);
+        }
+        to {
+            transforms: translateY(200px);
+        }
+    }
+
+When an animation is played in reverse the timing function is reversed. For example, when played in reverse, if the animation  `ease-in` animation would appear to be an `ease-out` animation, progressing from the 100% keyframe to the 0% keyframe.
 
 
 ### The `animation-delay` property
