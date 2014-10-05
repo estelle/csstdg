@@ -87,17 +87,17 @@ Assuming we have a background color change animation:
 And the element originally had it's background-color set to red, it would be as if the animation were written as:
 
 	@keyframes change_bgcolor {
-    0%   { background-color: red;}
-    45%  { background-color: green; }
-    55%  { background-color: blue; }
-    100% { background-color: red;}
+        0%   { background-color: red;}
+        45%  { background-color: green; }
+        55%  { background-color: blue; }
+        100% { background-color: red;}
 	}
 or, remembering that we can including multiple, identical keyframes as a comma separated list :
 
 	@keyframes change_bgcolor {
-    0%, 100% { background-color: red;}
-    45% { background-color: green; }
-    55% { background-color: blue; }
+        0%, 100% { background-color: red;}
+        45% { background-color: green; }
+        55% { background-color: blue; }
 	}
 
 Negative values or values greater than `100%` are not valid and will be ignored.
@@ -165,7 +165,7 @@ The `animation-name` property takes as it's value the name or comma-separated na
 
  **Values:**
 
-    &lt;@keyframes_identifier> | none | inherit | initial
+    <@keyframes_identifier> | none | inherit | initial
 
  **Initial value:**
 
@@ -208,7 +208,7 @@ The `animation-duration` property defines how long a single animation iteration 
 
  **Values:**
 
-    &lt;time>
+    <time>
 
  **Initial value:**
 
@@ -294,18 +294,18 @@ When set to `normal`, each iteration of the animation progresses from the 0% key
         animation-duration: 400ms;
         animation-iteration-count: infinite;
         animation-direction: alternate-reverse;
-        animation-timing-function: ease-in;
+        animation-timing-function: ease-out;
     }
     @keyframes bouncing {
         from {
-            transforms: translateY(0);
+            transforms: translateY(200px);
         }
         to {
-            transforms: translateY(200px);
+            transforms: translateY(0);
         }
     }
 
-When an animation is played in reverse the timing function is reversed. For example, when played in reverse, if the animation  `ease-in` animation would appear to be an `ease-out` animation, progressing from the 100% keyframe to the 0% keyframe.
+When an animation is played in reverse the timing function is reversed. In the above example, we are bouncing our ball, but we want to start it before it drops, and we want it to alternate between going up and going down. We will cover `animation-direction: alternate-reverse;` below. The important thing to note here is that when the ball is dropping, it gets faster. As it goes up, it gets slower: the ball is slowest at the apex and fastest at the nadir.  When played in reverse, our `ease-out` animation appears to be `ease-in` animation, progressing from the 100% keyframe to the 0% keyframe.
 
 
 ### The `animation-delay` property
