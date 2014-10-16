@@ -452,9 +452,9 @@ Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS
 
 	rotate(33deg) translate(24px,25px) skewX(-10deg) perspective(500px)
 
-### End-state equivalence
+### A note on end-state equivalence
 
-Only the end states of a `matrix()` function and an equivalent chain of transform functions can be considered identical, and for the same reason that was discussed in the section on rotation: because a rotation angle of `393deg` will end with the same visible rotation as an angle of `33deg`.  This matters if you are animating the transformation, since the former will cause the element to do a barrel roll in the animation, whereas the second will not.  The `matrix()` version of this end state won’t include the barrel roll; in other words, it will use the shortest possible rotation to reach the end state.
+It’s important to keep in mind that only the end states of a `matrix()` function, and an equivalent chain of transform functions, can be considered identical.  This is for the same reason that was discussed in the section on rotation: because a rotation angle of `393deg` will end with the same visible rotation as an angle of `33deg`.  This matters if you are animating the transformation, since the former will cause the element to do a barrel roll in the animation, whereas the second will not.  The `matrix()` version of this end state won’t include the barrel roll, either.  Instead, it will always use the shortest possible rotation to reach the end state.
 
 To illustrate what this means, consider the following, a transform chain and its `matrix()` equivalent:
 
@@ -463,7 +463,7 @@ To illustrate what this means, consider the following, a transform chain and its
 
 Note the rotation of 200 degrees.  We naturally interpret this to mean a clockwise rotation of 200 degrees, which it does.  If these two transforms are animated, however, they will have act differently: the chained-functions version will indeed rotate 200 degrees clockwise, whereas the `matrix()` version will rotate 160 degrees anti-clockwise.  Both will end up in the same place, but will get there in different ways.
 
-There are similar differences that arise even when the rotations are smaller.  Consider these apparently equivalent transforms:
+There are similar differences that arise even when you might think they wouldn’t.  Once again, this is because a `matrix()` transformation will always take the shortest possible route to the end state, whereas a transform chain might not.  (In fact, it probably doesn’t.)  Consider these apparently equivalent transforms:
 
 	rotate(160deg) translate(24px,25px) rotate(-30deg) translate(-100px)
 	matrix(-0.642788, 0.766044, -0.766044, -0.642788, 33.1756, -91.8883)
@@ -478,6 +478,8 @@ Of course, none of this matters if you aren’t animating the transformation, bu
 various properties
 
 ## Moving the Origin
+
+So far, all of the transforms we’ve seen have shared one thing in common: the precise center of the element was used as the *transform origin*.  For example, when rotating the element, it rotated around its center, instead of, say, a corner.  This is the default behavior, but with the property `transform-origin`, you can change it.
 
 ---
 
@@ -514,6 +516,23 @@ A percentage, except for length values, which are converted to an absolute lengt
 
 ---
 
+With `transform-origin`, you supply two keywords to define the point around which transforms should be made; first the horizontal, then the vertical.  (If you’re aware of the `background-position` property, the syntax for `transform-origin` should look very familiar.)  You can use plain-English keywords like `top` and `right`, percentages, lengths, or a combination of different keyword types.
+
+Length values are taken as a distance from the top left corner of the element.  Thus, `transform-origin: 5em 22px` will place the transform origin 5em to the right of the left side of the element, and 22 pixels down from the top of the element.
+
+Percentages are calculated with respect to the corresponding axis and size of the element, as offsets from the element’s top left corner.  For example, `transform-origin: 67% 40%` will place the transform origin 67 percent of the width to the right of the element’s left side, and 40 percent of the element’s height down from the element’s top side.  Figure XX illustrates a few origin calculations.
+
+> [[ Figure XX. Various origin calculations. ]]
+
+All right, so if you change the origin, what happens?  The easiest way to visualize this is with rotations.  Suppose you rotate an element 45 degrees to the right.  Its final placement will depend  on its origin.  Figure XX illustrates the the effects of several different transform origins.
+
+> [[ Figure XX. The rotational effects of using various transform origins. ]]
+
+The origin matters for other transform types, such as skews and scales.  Scaling an element with its origin in the center will pull in all sides equally, whereas scaling an element with a bottom-right origin will cause it to shrink toward that corner.  Similarly, skewing an element with respect to its center will result in the same shape as if it’s skewed with respect to the top right corner, but the placement of the shape will be different.  Some examples are shown in Figure XX.
+
+> [[ Figure XX. The rotational effects of using various transform origins. ]]
+
+The one transform type that isn’t really affected by changing the transform origin is translation.  If you push an element around with `translate()`, or its cousins like `translateX()` and `translateY()`, it’s going to end up in the same place regardless of where the transform origin is located.  If that’s all the transforming you plan to do, then setting the transform origin is irrelevant.
 
 ## Choosing a 3D Style
 
