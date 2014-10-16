@@ -532,9 +532,11 @@ The origin matters for other transform types, such as skews and scales.  Scaling
 
 > [[ Figure XX. The rotational effects of using various transform origins. ]]
 
-The one transform type that isn’t really affected by changing the transform origin is translation.  If you push an element around with `translate()`, or its cousins like `translateX()` and `translateY()`, it’s going to end up in the same place regardless of where the transform origin is located.  If that’s all the transforming you plan to do, then setting the transform origin is irrelevant.
+The one transform type that isn’t really affected by changing the transform origin is translation.  If you push an element around with `translate()`, or its cousins like `translateX()` and `translateY()`, it’s going to end up in the same place regardless of where the transform origin is located.  If that’s all the transforming you plan to do, then setting the transform origin is irrelevant.  If you ever do anything besides translating, though, the origin will matter.  Use it wisely.
 
 ## Choosing a 3D Style
+
+If you’re setting elements to be transformed through three dimensions—using, say, `translate3d()` or `rotateY()`—you probably expect that the elements will be presented as though they’re in a 3D space.  And yet, this is not the default behavior.  By default, everything looks flat no matter what you do.  Fortunately, this can be overridden with the `transform-style` property.
 
 ---
 
@@ -562,12 +564,58 @@ As specified
 
 ---
 
+Suppose you have an element you want to move “closer to” your eye, and then tilt away a bit, with a moderate amount of perspective.  Something like this rule, as applied to the following HTML:
 
-## Creating Perspective
+	div#inner {transform: translateZ(23px) rotateX(33deg) perspective(750px);}
+	
+	<div id="outer">
+	outer
+	<div id="inner">inner</div>
+	</div>
 
-two properties
+So you do that, and get the result shown in Figure XX; more or less what you might have expected.  But then you decide to rotate the outer `div` to one side, and suddenly nothing makes sense any more.  The inner `div` isn’t where you envisioned it.  In fact, it just looks like a picture pasted to the front of the outer `div`.
+
+> [[ Figure XX. A 3D-transformed inner `div`. ]]
+
+Well, that’s exactly what it is, because the default value of `transform-style` is `flat`.  What happened was, the inner `div` got drawn in its moved-forward-tilted-back state, and that was applied to the front of the outer `div` like it was an image.  So, when you rotated the outer `div`, the flat picture rotated right along with it, as shown in Figure XX.
+
+	div#outer {transform: rotateY(0deg) perspective(750px);}
+
+> [[ Figure XX. The effects of a `flat` transform style. ]]
+
+Change the value to `preserve-3d`, however, and things suddenly change.  The inner `div` will be drawn as a full 3D object with respect to its parent outer `div`, floating in space nearby, and _not_ as a picture pasted on the front of the outer `div`.  You can see the results of this change in Figure XX.
+
+	div#outer {transform: rotateY(0deg) perspective(750px);
+		transform-style: preserve-3d;}
+	div#inner {transform: translateZ(23px) rotateX(33deg) perspective(750px);}
+
+> [[ Figure XX. The effects of a 3D-preserved transform style. ]]
+
+That’s better!  It might not be precisely what you had in mind, because the outer `div` still looks weirdly flat, but it’s better.  As for that flatness, it’s due to the way perspective is managed in CSS, and that’s what we’ll discuss in the next section.  (Spoiler: you won’t usually set perspective the way we did above.)
+
+One important aspect of `transform-style` is that it can be overridden by other properties.  The reason is that some values of these other properties require a flattened presentation of an element and its children in order to work at all.  In such cases, the value of `transform-style` is forced to be `flat` regardless of what you may have declared.
+
+So, in order to avoid this overriding behavior, make sure the following properties are set to the listed values:
+
+*	`overflow: visible`
+*	`filter: none`
+*	`clip: auto`
+*	`clip-path: none`
+*	`mask-image: none`
+*	`mask-border-source: none`
+*	`mix-blend-mode: normal`
+
+Those are all the default values for those properties, so as long as you don’t try to change any of them for your preserved-3D elements, you’re fine!  But if you find that editing some CSS suddenly flattens out your lovely 3D transforms, one of these properties might be the culprit.
+
+One more note: in addition to the above, the value of the property `isolation` must be, or be computed to be, `isolate`.  (`isolation` is a compositing property, in case you were wondering.)
+
+## Changing Perspective
+
+There are actually two properties that are used to define how perspective is handled: one to define the perspective distance, as with the `perspective()` function discussed in an earlier section; and another to define the perspective’s origin point.
 
 ### Defining a group perspective
+
+First, let’s consider the property `perspective`, which accepts a length that defines the depth of the perspective pyramid.  At first glance, it looks just like the `perspective()` function, but there are some very critical differences.
 
 ---
 
@@ -594,6 +642,36 @@ No
 The absolute length, or else `none`
 
 ---
+
+As a quick example, if you want to create a very deep perspective, one mimicking the results you’d get from a zoom lens, you might declare something like `perspective: 2500px`.  For a shallow depth, one that mimics a closeup fisheye lens effect, perhaps `perspective: 100px`.
+
+So how does this differ from the `perspective()` function?  When you use `perspective()`, you’re defining the perspective effect for the element that is given that function.  So if you say `transform: rotateY(-50grad) perspective(800px);`, you’re applying that perspective to each element that has the rule applied.
+
+With the `perspective` property, on the other hand, you’re creating a perspective depth that is applied to all the child elements of the element that received the property.  Confused yet?  Don’t be.  Here’s a simple illustration of the difference, as shown in Figure XX.
+
+	div {transform-style: preserve-3d; border: 1px solid gray; width: 660px;}
+	img {margin: 10px;}
+	#one {perspective: none;}
+	#one img {transform: rotateX(-50grad) perspective(800px);}
+	#two {perspective: 800px;}
+	#two img {transform: rotateX(-50grad);}
+
+	<div><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
+	<div id="one"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
+	<div id="two"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
+
+> [[ Figure XX. Shared perspective versus individual perspectives. ]]
+
+In Figure XX, we see first a line of images that haven’t been transformed.  In the second line, each image has been rotated 50 gradians (equivalent to 45 degrees) toward us, but each one within its own individual perspective.  This is why they still look flat, but shorter.
+
+In the third line of images, none of them has an individual perspective.  Instead, they are all drawn within the perspective defined by the `perspective: 800px;` that’s been set on the `div` that contains them.  Since they all operate within a shared perspective, they look “correct;” that is, like we would expect if we had three physical pictures mounted on a clear sheet of glass and rotated toward us around the center horizontal axis of that glass.
+
+> Note that presence of `transform-style: preserve-3d` makes this effect possible, as discussed in the previous section.
+
+This is the critical difference between `perspective`, the property; and `perspective()`, the function.  The former creates a 3D space shared by all its children.  The latter affects only the element to which it’s applied.
+
+In most cases, you’re going to use the `perspective` property.  In fact, container `div`s (or other elements) are a very common feature of 3D transforms, the way they used to be for page layout.  In the previous example, the `<div id="two">` was there solely to serve as a perspective container, so to speak.  On the other hand, we couldn’t have done what we did without it.
+
 
 ### Moving the perspective’s origin
 
