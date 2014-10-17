@@ -675,6 +675,8 @@ In most cases, you’re going to use the `perspective` property.  In fact, conta
 
 ### Moving the perspective’s origin
 
+When transforming elements in three dimensions—assuming you’ve allowed them to appear three-dimensional, that is—there will be a perspective used.  (See `transform-style` and `perspective`, respectively, in previous sections.)  That perspective will have an origin, which is also known as the _vanishing point_, and you can change where it’s located with the property `perspective-origin`.
+
 ---
 
 `perspective-origin`
@@ -710,8 +712,34 @@ A percentage, except for length values, which are converted to an absolute lengt
 
 ---
 
+As you’ve no doubt spotted, `perspective-origin` and `transform-origin` (see previously) have the same value syntax.  While the way the values are expressed is identical, the effects they have are very different.  With `transform-origin`, you define the point around which transforms happen.  With `perspective-origin`, you define the point on which sight lines converge.
+
+As with most 3D transform properties, this is more easily demonstrated than described.  Consider the following CSS and markup, illustrated in Figure XX.
+
+	#container {perspective: 850px; perspective-origin: 50% 0%;}
+	#ruler {height: 50px; background: #DED url(tick.gif) repeat-x;
+		transform: rotateX(60deg);
+		transform-origin: 50% 100%;}
+
+	<div id="container">
+		<div id="ruler"></div>
+	</div>
+
+> [[ Figure XX. A basic “ruler.” ]]
+
+What we have is a repeated background image of tick-marks on a ruler, with the `div` that contains them tiled away from us by 60 degrees.  All the lines point at a common vanishing point, the top center of the container `div` (because of the `50% 0%` value for `perspective-origin`).
+
+No consider that same setup with various perspective origins, as shown in Figure XX.
+
+> [[ Figure XX. A basic “ruler” with different perspective origins. ]]
+
+As you can see, moving the perspective origin changes the rendering of the 3D-transformed element.
+
+Note that these only had an effect because a we supplied a value four `perspective`.  If the value of `perspective` is ever `none`, then any value given for `perspective-origin` will be ignored.  That makes sense, since you can’t have a perspective origin if there’s no perspective!
+
 ## Dealing With Backfaces
 
+x
 
 ---
 
@@ -738,3 +766,10 @@ No
 As specified
 
 ---
+
+x
+
+
+# Summary
+
+x
