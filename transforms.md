@@ -739,7 +739,7 @@ Note that these only had an effect because a we supplied a value four `perspecti
 
 ## Dealing With Backfaces
 
-x
+Something you probably never thought about, when laying out elements, was: what would it look like if I could see the back side of the element?  Now that 3D transforms are a possibility, though, there may come the day when you do see the back of an element.  What happens when you do is controlled by the property `backface-visibility`.
 
 ---
 
