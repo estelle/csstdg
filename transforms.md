@@ -735,7 +735,7 @@ No consider that same setup with various perspective origins, as shown in Figure
 
 As you can see, moving the perspective origin changes the rendering of the 3D-transformed element.
 
-Note that these only had an effect because a we supplied a value four `perspective`.  If the value of `perspective` is ever `none`, then any value given for `perspective-origin` will be ignored.  That makes sense, since you can’t have a perspective origin if there’s no perspective!
+Note that these only had an effect because a we supplied a value four `perspective`.  If the value of `perspective` is ever `none`, then any value given for `perspective-origin` will be ignored.  That makes sense, since you can’t have a perspective origin when there’s no perspective at all!
 
 ## Dealing With Backfaces
 
