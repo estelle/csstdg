@@ -2,7 +2,9 @@
 
 # Transforms
 
-introduction
+Ever since the inception of CSS, elements have been rectangular and very firmly oriented on the horizontal and vertical axes.  A number of tricks arose to make elements look like they were tilted and so on, but underneath it all was a very rigid grid.  In the late 2000s, there grew an interest in being able to break the shackles of that grid and transform objects in interesting ways—and not just in two dimensions.
+
+If you’ve ever positioned an object, whether relatively or absolutely, then you’ve already transformed an object.  For that matter, any time you used floats or negative-margin tricks (or both), you transformed an object.  All of those are examples of translation, or the movement of an element from where it would normally appear to some other place.  With CSS Transforms, you have a new way to translate elements, and a whole lot more besides.  Whether it’s as simple as rotating some photographs a bit to make them appear more natural, or creating interfaces where information can be revealed by flipping over elements, or just doing interesting perspective tricks with sidebars, CSS Transforms can—if you’ll pardon the obvious expression—transform the way you design
 
 # Coordinate Systems
 
@@ -767,7 +769,7 @@ As specified
 
 ---
 
-Unlike many of the other properties and functions we’ve already talked about, this one is as straightforward as straightforward can be.  All it does is determine whether the back side of an element is visible or not.  It really is just that simple.
+Unlike many of the other properties and functions we’ve already talked about, this one is as straightforward as straightforward can be.  All it does is determine whether the back side of an element can be seen, or not.  It really is just that simple.
 
 So let’s say you flip over two elements, one with `backface-visibility` set to the default value of `visible` and the other set to `hidden`.  You get the result shown in Figure XX.
 
@@ -809,10 +811,8 @@ There’s a variant on that example that uses the same markup, but slightly diff
 
 > [[ Figure XX. Information on the back. ]]
 
-The only thing we had to do to make that happen was to just shift the `backface-visibilty: hidden` to the `div` instead of applying it to both the `ing` and the `div`.  Thus, the `div`’s back face is hidden when it’s flipped over, but the image’s is not.
-
-> Another situation in which is can be useful to hide back faces is when you are using CSS to create a fully 3D model of something, but you want to either hide the faces the are on the far side of the object, or hide those closet to the viewer so that they can see to the inside of the model.
+The only thing we had to do to make that happen was to just shift the `backface-visibilty: hidden` to the `div` instead of applying it to both the `ing` and the `div`.  Thus, the `div`’s backface is hidden when it’s flipped over, but the image’s is not.
 
 # Summary
 
-x
+With the ability to transform elements in two- and three-dimensional space, CSS Transforms provide a great deal of power to designers who are looking for new ways to present information.  From creating interesting combinations of 2D transforms to creating a fully 3D-acting interface, transforms open up a great deal of new territory in the design space.   There are some interesting dependencies between properties, which is something that not every CSS author will find natural at first, but they become second nature with just a bit of practice.
