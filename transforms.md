@@ -739,7 +739,7 @@ Note that these only had an effect because a we supplied a value four `perspecti
 
 ## Dealing With Backfaces
 
-Something you probably never thought about, when laying out elements, was: what would it look like if I could see the back side of the element?  Now that 3D transforms are a possibility, though, there may come the day when you do see the back of an element.  What happens when you do is controlled by the property `backface-visibility`.
+Something you probably never really thought about, when laying out elements, was: what would it look like if I could see the back side of the element?  But now that 3D transforms are a possibility, there may well come the day when you _do_ see the back of an element.  You might even mean to do so intentionally.  What happens at that moment is determined by the property `backface-visibility`.
 
 ---
 
@@ -767,8 +767,51 @@ As specified
 
 ---
 
-x
+Unlike many of the other properties and functions we’ve already talked about, this one is as straightforward as straightforward can be.  All it does is determine whether the back side of an element is visible or not.  It really is just that simple.
 
+So let’s say you flip over two elements, one with `backface-visibility` set to the default value of `visible` and the other set to `hidden`.  You get the result shown in Figure XX.
+
+	span {border: 1px solid red; display: inline-block;}
+	img {vertical-align: bottom;}
+	img.flip {transform: rotateX(180deg); display: inline-block;}
+	img#show {backface-visibility: visible;}
+	img#hide {backface-visibility: hidden;}
+
+	<span><img src="tars.gif"></span>
+	<span><img src="tars.gif" class="flip" id="show"></span>
+	<span><img src="tars.gif" class="flip" id="hide"></span>
+
+> [[ Figure XX. Visible and hidden backfaces. ]]
+
+As you can see, the first image is unchanged.  The second is flipped over around its X axis, so we see it from the back.  The third has also been flipped, but we can’t see its back because it’s hidden.
+
+This property can come in handy in a number of situations.  The simplest is a case where you have two elements that represent the two sides of a UI element that flips over; say, a search area with preference settings on its back, or a photo with some information on the back.  Let’s take the latter case.  The CSS and markup might look something like this:
+
+	section {position: relative;}
+	img, div {position: absolute; top: 0; left: 0; backface-visibility: hidden;}
+	div {transform: rotateY(180deg);}
+	section:hover {transform: rotateY(180deg); transform-style: preserve-3d;}
+	
+	<section>
+		<img src="photo.jpg" alt="">
+		<div class="info">(…info goes here…)</div>
+	</section>
+
+Okay, so that example shows that using `backface-visibility` isn’t _quite_ as simple as it first appears.  It’s not that the property itself is complicated, but if you forget to set `transform-style` to `preserve-3d`, then it won’t work as intended.
+
+There’s a variant on that example that uses the same markup, but slightly different CSS to show the image’s back face when it’s flipped over.  This is probably more what was intended, since it makes it look like the information is literally written on the back of the image.  It leads to the end result shown in Figure XX.
+
+	section {position: relative;}
+	img, div {position: absolute; top: 0; left: 0;}
+	div {transform: rotateY(180deg); backface-visibility: hidden;
+		background: rgba(255,255,255,0.75;}
+	section:hover {transform: rotateY(180deg); transform-style: preserve-3d;}
+
+> [[ Figure XX. Information on the back. ]]
+
+The only thing we had to do to make that happen was to just shift the `backface-visibilty: hidden` to the `div` instead of applying it to both the `ing` and the `div`.  Thus, the `div`’s back face is hidden when it’s flipped over, but the image’s is not.
+
+> Another situation in which is can be useful to hide back faces is when you are using CSS to create a fully 3D model of something, but you want to either hide the faces the are on the far side of the object, or hide those closet to the viewer so that they can see to the inside of the model.
 
 # Summary
 
