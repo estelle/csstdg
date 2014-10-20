@@ -52,7 +52,7 @@ Change that to `–45deg`, and the element will rotate counter-clockwise (anti-c
 
 > [[ Figure 5. Rotations in the XY plane. ]]
 
-You can use degree to define skews, which will be covered later, but most authors will use degrees for rotational purposes.
+You can use a degree angle to define skews, which will be covered later, but most authors will use degrees for rotational purposes.
 
 All right—now that we have our bearings, let's get started with transforms!
 
@@ -90,7 +90,7 @@ As specified, except for relative length values, which are converted to an absol
 
 ---
 
-First off, let's clear up the matter of the bounding box. For any element being affected by CSS, this is the border box; that is, the outermost edge of the element's border. That means that any outlines and margins are ignored for the purposes of calculating the bounding box. Special note: if a table-display element is being transformed, its bounding box is the table wrapper box, which encloses the table box and any association caption box.
+First off, let's clear up the matter of the *bounding box*. For any element being affected by CSS, this is the border box; that is, the outermost edge of the element's border. That means that any outlines and margins are ignored for the purposes of calculating the bounding box. Special note: if a table-display element is being transformed, its bounding box is the table wrapper box, which encloses the table box and any association caption box.
 
 If you're transforming an SVG element with CSS, then its bounding box is its SVG-defined _object bounding box_. Simple enough!
 
@@ -122,16 +122,16 @@ Note that when you bave a series of transform functions, all of them must be pro
 
 Because the value for `rotate()` is invalid—rotational values must have a unit—the entire value is dropped. The image in question will simply sit there in its initial untransformed state, neither translated nor scaled, let alone rotated.
 
-It's also the case that transforms are not cumulative. That is to say, if you apply a transform to an element and then later want to add a transformation, you need to restate the original transform. Consider the following scenarios, illustrated in Figure XX:
+It's also the case that transforms are not usually cumulative. That is to say, if you apply a transform to an element and then later want to add a transformation, you need to restate the original transform. Consider the following scenarios, illustrated in Figure 8:
 
 	#ex01 {transform: rotate(30deg) skewX(-25deg);}
 	#ex01 {transform: scaleY(2);}
 	#ex02 {transform: rotate(30deg) skewX(-25deg);}
 	#ex02 {transform: rotate(30deg) skewX(-25deg) scaleY(2);}
 
-> [[ Figure XX. Overwriting or modifying transforms. ]]
+> [[ Figure 8. Overwriting or modifying transforms. ]]
 
-In the first case, the second rule completely replaces the first, meaning that the element is only scaled. This actually makes some sense; it's the same as if you declare a font size and then elsewhere declare a different font size for the same element. You don't get a cumulative font size that way. You just get one size or the other. In the second example, the entirety of the first set of transforms was included in the second set, so they all got applied along with the scaleY() function.
+In the first case, the second rule completely replaces the first, meaning that the element is only scaled along the Y axis. This actually makes some sense; it's the same as if you declare a font size and then elsewhere declare a different font size for the same element. You don't get a cumulative font size that way. You just get one size or the other. In the second example, the entirety of the first set of transforms was included in the second set, so they all got applied along with the `scaleY()` function.
 
 There is an exception to this, which is that animated transforms, whether using transitions or actual animations, _are_ additive. That way, you can take an element that's transformed and then animate one of its transform functions without overwriting the others. For example, assume you had:
 
@@ -146,102 +146,110 @@ What makes this interesting is that even if you don't explicitly specify a trans
 
 This would rotate the translated, scaled image 45 degrees to its left on hover. The rotation would take place over zero seconds, because no transition interval was declared, but it's still an implicit transition. Thus, any state change can be thought of as a transition, and thus any transforms that are applied as a result of those state changes are additive with previous transforms.
 
-> As of mid-2014, `transform` still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
+> As of mid-2014, `transform` and its associated properties still had to be vendor-prefixed in WebKit and Blink browsers like Safari and Chrome. No prefixes were needed in other major user agents.
 
 ## The transform functions
 
-There are, as of this writing, 21 different transform functions, employing a number of different value patterns to get their jobs done. Table X provides a list of all the available transform functions, minus their value patterns.
+There are, as of this writing, 21 different transform functions, employing a number of different value patterns to get their jobs done. Table 1 provides a list of all the available transform functions, minus their value patterns.
 
-> Table X. Transform functions.
+> Table 1. Transform functions.
 
 <table>
-<tr>
+<tr style="vertical-align: top;">
 <td>
-translate()<br>
-translate3d()<br>
-translateX()<br>
-translateY()<br>
-translateZ()
+<code>translate()</code><br>
+<code>translate3d()</code><br>
+<code>translateX()</code><br>
+<code>translateY()</code><br>
+<code>translateZ()</code>
 </td><td>
-scale()<br>
-scale3d()<br>
-scaleX()<br>
-scaleY()<br>
-scaleZ()
+<code>scale()</code><br>
+<code>scale3d()</code><br>
+<code>scaleX()</code><br>
+<code>scaleY()</code><br>
+<code>scaleZ()</code>
 </td><td>
-rotate()<br>
-rotate3d()<br>
-rotateX()<br>
-rotateY()<br>
-rotateZ()
+<code>rotate()</code><br>
+<code>rotate3d()</code><br>
+<code>rotateX()</code><br>
+<code>rotateY()</code><br>
+<code>rotateZ()</code>
 </td><td>
-skew()<br>
-skewX() <br>
-skewY() <br>
-matrix()<br>
-matrix3d()<br>
-perspective()
+<code>skew()</code><br>
+<code>skewX()</code><br>
+<code>skewY()</code><br>
+<code>matrix()</code><br>
+<code>matrix3d()</code><br>
+<code>perspective()</code>
 </td>
 </tr>
 </table>
 
 
-As previously stated, the most common value pattern for transform is a space-separated list of one or more functions, processed from first (leftmost) to last (rightmost), and all of the functions must have valid values. If any of the functions is invalid, it will invalidate the entire value of transform, thus preventing any transformation at all.
+As previously stated, the most common value pattern for `transform` is a space-separated list of one or more functions, processed from first (leftmost) to last (rightmost), and all of the functions must have valid values. If any one of the functions is invalid, it will invalidate the entire value of `transform`, thus preventing any transformation at all.
 
 ### Translation functions
 
 A translation transform is just a move along one or more axes. For example, `translateX()` moves an element along its own X axis, `translateY()` moves it along its Y axis, and `translateZ()` along its Z axis.
 
-Functions
+---
+**Functions**
 
 	translateX(), translateY()
 
-Permitted values
+**Permitted values**
 
 	<length> | <percentage>
+---
 
-These are usually referred to as the "2D" translation functions, since they can slide an element up and down or side to side, but not forward or backward along the Z axis. Each of these accepts functions a single distance value, expressed as either a length or a percentage.
+These are usually referred to as the "2D" translation functions, since they can slide an element up and down, or side to side, but not forward or backward along the Z axis. Each of these functions accepts a single distance value, expressed as either a length or a percentage.
 
 If the value is a length, then the effect is about what you'd expect. Translate an element 200 pixels along the X axis with `translateX(200px)`, and it will move 200 pixels to its right. Change that to `translateX(-200px)`, and it will move 200 pixels to its left. For `translateY()`, positive values move the element downward; negative values move it upward, both with respect to the element itself. Thus, if you flip the element upside-down by rotation, positive `translateY()` values will actually move the element downward on the page.
 
-If the value is a percentage, then the distance is calculated as a percentage of the element's own size. Thus, `translateX(50%)` will move a 300-by-300—pixel element to its right by 150 pixels, and `translateY(-10%)` will move that same element upward (with respect to itself) by 30 pixels.
+If the value is a percentage, then the distance is calculated as a percentage of the element's own size. Thus, `translateX(50%)` will move an element 300 pixels wide and 200 pixels tall to its right by 150 pixels, and `translateY(-10%)` will move that same element upward (with respect to itself) by 20 pixels.
 
-Function
+---
+**Function**
 
 	translate()
 
-Permitted values
+**Permitted values**
 
 	[ <length> | <percentage> ] [, <length> | <percentage>]?
+---
 
-If you want to translate an element along both the X and Y axes at the same time, then `translate()` makes that simple. Just supply the X value first and the Y value second, and it will act the same as if you combined `translateX() translateY()`. If you omit the Y value, then it's assumed to be zero. Thus, `translate(2em)` is treated as if it were `translate(2em,0)`, which is also the same as `translateX(2em)`. See Figure XX for some examples of 2D translation.
+If you want to translate an element along both the X and Y axes at the same time, then `translate()` makes that simple. Just supply the X value first and the Y value second, and it will act the same as if you combined `translateX() translateY()`. If you omit the Y value, then it's assumed to be zero. Thus, `translate(2em)` is treated as if it were `translate(2em,0)`, which is also the same as `translateX(2em)`. See Figure 9 for some examples of 2D translation.
 
-> [[ Figure XX. Translating in two dimensions. ]]
+> [[ Figure 9. Translating in two dimensions. ]]
 
->According to the latest version of the specification, both the 2D translation functions can be given a unitless number. In that case, the number is treated as being expressed in terms of a "user unit,"which is treated the same as a pixel unless otherwise defined. The CSS specification does not explain how a user unit is otherwise defined: the SVG specification does, albeit briefly. In the field, no browser tested as of this writing supported unitless numbers of translation values, so the capability is academic at best.
+According to the latest version of the specification, both the 2D translation functions can be given a unitless number. In that case, the number is treated as being expressed in terms of a "user unit,"which is treated the same as a pixel unless otherwise defined. The CSS specification does not explain how a user unit is otherwise defined: the SVG specification does, albeit briefly. In the field, no browser tested as of this writing supported unitless numbers of translation values, so the capability is academic at best.
 
-Functions
+---
+**Function**
 
 	translateZ()
 
-Permitted value
+**Permitted value**
 
 	<length>
+---
 
 
 This function translates elements along the Z axis, thus moving them into the third dimension. Unlike the 2D translation functions, `translateZ()` only accepts length values. Percentage values are _not_ permitted for `translateZ()`, or indeed for any Z-axis value.
 
-Functions
+---
+**Functions**
 
 	translate3d()
 
-Permitted values
+**Permitted values**
 
 	[ <length> | <percentage> ], [ <length> | <percentage>], [ <length> ]
+---
 
-Much like `translate()` does for X and Y translations, `translate3d()` is a shorthand function that incorporates the X, Y, and Z translation values into a single function. This is obviously handy if you want to move an element over, up, and forward in one fell swoop. See Figure XX for some examples of 3D translations.
+Much like `translate()` does for X and Y translations, `translate3d()` is a shorthand function that incorporates the X, Y, and Z translation values into a single function. This is obviously handy if you want to move an element over, up, and forward in one fell swoop. See Figure 10 for some illustrations of 3D translations.
 
-> [[ Figure XX. Translating in three dimensions. ]]
+> [[ Figure 10. Translating in three dimensions. ]]
 
 Unlike `translate()`, there is no fallback for situations where `translate3d()` does not contain three values. Thus, `translate3d(1em,-50px)` should be treated as invalid by user agents instead of being assumed to be `translate3d(2em,-50px,0)`.
 
@@ -249,53 +257,61 @@ Unlike `translate()`, there is no fallback for situations where `translate3d()` 
 
 A scale transform makes an element larger or smaller, depending on what value you use. These values are unitless real numbers, and are always positive. On the 2D plane, you can scale along the X and Y axes individually, or scale them together.
 
-Functions
+---
+**Functions**
 
 	scaleX(), scaleY(), scaleZ()
 
-Permitted value
+**Permitted value**
 
 	<number>
+---
 
 
 The number value supplied to a scale function is a multiplier; thus, `scaleX(2)` will make an element twice as wide as it was before the transformation, whereas `scaleY(0.5)` will make it half as tall. Given this, you might expect that percentage values are permissible as scaling values, but they aren't.
 
-Function
+---
+**Function**
 
 	scale()
 
-Permitted value
+**Permitted value**
 
 	<number> [, <number>]?
+---
 
-If you want to scale along both axes simultaneously, use scale(). The X value is always first and the Y always second, so `scale(2,0.5)` will make the element twice as wide and half as tall as it was before being transformed. If you only supply one number, it is used as the scaling value for both axes; thus, scale(2) will make the element twice as wide _and _twice as tall. This is in contrast to `translate()`, where an omitted second value is always set to zero. `scale(1)` will scale an element to be exactly the same size it was before you scaled it, as will scale(1,1). Just in case you were dying to do that.
+If you want to scale along both axes simultaneously, use `scale()`. The X value is always first and the Y always second, so `scale(2,0.5)` will make the element twice as wide and half as tall as it was before being transformed. If you only supply one number, it is used as the scaling value for both axes; thus, scale(2) will make the element twice as wide _and _twice as tall. This is in contrast to `translate()`, where an omitted second value is always set to zero. `scale(1)` will scale an element to be exactly the same size it was before you scaled it, as will scale(1,1). Just in case you were dying to do that.
 
 Of course, if you can scale in two dimensions, you can also scale in three. CSS offers `scaleZ()` for scaling just along the Z axis, and `scale3d()` for scaling along all three axes at once.
 
-Function
+---
+**Function**
 
 	scale3d()
 
-Permitted value
+**Permitted value**
 
 	<number>, <number>, <number>
+---
 
-Similar to `translate3d()`, `scale3d()` requires all three numbers to be valid. If you fail to do this, then the malformed `scale3d() `will invalidate the entire transform value to which is belongs. See Figure XX for some examples of element scaling.
+Similar to `translate3d()`, `scale3d()` requires all three numbers to be valid. If you fail to do this, then the malformed `scale3d() `will invalidate the entire transform value to which is belongs. See Figure 11 for some examples of element scaling.
 
-> [[Figure XX. Scaled elements.]]
+> [[ Figure 11. Scaled elements. ]]
 
 
 ### Rotation functions
 
 A rotation function causes an element to be rotated around an axis, or around an arbitrary vector in 3D space.  There are four simple rotation functions, and one less simple function meant specifically for 3D.
 
-Functions
+---
+**Functions**
 
 	rotate(), rotateX(), rotateY(), rotateZ()
 
-Permitted values
+**Permitted values**
 
 	<angle>
+---
 
 
 All four basic rotation functions accept just one value, a degree.  This can be expressed using any of the valid degree units (`deg`, `grad`, `rad`, and `turn`) and a number, either positive or negative.
@@ -304,28 +320,32 @@ If a value’s number runs outside the usual range for the given unit, it will b
 
 That is to say, animating a rotation of `1100deg` will spin the element around several times before coming to rest at a tilt of -20 degrees (or 340 degrees, if you like).  By contrast, animating a rotation of `-20deg` will tilt the element a bit to the left, with no spinning; and of course animating a rotation of `340deg` will animate an almost-full spin to the right.  All three animations come to the same end state, but the process of getting there is very different in each case.
 
-The function `rotate()` is a straight 2D rotation, and the one you’re most likely to use.  It is equivalent to `rotateZ()` because it rotates the element around the Z axis (the one that shoots straight out of your display and through your eyeballs).  In a like manner, `rotateX()` causes rotation around the X axis, thus causing the element to tilt toward or away from you; and `rotateY()` rotates the element around its Y axis, as though it were a door.  These are all illustrated in Figure XX.
+The function `rotate()` is a straight 2D rotation, and the one you’re most likely to use.  It is equivalent to `rotateZ()` because it rotates the element around the Z axis (the one that shoots straight out of your display and through your eyeballs).  In a like manner, `rotateX()` causes rotation around the X axis, thus causing the element to tilt toward or away from you; and `rotateY()` rotates the element around its Y axis, as though it were a door.  These are all illustrated in Figure 12.
 
-> [[Figure XX. Rotations around the three axes.]]
+> [[ Figure 12. Rotations around the three axes. ]]
 
+> WARNING: The examples in Figure 12 all present a fully 3D appearance.  This is only possible with certain values of the properties `transform-style` and `perspective`, described in a later section.  This will be true throughout this text in any situation where 3D-transformed elements appear to be fully three-dimensional.
+---
 
-Function
+---
+**Function**
 
 	rotate3d()
 
-Permitted value
+**Permitted value**
 
 	<number>, <number>, <number>, <angle>
+---
 
 If you’re comfortable with vectors and want to rotate an element through 3D space, then `rotate3d()` is for you.  The first three numbers specify the X, Y, and Z components of a vector in 3D space, and the degree value determines the amount of rotation around the declared 3D vector.
 
-To start with a simple example, the 3D equivalent to `rotate(45deg)` is `rotate3d(0,0,1,45deg)`.  That specifies a vector of zero magnitude on the X and Y axes, and a magnitude of 1 along the Z axis.  In other words, it describes the Z axis.  The element is thus rotated 45 degrees around that vector, as shown in Figure XX.  That figure also shows the appropriate `rotate3d()` values to rotate an element by 45 degrees around the X and Y axes.
+To start with a simple example, the 3D equivalent to `rotate(45deg)` is `rotate3d(0,0,1,45deg)`.  That specifies a vector of zero magnitude on the X and Y axes, and a magnitude of 1 along the Z axis.  In other words, it describes the Z axis.  The element is thus rotated 45 degrees around that vector, as shown in Figure 13.  That figure also shows the appropriate `rotate3d()` values to rotate an element by 45 degrees around the X and Y axes.
 
-> [[Figure XX. Rotations around 3D vectors.]]
+> [[ Figure 13. Rotations around 3D vectors. ]]
 
-A little more complicated is something like `rotate3d(-0.25,0.35,0.66667,45deg)`, where the described vector points off in to 3D space between the axes.  This has the result shown (and illustrated via schematic) in Figure XX.
+A little more complicated is something like `rotate3d(-0.25,0.35,0.66667,45deg)`, where the described vector points off in to 3D space between the axes.  This has the result shown (and illustrated via schematic) in Figure 14.
 
-> [[Figure XX. Rotation around a 3D vector, and how that vector is determined.]]
+> [[ Figure 14. Rotation around a 3D vector, and how that vector is determined. ]]
 
 If you’re no comfortable with vectors, that’s okay; most people aren’t.  You’ll really only ever need to use them if you’re doing precise 3D calculations, at which point you’ll be getting very familiar with vectors whether you want to or not.
 
@@ -333,32 +353,35 @@ If you’re no comfortable with vectors, that’s okay; most people aren’t.  Y
 
 When you skew an element, you slant it along one or both of the X and Y axes.  There is no Z-axis or other 3D skewing.
 
-Functions
+---
+**Functions**
 
 	skewX(), skewY()
 
-Permitted value
+**Permitted value**
 
 	<angle>
+---
 
-In both cases, you supply an angle value, and the element is skewed to match that angle.  It’s much easier to show skewing rather than try to explain it in words, so Figure XX shows a number of skew examples along the X and Y axes.
+In both cases, you supply an angle value, and the element is skewed to match that angle.  It’s much easier to show skewing rather than try to explain it in words, so Figure 15 shows a number of skew examples along the X and Y axes.
 
-> [[Figure XX. Skewing along the X and Y axes.]]
+> [[ Figure 15. Skewing along the X and Y axes. ]]
 
 
-Function
+---
+**Function**
 
 	skew()
 
-Permitted values
+**Permitted values**
 
 	<angle> [, <angle> ]?
+---
 
 
-The `skew()` function is just a shorthand for `skewX()` and `skewY()`, accepting either one degree value or two comma-separated degree values.  If you have two values, the X skew angle is always first, and the Y skew angle comes second.  If you leave out a Y skew angle, then it’s treated as zero.  This means `skew(45deg)` is functionally equivalent to `skewX(45deg)`.  Figure XX shows some double-skewed elements.
+The `skew()` function is just a shorthand for `skewX()` and `skewY()`, accepting either one degree value or two comma-separated degree values.  If you have two values, the X skew angle is always first, and the Y skew angle comes second.  If you leave out a Y skew angle, then it’s treated as zero.  This means `skew(45deg)` is functionally equivalent to `skewX(45deg)`.  Figure 16 shows some double-skewed elements.
 
-
-> [[Figure XX. Skewed elements.]]
+> [[ Figure 16. Skewed elements. ]]
 
 
 ### The perspective function
@@ -394,13 +417,15 @@ Perspective values must always be positive, non-zero lengths.  Any other value w
 
 If you’re a particular fan of advanced math, or stale jokes derived from Wachowski Brothers movies, then these functions will be your favorites.
 
-Function
+---
+**Function**
 
 	matrix()
 
-Permitted values
+**Permitted values**
 
 	 <number> [, <number> ]{5,5}
+---
 
 In the CSS Transforms specification, we find the trenchant description of `matrix()` as a function that “specifies a 2D transformation in the form of a transformation matrix of the six values *a*-*f*.”
 
@@ -427,13 +452,15 @@ What this comes down to is, if you’re familiar with or need to make use of mat
 
 Now, that was for plain old 2D transforms.  What if you want to use a matrix to transform through three dimensions?
 
-Function
+---
+**Function**
 
 	matrix3d()
 
-Permitted values
+**Permitted values**
 
 	<number> [, <number> ]{15,15}
+---
 
 Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS Transforms specification: “specifies a 3D transformation as a 4x4 homogeneous matrix of 16 values in column-major order.”  This means the value of `matrix3d` _must_ be a list of 16 comma separated numbers, no more or less.  Those numbers are arranged in a 4x4 grid in column order, so the first column is the first set of four numbers in the value, the second column the second set of four numbers, the third column the third set, and so on.  Thus, you can take the following function:
 
