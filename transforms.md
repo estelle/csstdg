@@ -483,7 +483,7 @@ Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS
 
 …as shown in Figure 20.
 
-> [[ Figure 20. A matrix3d--transformed element and its functional equivalent. ]]
+> [[ Figure 20. A matrix3d-transformed element and its functional equivalent. ]]
 
 ### A note on end-state equivalence
 
