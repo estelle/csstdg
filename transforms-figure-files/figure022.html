@@ -5,9 +5,16 @@
 <style>
 body {margin: 100px;}
 
-	div {border: 1px solid red; float: left; margin: 50px; background: url(img/frame-sq.png); background-size: 100% 100%; background-origin: border-box; transform-style: preserve-3d; perspective: 500px;}
+	body > div {float: left; margin: 50px; border: 1px solid red;
+		background: url(img/frame-sq.png); background-size: 100% 100%; background-origin: border-box;
+		transform-style: preserve-3d;}
 	div:nth-child(5) {clear: left;}
-	img[id] {height: 150px; width: 150px; vertical-align: bottom; opacity: 0.5; transform: rotate(45deg);}
+	div > div {height: 150px; width: 150px; border: 1px solid gray;
+		opacity: 1;
+		text-align: center; font: small sans-serif; line-height: 2.5;
+		background: linear-gradient(0deg,rgba(255,255,255,0.6),rgba(165,175,255,0.6));
+		text-shadow: 0 0 5px rgba(165,175,255,1);
+		transform: rotate(45deg);}
 	img.focus {position: absolute; top: 0; left: 0; margin: -7px 0 0 -7px;}
 
 	#ex01 {transform-origin: 0 0;}
@@ -31,14 +38,14 @@ body {margin: 100px;}
 </head>
 <body>
 
-<div><img src="img/box.png" alt="" id="ex01"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex02"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex03"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex04"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex05"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex06"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex07"><img src="img/focus.png" class="focus" alt=""></div>
-<div><img src="img/box.png" alt="" id="ex08"><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex01">Origin 0 0</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex02">Origin 0 100%</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex03">Origin 100% 0</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex04">Origin 100% 100%</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex05">Origin 75% 25%</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex06">Origin 25% 75%</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex07">Origin 50% 100%</div><img src="img/focus.png" class="focus" alt=""></div>
+<div><div id="ex08">Origin 50% 50%</div><img src="img/focus.png" class="focus" alt=""></div>
 
 </body>
 </html>
