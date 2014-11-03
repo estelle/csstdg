@@ -398,19 +398,19 @@ Permitted values
 
 It might seem a bit weird that you specify perspective as a distance.  After all, `perspective(200px)` seems a bit odd when you can’t really measure pixels along the Z axis.  And yet, here we are.  You supply a length, and the illusion of depth is constructed around that value.  Lower numbers create more extreme perspective, as though you were right up close to the element and viewing it through a fisheye lens.  Higher numbers create a gentler perspective, as though viewing the element through a zoom lens from far away.  _Really_ high perspective values create an isometric effect.
 
-This makes a certain amount of sense.  If you visualize perspective as a pyramid, with its apex point at the perspective origin and its base the closest thing to you, then a shorter distance between apex and base will create a shallower pyramid, and thus a more extreme distortion.  This is illustrated in Figure XX.
+This makes a certain amount of sense.  If you visualize perspective as a pyramid, with its apex point at the perspective origin and its base the closest thing to you, then a shorter distance between apex and base will create a shallower pyramid, and thus a more extreme distortion.  This is illustrated in Figure 17.
 
-> [[ Figure XX. Different perspective pyramids. ]]
+> [[ Figure 17. Different perspective pyramids. ]]
 
-In the documentation for Safari, Apple writes that perspective values below `300px` tend to be extremely distorted, values above `2000px` create “very mild” distortion, and values between `500px` and `1000px` create “moderate perspective.” [^1]  To illustrate this, Figure XX shows a series of elements with the exact same rotation as displayed with varying perspective values.
+In the documentation for Safari, Apple writes that perspective values below `300px` tend to be extremely distorted, values above `2000px` create “very mild” distortion, and values between `500px` and `1000px` create “moderate perspective.” [^1]  To illustrate this, Figure 18 shows a series of elements with the exact same rotation as displayed with varying perspective values.
 
 [^1]: https://developer.apple.com/library/safari/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Using2Dand3DTransforms/Using2Dand3DTransforms.html
 
-> [[ Figure XX. The effects of varying perspective values. ]]
+> [[ Figure 18. The effects of varying perspective values. ]]
 
-Perspective values must always be positive, non-zero lengths.  Any other value will cause the perspective to be ignored.
+Perspective values must always be positive, non-zero lengths.  Any other value will cause the `perspective()` function to be ignored.  Also note that its placement in the list of functions is very important.  If you look at the code for Figure 18, the `perspective()` function comes before the `rotateY()` function.  If you were to reverse the order, the rotation would happen before the perspective is applied, so all four examples in Figure 18 would look exactly the same.  So if you plan to apply a perspective value via the list of transform functions, make sure it comes first, or at the very least before any transforms that depend on it.  This serves as a particularly stark reminder that the order you write `transform` functions can be very important.
 
-> !! Note that the function `perspective()` is very similar to the property `perspective`, which will be covered later, but they are applied in critically different ways.
+> !! Note that the function `perspective()` is very similar to the property `perspective`, which will be covered later, but they are applied in critically different ways.  Generally, you will want to use the `perspective` property instead of the `perspective()` function, but there may be exceptions.
 
 
 ### Matrix functions
@@ -442,11 +442,11 @@ That’s the CSS syntax used to describe this transformation matrix:
 	0			 0			1	0
 	0			 0			0	1
 
-Right.  So what does that do?  It has the result shown in Figure XX, which is exactly the same result as writing this:
+Right.  So what does that do?  It has the result shown in Figure 19, which is exactly the same result as writing this:
 
 	rotate(33deg) translate(24px,25px) skewX(-10deg)
 
-> [[ Figure XX. A matrix-transformed element. ]]
+> [[ Figure 19. A matrix-transformed element and its functional equivalent. ]]
 
 What this comes down to is, if you’re familiar with or need to make use of matrix calculations, you can and should absolutely use them.  If not, you can chain much more human-readable transform functions together and get the element to the same end state.
 
@@ -465,21 +465,25 @@ Now, that was for plain old 2D transforms.  What if you want to use a matrix to 
 Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS Transforms specification: “specifies a 3D transformation as a 4x4 homogeneous matrix of 16 values in column-major order.”  This means the value of `matrix3d` _must_ be a list of 16 comma separated numbers, no more or less.  Those numbers are arranged in a 4x4 grid in column order, so the first column is the first set of four numbers in the value, the second column the second set of four numbers, the third column the third set, and so on.  Thus, you can take the following function:
 
 	matrix3d(
-		0.838671, 0.544639, 0, 0,
-		-0.692519, 0.742636, 0, 0,
-		-0.0130242, -0.0680762, 1, -0.002,
-		6.51212, 34.0381, 0, 1)
+		1, 0, 0, 0,
+		-0.176327, 0.838671, 0.544639, -0.0027232,
+		0, -0.544639, 0.838671, -0.00419335,
+		24, 20.9668, 13.616, 0.93192)
 
 …and write it out as this matrix:
 
-	0.838671	-0.692519	-0.0130242	6.51212
-	0.544639	 0.742636	-0.0680762	34.0381
-	0			 0			 1			0
-	0			 0			-0.002		1
+	1			0			0			0
+	-0.176327	0.838671	0.544639	-0.0027232
+	0			-0.544639	0.838671	-0.00419335
+	24			20.9668		13.616		0.93192
 
 …both of which have an end state equivalent to:
 
-	rotate(33deg) translate(24px,25px) skewX(-10deg) perspective(500px)
+	perspective(500px) rotate(33deg) translate(24px,25px) skewX(-10deg)
+
+…as shown in Figure 20.
+
+> [[ Figure 20. A matrix3d--transformed element and its functional equivalent. ]]
 
 ### A note on end-state equivalence
 
@@ -504,7 +508,7 @@ Of course, none of this matters if you aren’t animating the transformation, bu
 
 # More Transform Properties
 
-various properties
+In addition to the base `transform` property, there are a few related properties that help to define things like the origin point of a transform, the perspective used for a “scene,” and more.
 
 ## Moving the Origin
 
@@ -549,17 +553,17 @@ With `transform-origin`, you supply two keywords to define the point around whic
 
 Length values are taken as a distance from the top left corner of the element.  Thus, `transform-origin: 5em 22px` will place the transform origin 5em to the right of the left side of the element, and 22 pixels down from the top of the element.
 
-Percentages are calculated with respect to the corresponding axis and size of the element, as offsets from the element’s top left corner.  For example, `transform-origin: 67% 40%` will place the transform origin 67 percent of the width to the right of the element’s left side, and 40 percent of the element’s height down from the element’s top side.  Figure XX illustrates a few origin calculations.
+Percentages are calculated with respect to the corresponding axis and size of the element, as offsets from the element’s top left corner.  For example, `transform-origin: 67% 40%` will place the transform origin 67 percent of the width to the right of the element’s left side, and 40 percent of the element’s height down from the element’s top side.  Figure 21 illustrates a few origin calculations.
 
-> [[ Figure XX. Various origin calculations. ]]
+> [[ Figure 21. Various origin calculations. ]]
 
-All right, so if you change the origin, what happens?  The easiest way to visualize this is with rotations.  Suppose you rotate an element 45 degrees to the right.  Its final placement will depend  on its origin.  Figure XX illustrates the the effects of several different transform origins.
+All right, so if you change the origin, what happens?  The easiest way to visualize this is with rotations.  Suppose you rotate an element 45 degrees to the right.  Its final placement will depend  on its origin.  Figure 22 illustrates the the effects of several different transform origins.
 
-> [[ Figure XX. The rotational effects of using various transform origins. ]]
+> [[ Figure 22. The rotational effects of using various transform origins. ]]
 
-The origin matters for other transform types, such as skews and scales.  Scaling an element with its origin in the center will pull in all sides equally, whereas scaling an element with a bottom-right origin will cause it to shrink toward that corner.  Similarly, skewing an element with respect to its center will result in the same shape as if it’s skewed with respect to the top right corner, but the placement of the shape will be different.  Some examples are shown in Figure XX.
+The origin matters for other transform types, such as skews and scales.  Scaling an element with its origin in the center will pull in all sides equally, whereas scaling an element with a bottom-right origin will cause it to shrink toward that corner.  Similarly, skewing an element with respect to its center will result in the same shape as if it’s skewed with respect to the top right corner, but the placement of the shape will be different.  Some examples are shown in Figure 23.
 
-> [[ Figure XX. The rotational effects of using various transform origins. ]]
+> [[ Figure 23. The skew effects of using various transform origins. ]]
 
 The one transform type that isn’t really affected by changing the transform origin is translation.  If you push an element around with `translate()`, or its cousins like `translateX()` and `translateY()`, it’s going to end up in the same place regardless of where the transform origin is located.  If that’s all the transforming you plan to do, then setting the transform origin is irrelevant.  If you ever do anything besides translating, though, the origin will matter.  Use it wisely.
 
@@ -595,32 +599,32 @@ As specified
 
 Suppose you have an element you want to move “closer to” your eye, and then tilt away a bit, with a moderate amount of perspective.  Something like this rule, as applied to the following HTML:
 
-	div#inner {transform: translateZ(23px) rotateX(33deg) perspective(750px);}
+	div#inner {transform: perspective(750px) translateZ(60px) rotateX(45deg);}
 	
 	<div id="outer">
 	outer
 	<div id="inner">inner</div>
 	</div>
 
-So you do that, and get the result shown in Figure XX; more or less what you might have expected.  But then you decide to rotate the outer `div` to one side, and suddenly nothing makes sense any more.  The inner `div` isn’t where you envisioned it.  In fact, it just looks like a picture pasted to the front of the outer `div`.
+So you do that, and get the result shown in Figure 24; more or less what you might have expected.
 
-> [[ Figure XX. A 3D-transformed inner `div`. ]]
+> [[ Figure 24. A 3D-transformed inner `div`. ]]
 
-Well, that’s exactly what it is, because the default value of `transform-style` is `flat`.  What happened was, the inner `div` got drawn in its moved-forward-tilted-back state, and that was applied to the front of the outer `div` like it was an image.  So, when you rotated the outer `div`, the flat picture rotated right along with it, as shown in Figure XX.
+But then you decide to rotate the outer `div` to one side, and suddenly nothing makes sense any more.  The inner `div` isn’t where you envisioned it.  In fact, it just looks like a picture pasted to the front of the outer `div`.
 
-	div#outer {transform: rotateY(0deg) perspective(750px);}
+Well, that’s exactly what it is, because the default value of `transform-style` is `flat`.  What happened was, the inner `div` got drawn in its moved-forward-tilted-back state, and that was applied to the front of the outer `div` like it was an image.  So, when you rotated the outer `div`, the flat picture rotated right along with it, as shown in Figure 25.
 
-> [[ Figure XX. The effects of a `flat` transform style. ]]
+	div#outer {transform: perspective(750px) rotateY(60deg) rotateX(-20deg);}
 
-Change the value to `preserve-3d`, however, and things suddenly change.  The inner `div` will be drawn as a full 3D object with respect to its parent outer `div`, floating in space nearby, and _not_ as a picture pasted on the front of the outer `div`.  You can see the results of this change in Figure XX.
+> [[ Figure 25. The effects of a `flat` transform style. ]]
 
-	div#outer {transform: rotateY(0deg) perspective(750px);
+Change the value to `preserve-3d`, however, and things suddenly change.  The inner `div` will be drawn as a full 3D object with respect to its parent outer `div`, floating in space nearby, and _not_ as a picture pasted on the front of the outer `div`.  You can see the results of this change in Figure 26.
+
+	div#outer {transform: perspective(750px) rotateY(60deg) rotateX(-20deg);
 		transform-style: preserve-3d;}
-	div#inner {transform: translateZ(23px) rotateX(33deg) perspective(750px);}
+	div#inner {transform: perspective(750px) translateZ(60px) rotateX(45deg);}
 
-> [[ Figure XX. The effects of a 3D-preserved transform style. ]]
-
-That’s better!  It might not be precisely what you had in mind, because the outer `div` still looks weirdly flat, but it’s better.  As for that flatness, it’s due to the way perspective is managed in CSS, and that’s what we’ll discuss in the next section.  (Spoiler: you won’t usually set perspective the way we did above.)
+> [[ Figure 26. The effects of a 3D-preserved transform style. ]]
 
 One important aspect of `transform-style` is that it can be overridden by other properties.  The reason is that some values of these other properties require a flattened presentation of an element and its children in order to work at all.  In such cases, the value of `transform-style` is forced to be `flat` regardless of what you may have declared.
 
@@ -676,12 +680,12 @@ As a quick example, if you want to create a very deep perspective, one mimicking
 
 So how does this differ from the `perspective()` function?  When you use `perspective()`, you’re defining the perspective effect for the element that is given that function.  So if you say `transform: rotateY(-50grad) perspective(800px);`, you’re applying that perspective to each element that has the rule applied.
 
-With the `perspective` property, on the other hand, you’re creating a perspective depth that is applied to all the child elements of the element that received the property.  Confused yet?  Don’t be.  Here’s a simple illustration of the difference, as shown in Figure XX.
+With the `perspective` property, on the other hand, you’re creating a perspective depth that is applied to all the child elements of the element that received the property.  Confused yet?  Don’t be.  Here’s a simple illustration of the difference, as shown in Figure 27.
 
 	div {transform-style: preserve-3d; border: 1px solid gray; width: 660px;}
 	img {margin: 10px;}
 	#one {perspective: none;}
-	#one img {transform: rotateX(-50grad) perspective(800px);}
+	#one img {transform: perspective(800px) rotateX(-50grad);}
 	#two {perspective: 800px;}
 	#two img {transform: rotateX(-50grad);}
 
@@ -689,9 +693,9 @@ With the `perspective` property, on the other hand, you’re creating a perspect
 	<div id="one"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
 	<div id="two"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
 
-> [[ Figure XX. Shared perspective versus individual perspectives. ]]
+> [[ Figure 27. Shared perspective versus individual perspectives. ]]
 
-In Figure XX, we see first a line of images that haven’t been transformed.  In the second line, each image has been rotated 50 gradians (equivalent to 45 degrees) toward us, but each one within its own individual perspective.  This is why they still look flat, but shorter.
+In Figure 27, we see first a line of images that haven’t been transformed.  In the second line, each image has been rotated 50 gradians (equivalent to 45 degrees) toward us, but each one within its own individual perspective.
 
 In the third line of images, none of them has an individual perspective.  Instead, they are all drawn within the perspective defined by the `perspective: 800px;` that’s been set on the `div` that contains them.  Since they all operate within a shared perspective, they look “correct;” that is, like we would expect if we had three physical pictures mounted on a clear sheet of glass and rotated toward us around the center horizontal axis of that glass.
 
@@ -743,7 +747,7 @@ A percentage, except for length values, which are converted to an absolute lengt
 
 As you’ve no doubt spotted, `perspective-origin` and `transform-origin` (see previously) have the same value syntax.  While the way the values are expressed is identical, the effects they have are very different.  With `transform-origin`, you define the point around which transforms happen.  With `perspective-origin`, you define the point on which sight lines converge.
 
-As with most 3D transform properties, this is more easily demonstrated than described.  Consider the following CSS and markup, illustrated in Figure XX.
+As with most 3D transform properties, this is more easily demonstrated than described.  Consider the following CSS and markup, illustrated in Figure 28.
 
 	#container {perspective: 850px; perspective-origin: 50% 0%;}
 	#ruler {height: 50px; background: #DED url(tick.gif) repeat-x;
@@ -754,13 +758,13 @@ As with most 3D transform properties, this is more easily demonstrated than desc
 		<div id="ruler"></div>
 	</div>
 
-> [[ Figure XX. A basic “ruler.” ]]
+> [[ Figure 28. A basic “ruler.” ]]
 
 What we have is a repeated background image of tick-marks on a ruler, with the `div` that contains them tiled away from us by 60 degrees.  All the lines point at a common vanishing point, the top center of the container `div` (because of the `50% 0%` value for `perspective-origin`).
 
-No consider that same setup with various perspective origins, as shown in Figure XX.
+No consider that same setup with various perspective origins, as shown in Figure 29.
 
-> [[ Figure XX. A basic “ruler” with different perspective origins. ]]
+> [[ Figure 29. A basic “ruler” with different perspective origins. ]]
 
 As you can see, moving the perspective origin changes the rendering of the 3D-transformed element.
 
@@ -798,7 +802,7 @@ As specified
 
 Unlike many of the other properties and functions we’ve already talked about, this one is as straightforward as straightforward can be.  All it does is determine whether the back side of an element can be seen, or not.  It really is just that simple.
 
-So let’s say you flip over two elements, one with `backface-visibility` set to the default value of `visible` and the other set to `hidden`.  You get the result shown in Figure XX.
+So let’s say you flip over two elements, one with `backface-visibility` set to the default value of `visible` and the other set to `hidden`.  You get the result shown in Figure 30.
 
 	span {border: 1px solid red; display: inline-block;}
 	img {vertical-align: bottom;}
@@ -806,11 +810,11 @@ So let’s say you flip over two elements, one with `backface-visibility` set to
 	img#show {backface-visibility: visible;}
 	img#hide {backface-visibility: hidden;}
 
-	<span><img src="tars.gif"></span>
-	<span><img src="tars.gif" class="flip" id="show"></span>
-	<span><img src="tars.gif" class="flip" id="hide"></span>
+	<span><img src="salmon.gif"></span>
+	<span><img src="salmon.gif" class="flip" id="show"></span>
+	<span><img src="salmon.gif" class="flip" id="hide"></span>
 
-> [[ Figure XX. Visible and hidden backfaces. ]]
+> [[ Figure 30. Visible and hidden backfaces. ]]
 
 As you can see, the first image is unchanged.  The second is flipped over around its X axis, so we see it from the back.  The third has also been flipped, but we can’t see its back because it’s hidden.
 
@@ -828,15 +832,15 @@ This property can come in handy in a number of situations.  The simplest is a ca
 
 Okay, so that example shows that using `backface-visibility` isn’t _quite_ as simple as it first appears.  It’s not that the property itself is complicated, but if you forget to set `transform-style` to `preserve-3d`, then it won’t work as intended.
 
-There’s a variant on that example that uses the same markup, but slightly different CSS to show the image’s back face when it’s flipped over.  This is probably more what was intended, since it makes it look like the information is literally written on the back of the image.  It leads to the end result shown in Figure XX.
+There’s a variant on that example that uses the same markup, but slightly different CSS to show the image’s back face when it’s flipped over.  This is probably more what was intended, since it makes it look like the information is literally written on the back of the image.  It leads to the end result shown in Figure 31.
 
 	section {position: relative;}
 	img, div {position: absolute; top: 0; left: 0;}
 	div {transform: rotateY(180deg); backface-visibility: hidden;
-		background: rgba(255,255,255,0.75;}
+		background: rgba(255,255,255,0.85);}
 	section:hover {transform: rotateY(180deg); transform-style: preserve-3d;}
 
-> [[ Figure XX. Information on the back. ]]
+> [[ Figure 31. Information on the back. ]]
 
 The only thing we had to do to make that happen was to just shift the `backface-visibilty: hidden` to the `div` instead of applying it to both the `ing` and the `div`.  Thus, the `div`’s backface is hidden when it’s flipped over, but the image’s is not.
 
