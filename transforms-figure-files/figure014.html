@@ -5,10 +5,13 @@
 <style>
 body {margin: 100px;}
 
-	div {border: 1px solid red; float: left; margin: 50px; background: url(img/frame-sq.png); background-size: 100% 100%; background-origin: border-box; transform-style: preserve-3d; perspective: 500px;
-	transition: 5s;}
+	div {border: 1px solid red; float: left; position: relative; margin: 50px;
+		background: url(img/frame-sq.png); background-size: 100% 100%; background-origin: border-box;
+		transform-style: preserve-3d; perspective: 500px; transition: 5s;}
 	div:nth-child(5) {clear: left;}
 	img {height: 150px; width: 150px; vertical-align: bottom; opacity: 0.9;}
+	span {position: absolute; top: 110%; left: -33%; width: 100%;
+		text-align: center; white-space: pre; font: 13px Anadale Mono, monospace;}
 
 	#ex01 {transform: rotate3d(-0.95,0.35,0.66667,45deg);}
 	div:hover {transform: rotateY(360deg);}
@@ -17,7 +20,7 @@ body {margin: 100px;}
 </head>
 <body>
 
-<div><img src="img/box.png" alt="" id="ex01"></div>
+<div><img src="img/box.png" alt="" id="ex01"><span>rotateY(-0.95,0.35,0.66667,45deg)</span></div>
 
 </body>
 </html>
