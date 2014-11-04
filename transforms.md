@@ -98,6 +98,7 @@ Now, the value entry *<transform-list>* requires some explanation. This placehol
 
 	#example {transform: rotate(30deg) skewX(-25deg) scaleY(2);}
 
+> ![](transforms-figure-images/figure006.png)  
 > [[ Figure 6. A transformed div element. ]]
 
 The functions are processed one at a time, starting with the first (leftmost) and proceeding to the last (rightmost). This first-to-last processing order is important, because changing the order can lead to drastically different results. Consider the following two rules, which have the results shown in Figure 7.
@@ -105,6 +106,7 @@ The functions are processed one at a time, starting with the first (leftmost) an
 	img#one {transform: translateX(200px) rotate(45deg);}
 	img#two {transform: rotate(45deg) translateX(200px);}
 
+> ![](transforms-figure-images/figure007.png)  
 > [[ Figure 7. Different transform lists, different results. ]]
 
 In the first instance, an image is translated (moved) 200 pixels along its X axis, and then rotated 45 degrees. In the second instance, an image is rotated 45 degrees and then moved 200 pixels along its X axis—that's the X axis of the transformed element, _not_ of the parent element, page, or viewport. In other words, when an element is rotated, its X axis (along with its other axes) rotates along with it. All element transforms are conducted with respect to the element's own frame of reference.
@@ -129,6 +131,7 @@ It's also the case that transforms are not usually cumulative. That is to say, i
 	#ex02 {transform: rotate(30deg) skewX(-25deg);}
 	#ex02 {transform: rotate(30deg) skewX(-25deg) scaleY(2);}
 
+> ![](transforms-figure-images/figure008.png)  
 > [[ Figure 8. Overwriting or modifying transforms. ]]
 
 In the first case, the second rule completely replaces the first, meaning that the element is only scaled along the Y axis. This actually makes some sense; it's the same as if you declare a font size and then elsewhere declare a different font size for the same element. You don't get a cumulative font size that way. You just get one size or the other. In the second example, the entirety of the first set of transforms was included in the second set, so they all got applied along with the `scaleY()` function.
@@ -220,6 +223,7 @@ If the value is a percentage, then the distance is calculated as a percentage of
 
 If you want to translate an element along both the X and Y axes at the same time, then `translate()` makes that simple. Just supply the X value first and the Y value second, and it will act the same as if you combined `translateX() translateY()`. If you omit the Y value, then it's assumed to be zero. Thus, `translate(2em)` is treated as if it were `translate(2em,0)`, which is also the same as `translateX(2em)`. See Figure 9 for some examples of 2D translation.
 
+> ![](transforms-figure-images/figure009.png)  
 > [[ Figure 9. Translating in two dimensions. ]]
 
 According to the latest version of the specification, both the 2D translation functions can be given a unitless number. In that case, the number is treated as being expressed in terms of a "user unit,"which is treated the same as a pixel unless otherwise defined. The CSS specification does not explain how a user unit is otherwise defined: the SVG specification does, albeit briefly. In the field, no browser tested as of this writing supported unitless numbers of translation values, so the capability is academic at best.
@@ -280,7 +284,13 @@ The number value supplied to a scale function is a multiplier; thus, `scaleX(2)`
 	<number> [, <number>]?
 ---
 
-If you want to scale along both axes simultaneously, use `scale()`. The X value is always first and the Y always second, so `scale(2,0.5)` will make the element twice as wide and half as tall as it was before being transformed. If you only supply one number, it is used as the scaling value for both axes; thus, scale(2) will make the element twice as wide _and _twice as tall. This is in contrast to `translate()`, where an omitted second value is always set to zero. `scale(1)` will scale an element to be exactly the same size it was before you scaled it, as will scale(1,1). Just in case you were dying to do that.
+If you want to scale along both axes simultaneously, use `scale()`. The X value is always first and the Y always second, so `scale(2,0.5)` will make the element twice as wide and half as tall as it was before being transformed. If you only supply one number, it is used as the scaling value for both axes; thus, `scale(2)` will make the element twice as wide _and _twice as tall. This is in contrast to `translate()`, where an omitted second value is always set to zero. `scale(1)` will scale an element to be exactly the same size it was before you scaled it, as will `scale(1,1)`. Just in case you were dying to do that.
+
+Figure 11 shows a few examples of element scaling, using both the single-axis scaling functions as well as the combined `scale()`.
+
+> ![](transforms-figure-images/figure011.png)  
+> [[ Figure 11. Scaled elements. ]]
+
 
 Of course, if you can scale in two dimensions, you can also scale in three. CSS offers `scaleZ()` for scaling just along the Z axis, and `scale3d()` for scaling along all three axes at once.
 
@@ -294,10 +304,7 @@ Of course, if you can scale in two dimensions, you can also scale in three. CSS 
 	<number>, <number>, <number>
 ---
 
-Similar to `translate3d()`, `scale3d()` requires all three numbers to be valid. If you fail to do this, then the malformed `scale3d() `will invalidate the entire transform value to which is belongs. See Figure 11 for some examples of element scaling.
-
-> [[ Figure 11. Scaled elements. ]]
-
+Similar to `translate3d()`, `scale3d()` requires all three numbers to be valid. If you fail to do this, then the malformed `scale3d() `will invalidate the entire transform value to which is belongs.
 
 ### Rotation functions
 
@@ -322,9 +329,10 @@ That is to say, animating a rotation of `1100deg` will spin the element around s
 
 The function `rotate()` is a straight 2D rotation, and the one you’re most likely to use.  It is equivalent to `rotateZ()` because it rotates the element around the Z axis (the one that shoots straight out of your display and through your eyeballs).  In a like manner, `rotateX()` causes rotation around the X axis, thus causing the element to tilt toward or away from you; and `rotateY()` rotates the element around its Y axis, as though it were a door.  These are all illustrated in Figure 12.
 
+> ![](transforms-figure-images/figure012.png)  
 > [[ Figure 12. Rotations around the three axes. ]]
 
-> WARNING: The examples in Figure 12 all present a fully 3D appearance.  This is only possible with certain values of the properties `transform-style` and `perspective`, described in a later section.  This will be true throughout this text in any situation where 3D-transformed elements appear to be fully three-dimensional.
+> WARNING: Several of the examples in Figure 12 present a fully 3D appearance.  This is only possible with certain values of the properties `transform-style` and `perspective`, described in a later section and omitted here for clarity.  This will be true throughout this text in any situation where 3D-transformed elements appear to be fully three-dimensional.
 ---
 
 ---
@@ -341,13 +349,15 @@ If you’re comfortable with vectors and want to rotate an element through 3D sp
 
 To start with a simple example, the 3D equivalent to `rotate(45deg)` is `rotate3d(0,0,1,45deg)`.  That specifies a vector of zero magnitude on the X and Y axes, and a magnitude of 1 along the Z axis.  In other words, it describes the Z axis.  The element is thus rotated 45 degrees around that vector, as shown in Figure 13.  That figure also shows the appropriate `rotate3d()` values to rotate an element by 45 degrees around the X and Y axes.
 
+> ![](transforms-figure-images/figure013.png)  
 > [[ Figure 13. Rotations around 3D vectors. ]]
 
 A little more complicated is something like `rotate3d(-0.25,0.35,0.66667,45deg)`, where the described vector points off in to 3D space between the axes.  This has the result shown (and illustrated via schematic) in Figure 14.
 
+> ![](transforms-figure-images/figure014.png)  
 > [[ Figure 14. Rotation around a 3D vector, and how that vector is determined. ]]
 
-If you’re no comfortable with vectors, that’s okay; most people aren’t.  You’ll really only ever need to use them if you’re doing precise 3D calculations, at which point you’ll be getting very familiar with vectors whether you want to or not.
+If you’re not comfortable with vectors, that’s okay; most people aren’t.  You’ll really only ever need to use them if you’re doing precise 3D calculations, at which point you’ll be getting very familiar with vectors whether you want to or not.
 
 ### Skew functions
 
@@ -365,6 +375,7 @@ When you skew an element, you slant it along one or both of the X and Y axes.  T
 
 In both cases, you supply an angle value, and the element is skewed to match that angle.  It’s much easier to show skewing rather than try to explain it in words, so Figure 15 shows a number of skew examples along the X and Y axes.
 
+> ![](transforms-figure-images/figure015.png)  
 > [[ Figure 15. Skewing along the X and Y axes. ]]
 
 
@@ -381,6 +392,7 @@ In both cases, you supply an angle value, and the element is skewed to match tha
 
 The `skew()` function is just a shorthand for `skewX()` and `skewY()`, accepting either one degree value or two comma-separated degree values.  If you have two values, the X skew angle is always first, and the Y skew angle comes second.  If you leave out a Y skew angle, then it’s treated as zero.  This means `skew(45deg)` is functionally equivalent to `skewX(45deg)`.  Figure 16 shows some double-skewed elements.
 
+> ![](transforms-figure-images/figure016.png)  
 > [[ Figure 16. Skewed elements. ]]
 
 
@@ -406,6 +418,7 @@ In the documentation for Safari, Apple writes that perspective values below `300
 
 [^1]: https://developer.apple.com/library/safari/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Using2Dand3DTransforms/Using2Dand3DTransforms.html
 
+> ![](transforms-figure-images/figure018.png)  
 > [[ Figure 18. The effects of varying perspective values. ]]
 
 Perspective values must always be positive, non-zero lengths.  Any other value will cause the `perspective()` function to be ignored.  Also note that its placement in the list of functions is very important.  If you look at the code for Figure 18, the `perspective()` function comes before the `rotateY()` function.  If you were to reverse the order, the rotation would happen before the perspective is applied, so all four examples in Figure 18 would look exactly the same.  So if you plan to apply a perspective value via the list of transform functions, make sure it comes first, or at the very least before any transforms that depend on it.  This serves as a particularly stark reminder that the order you write `transform` functions can be very important.
@@ -446,6 +459,7 @@ Right.  So what does that do?  It has the result shown in Figure 19, which is ex
 
 	rotate(33deg) translate(24px,25px) skewX(-10deg)
 
+> ![](transforms-figure-images/figure019.png)  
 > [[ Figure 19. A matrix-transformed element and its functional equivalent. ]]
 
 What this comes down to is, if you’re familiar with or need to make use of matrix calculations, you can and should absolutely use them.  If not, you can chain much more human-readable transform functions together and get the element to the same end state.
@@ -483,6 +497,7 @@ Again, just for kicks, we’ll savor the definition of `matrix3d()` from the CSS
 
 …as shown in Figure 20.
 
+> ![](transforms-figure-images/figure020.png)  
 > [[ Figure 20. A matrix3d-transformed element and its functional equivalent. ]]
 
 ### A note on end-state equivalence
@@ -559,10 +574,12 @@ Percentages are calculated with respect to the corresponding axis and size of th
 
 All right, so if you change the origin, what happens?  The easiest way to visualize this is with rotations.  Suppose you rotate an element 45 degrees to the right.  Its final placement will depend  on its origin.  Figure 22 illustrates the the effects of several different transform origins.
 
+> ![](transforms-figure-images/figure022.png)  
 > [[ Figure 22. The rotational effects of using various transform origins. ]]
 
-The origin matters for other transform types, such as skews and scales.  Scaling an element with its origin in the center will pull in all sides equally, whereas scaling an element with a bottom-right origin will cause it to shrink toward that corner.  Similarly, skewing an element with respect to its center will result in the same shape as if it’s skewed with respect to the top right corner, but the placement of the shape will be different.  Some examples are shown in Figure 23.
+The origin matters for other transform types, such as skews and scales.  Scaling an element with its origin in the center will pull in all sides equally, whereas scaling an element with a bottom-right origin will cause it to shrink toward that corner.  Similarly, skewing an element with respect to its center will result in the same shape as if it’s skewed with respect to the top right corner, but the placement of the shape will be different.  Some examples are shown in Figure 23; in each case, the transform origin is marked with a circle.
 
+> ![](transforms-figure-images/figure023.png)  
 > [[ Figure 23. The skew effects of using various transform origins. ]]
 
 The one transform type that isn’t really affected by changing the transform origin is translation.  If you push an element around with `translate()`, or its cousins like `translateX()` and `translateY()`, it’s going to end up in the same place regardless of where the transform origin is located.  If that’s all the transforming you plan to do, then setting the transform origin is irrelevant.  If you ever do anything besides translating, though, the origin will matter.  Use it wisely.
@@ -608,6 +625,7 @@ Suppose you have an element you want to move “closer to” your eye, and then 
 
 So you do that, and get the result shown in Figure 24; more or less what you might have expected.
 
+> ![](transforms-figure-images/figure024.png)  
 > [[ Figure 24. A 3D-transformed inner `div`. ]]
 
 But then you decide to rotate the outer `div` to one side, and suddenly nothing makes sense any more.  The inner `div` isn’t where you envisioned it.  In fact, it just looks like a picture pasted to the front of the outer `div`.
@@ -616,6 +634,7 @@ Well, that’s exactly what it is, because the default value of `transform-style
 
 	div#outer {transform: perspective(750px) rotateY(60deg) rotateX(-20deg);}
 
+> ![](transforms-figure-images/figure025.png)  
 > [[ Figure 25. The effects of a `flat` transform style. ]]
 
 Change the value to `preserve-3d`, however, and things suddenly change.  The inner `div` will be drawn as a full 3D object with respect to its parent outer `div`, floating in space nearby, and _not_ as a picture pasted on the front of the outer `div`.  You can see the results of this change in Figure 26.
@@ -624,6 +643,7 @@ Change the value to `preserve-3d`, however, and things suddenly change.  The inn
 		transform-style: preserve-3d;}
 	div#inner {transform: perspective(750px) translateZ(60px) rotateX(45deg);}
 
+> ![](transforms-figure-images/figure026.png)  
 > [[ Figure 26. The effects of a 3D-preserved transform style. ]]
 
 One important aspect of `transform-style` is that it can be overridden by other properties.  The reason is that some values of these other properties require a flattened presentation of an element and its children in order to work at all.  In such cases, the value of `transform-style` is forced to be `flat` regardless of what you may have declared.
@@ -693,6 +713,7 @@ With the `perspective` property, on the other hand, you’re creating a perspect
 	<div id="one"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
 	<div id="two"><img src="rsq.gif"><img src="rsq.gif"><img src="rsq.gif"></div>
 
+> ![](transforms-figure-images/figure027.png)  
 > [[ Figure 27. Shared perspective versus individual perspectives. ]]
 
 In Figure 27, we see first a line of images that haven’t been transformed.  In the second line, each image has been rotated 50 gradians (equivalent to 45 degrees) toward us, but each one within its own individual perspective.
@@ -758,12 +779,14 @@ As with most 3D transform properties, this is more easily demonstrated than desc
 		<div id="ruler"></div>
 	</div>
 
+> ![](transforms-figure-images/figure028.png)  
 > [[ Figure 28. A basic “ruler.” ]]
 
 What we have is a repeated background image of tick-marks on a ruler, with the `div` that contains them tiled away from us by 60 degrees.  All the lines point at a common vanishing point, the top center of the container `div` (because of the `50% 0%` value for `perspective-origin`).
 
 No consider that same setup with various perspective origins, as shown in Figure 29.
 
+> ![](transforms-figure-images/figure029.png)  
 > [[ Figure 29. A basic “ruler” with different perspective origins. ]]
 
 As you can see, moving the perspective origin changes the rendering of the 3D-transformed element.
@@ -814,6 +837,7 @@ So let’s say you flip over two elements, one with `backface-visibility` set to
 	<span><img src="salmon.gif" class="flip" id="show"></span>
 	<span><img src="salmon.gif" class="flip" id="hide"></span>
 
+> ![](transforms-figure-images/figure030.png)  
 > [[ Figure 30. Visible and hidden backfaces. ]]
 
 As you can see, the first image is unchanged.  The second is flipped over around its X axis, so we see it from the back.  The third has also been flipped, but we can’t see its back because it’s hidden.
@@ -840,6 +864,7 @@ There’s a variant on that example that uses the same markup, but slightly diff
 		background: rgba(255,255,255,0.85);}
 	section:hover {transform: rotateY(180deg); transform-style: preserve-3d;}
 
+> ![](transforms-figure-images/figure031.png)  
 > [[ Figure 31. Information on the back. ]]
 
 The only thing we had to do to make that happen was to just shift the `backface-visibilty: hidden` to the `div` instead of applying it to both the `ing` and the `div`.  Thus, the `div`’s backface is hidden when it’s flipped over, but the image’s is not.
