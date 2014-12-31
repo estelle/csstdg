@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Test rotate</title>
+  <style>
+    #one {
+      margin: 100px 100px 0 100px;
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border: 1px solid #999;
+      z-index: 1;
+      background: linear-gradient(to top, transparent 99px, #999 99px, #999 100px, transparent 100px),
+        linear-gradient(to left, transparent 99px, #999 99px, #999 100px, transparent 100px),
+        linear-gradient(75deg, transparent 60px, #666 60px, #666 61px, transparent 61px),
+        linear-gradient(30deg, transparent 60px, #666 60px, #666 61px, transparent 61px);
+      background-position: 0 0, 0 0, 37px 0, 100px -29px;
+      background-size: 100% 100%, 100% 100%, 100% 50%, 100% 100%;
+      background-repeat: no-repeat;
+    }
+    #two {
+      position: absolute;
+      top: 0; left: 0;
+      content: '';
+      width: 200px;
+      height: 200px;
+      z-index: 5;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2));
+      border: 1px solid #000;
+      transform: skew(15deg, 15deg);
+      transform: skew(15deg, 30deg);
+    }
+     #three {
+      position: absolute;
+      top: 0; left: 0;
+      content: '';
+      width: 200px;
+      height: 200px;
+      z-index: 5;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2));
+      border: 1px solid #000;
+      transform: skew(15deg, 15deg);
+      transform: skewx(15deg) skewy 30deg);
+    }
+    p {font-family: monospace;
+      width: 200px;
+      text-align: center;
+      margin: 30px 100px;}
+  </style>
+</head>
+<body>
+<div id="one"><div id="two"><div id="three"></div></div></div>
+<p>skew(15deg, 30deg)<br/>skewx(15deg) skewy 30deg)
+</body>
+</html>

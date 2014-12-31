@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Transitioning menu</title>
+  <style>
+  nav, ul, li {margin: 0; padding: 0; font-family: helvetica; text-align: center;cursor: pointer; line-height: 1.4}
+nav {
+float: left;
+width: 100%;
+margin-bottom: 20px;
+}
+
+
+nav ul li {
+list-style-type: none;
+background-color: #f00;
+color: #FFF;
+margin: 0;
+padding: 3px 5px;
+border: 1px solid #FFF;
+text-shadow: 1px 1px rgba(0,0,0,0.2);
+}
+
+nav ul ul {
+  transform: scale(1,0);
+  opacity: 0;
+  transform-origin: top center;
+  transition: all 4s steps(8, start) 1s;
+  position:absolute;
+  top: 100%;
+}
+nav li:hover ul {
+  transform: scale(1,1);
+  transition: all 1s linear 50ms;
+  opacity: 1;
+}
+
+nav > ul > li {
+  display: inline-block;
+  position:relative;
+  float: left;
+  min-width: 120px;
+}
+  </style>
+</head>
+<body>
+<nav>
+  <ul>
+      <li>About
+        <ul>
+            <li>Me</li>
+            <li>You</li>
+            <li>Them</li>
+            <li>Nobody</li>
+       </ul>
+        </li>
+        <li>Posts
+        <ul>
+            <li>Door Post</li>
+            <li>Wall hanging</li>
+            <li>Stair Banister</li>
+            <li>Washington</li>
+       </ul></li>
+        <li>Topics
+        <ul>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>HTML5</li>
+            <li>SEO</li>
+       </ul></li>
+        <li>Events
+        <ul>
+            <li>Party</li>
+            <li>Dinner</li>
+            <li>Hike</li>
+            <li>Foo Camp</li>
+       </ul></li>
+   </ul>
+</nav>
+</body>
+</html>

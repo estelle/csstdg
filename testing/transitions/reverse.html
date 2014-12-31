@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>transition-delay property</title>
+  <style>
+    div {
+        background-image: linear-gradient(red, red),
+                          linear-gradient(green, green),
+                          linear-gradient(blue, blue),
+                          linear-gradient(black, black),
+                          linear-gradient(red, red),
+                          linear-gradient(green, green),
+                          linear-gradient(blue, blue),
+                          linear-gradient(black, black),
+                          linear-gradient(red, red),
+                          linear-gradient(green, green),
+                          linear-gradient(blue, blue),
+                          linear-gradient(black, black)
+                          ;
+        background-repeat: no-repeat;
+        background-size: 10px 10px, 20px 20px, 30px 30px, 40px 40px;
+        transition: background-size 1s ease-in 0s;
+        background-position: 10px 10px, 20px 20px, 30px 30px, 40px 40px,
+        10px 50px, 20px 70px, 30px 90px, 40px 140px,
+        10px 150px, 20px 220px, 30px 330px, 40px 440px,
+        110px 10px, 220px 20px, 330px 30px, 440px 40px;
+        height: 600px;
+        width: 700px;
+    }
+    div:hover {
+        background-size: 33px 33px, 66px 66px, 99px 99px;
+        transition: background-size 4s steps(10, end) 1s;
+    }
+  </style>
+</head>
+<body>
+<div>This is my quirkly little box</div>
+</body>
+</html>

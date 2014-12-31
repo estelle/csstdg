@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head style="display: block;">
+  <meta charset="utf-8"/>
+  <title>Order that :not is implemented</title>
+  <style style="display: block; padding: 10px; border: solid" contenteditable>
+
+li:nth-of-type(odd):not(.x) {
+  color:red;
+}
+li.x:not(:nth-of-type(odd)) {
+  text-decoration: underline;
+}
+
+.x:nth-of-type(even) {
+  font-style: italic;
+}
+
+
+  </style>
+</head>
+<body>
+  <ol>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li class="x">xxx</li>
+    <li class="x">xxx</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li class="x">xxx</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+    <li>test</li>
+</ol>
+</body>
+</html>

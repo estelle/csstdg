@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Images no longer get borders within links</title>
+  <style>
+ol li:only-child {color: red;}
+ol > li:only-child {text-decoration: underline;}
+ul:only-child {font-weight: bold;}
+li :only-child {font-size: 120%;}
+
+
+  </style>
+</head>
+<body>
+<ol>
+  <li>No match</li>
+  <li>No match
+    <ul>
+      <li>I am an only <em>child</em></li>
+    </ul>
+  </li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Test rotate</title>
+  <style>
+  body {padding-left: 50px; padding-top: 70px}
+  section {padding: 40px 50px 0px; float: left;
+      position: relative;}
+    .back {position: relative;
+      width: 200px;
+      height: 200px;
+      border: 1px solid #999;
+      z-index: 1;
+      background: linear-gradient(to top, transparent 99px, #999 99px, #999 100px, transparent 100px),
+        linear-gradient(to left, transparent 99px, #999 99px, #999 100px, transparent 100px);
+      background-position: 0 0;
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+     div > div {
+      position: absolute;
+      top: 0; left: 0;
+      content: '';
+      width: 200px;
+      height: 200px;
+      z-index: 5;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2));
+      border: 1px solid #000;
+    }
+    .a {
+      transform:  skew(20deg, 40deg);
+    }
+    .b {
+      transform:  skewx(20deg) skewy(40deg);
+    }
+
+    .c {
+      transform:  skewy(40deg) skewx(20deg);
+    }
+    p {font-family: monospace;
+      width: 200px;
+      text-align: center;
+      margin: 30px auto;}
+  </style>
+</head>
+<body>
+<section><div class="back"><div class=a></div></div>
+<p>skew(20deg, 40deg)
+</section>
+<section><div class="back"><div class=b></div></div>
+<p>skewx(20deg) skewy(40deg)
+</section>
+<section><div class="back"><div class=c></div></div>
+<p>skewy(40deg) skewx(20deg)
+</section>
+
+</body>
+</html>

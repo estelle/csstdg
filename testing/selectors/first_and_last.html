@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Using first and last to determine # of children</title>
+  <style>
+
+li:only-child {width: 100%;}
+li:nth-child(1):nth-last-child(2),
+li:nth-child(2):nth-last-child(1) {width: 50%;}
+li:nth-child(1):nth-last-child(3),
+li:nth-child(1):nth-last-child(3) ~ li {width: 33.33%;}
+li:nth-child(1):nth-last-child(4),
+li:nth-child(1):nth-last-child(4) ~ li {width: 25%;}
+ul {outline: 1px solid; margin:0; padding:0; margin-bottom: 2em; width: 100%; float: left; clear: both;list-style-type: none;}
+li {float: left; background-color: #ccc; margin:0; padding:0;  box-sizing: border-box; text-align: center; }
+li:nth-child(even) {background-color: #ededed;}
+
+  </style>
+</head>
+<body>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+  </ul>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+  </ul>
+  <ul>
+    <li>1</li>
+  </ul>
+
+</body>
+</html>

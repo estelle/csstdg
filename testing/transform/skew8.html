@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Test rotate</title>
+  <style>
+    #one {
+      margin: 100px 100px 0 100px;
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border: 1px solid #999;
+      z-index: 1;
+      background: linear-gradient(to top, transparent 99px, #999 99px, #999 100px, transparent 100px),
+        linear-gradient(to left, transparent 99px, #999 99px, #999 100px, transparent 100px),
+        linear-gradient(70deg, transparent 60px, #666 60px, #666 61px, transparent 61px);
+      background-position: 0 0;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+     #two {
+      position: absolute;
+      top: 0; left: 0;
+      content: '';
+      width: 200px;
+      height: 200px;
+      z-index: 5;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2));
+      border: 1px solid #000;
+      transform:  skew(20deg);
+    }
+    p {font-family: monospace;
+      width: 200px;
+      text-align: center;
+      margin: 30px 100px;}
+  </style>
+</head>
+<body>
+<div id="one"><div id="two"></div></div>
+<p>skew(20deg)
+</body>
+</html>
