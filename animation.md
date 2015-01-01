@@ -365,7 +365,7 @@ Similar to the  `transition-timing-function` property, the `animation-timing-fun
 
  **Values:**
 
-    ease | linear | ease-in | ease-out | |ease-in-out | step-start | step-end | steps(&lt;integer>, &lt;start|end>), cubic-bezier(&lt;number>, &lt;number>, &lt;number>, &lt;number>)
+    ease | linear | ease-in | ease-out | |ease-in-out | step-start | step-end | steps(&lt;integer>, start) | steps(&lt;integer>, end) | cubic-bezier(&lt;number>, &lt;number>, &lt;number>, &lt;number>)
 
  **Initial value:**
 
@@ -748,287 +748,26 @@ Note that CSS animations have the lowest priority on the UI thread. If you attac
 
 > *** While you can use animations to create changing content, dynamically changing content can lead to seizures in some users. Always keep accessibility in mind, including the accessibility of your website to people with epilepsy and other seizure disorders. 
 
+## Animation Events
+
+There are a few animation-related events you can access with DOM event listeners. 
+
+#### `animationstart`
+
+The `animationstart` event occurs at the start of the animation. If there is an animation-delay then this event will fire once the delay period has expired. If there is no delay, `animationstart` event occurs when the animation is applied to the element. If there are no iterations, the `animationstart` event still occurs.
+
+#### `animationend`
+
+The `animationend` event occurs at the conclusion of the last animation. It only occurs once per applied animation: if an element has 3 animations applied to it, the `animationend` event will occur 3 times: at the end of the last iteration, which is usually equivalent to the result of the following equation:
+
+(animation-duration * animation-iteration-count) + animation delay = time
+
+If there are no iterations, the `animationend` event still occurs once for each animation applied. If the `animation-iteration-count` is set to infinite, the `animationend` event never occurs.
+
+#### `animationiteration` 
+
+The `animationiteration` event occurs at the end of each iteration of an animation. If there are no iterations, or the iteration count is less than one, the `animationiteration` event never occurs. If the iteration count is infinite, the `animationiteration` event occurs ad infinidum. Unlike the `animationstart` and `animationend` events with each occur only once per animation name, the `animationiteration` event can occur multiple times or no times per animation name. 
+
 #### Printing Animations
 
 While not actually "animating" on a printed piece of paper, when an animated element is printed, the relevant property values will be printed. When it comes to print, obviously you can't see the element animating on a piece of paper, but if the animation causes an element to have a border-radius of 50%, the printed element will have a border-radius of 50%. 
-
-============
-ABOVE IS WHAT ESTELLE WROTE,
-BELOW IS THE SPECIFICATION
-============
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-In addition to the property-specific values listed in their definitions, all properties defined in this specification also accept the `initial` and `inherit` keyword as their property value.
-
-
-
-
-The start time of an animation is the time at which the style applying the animation and the corresponding @keyframes rule are both resolved. If an animation is specified for an element but the corresponding @keyframes rule does not yet exist, the animation cannot start; the animation will start from the beginning as soon as a matching @keyframes rule can be resolved. An animation specified by dynamically modifying the element’s style will start when this style is resolved; that may be immediately in the case of a pseudo style rule such as hover, or may be when the scripting engine returns control to the browser (in the case of style applied by script). Note that dynamically updating keyframe style rules does not start or restart an animation.
-
-An animation applies to an element if its name appears as one of the identifiers in the computed value of the `animation-name` property and the animation uses a valid @keyframes rule. Once an animation has started it continues until it ends or the `animation-name` is removed. The values used for the keyframes and animation properties are snapshotted at the time the animation starts. Changing them during the execution of the animation has no effect. Note also that changing the value of `animation-name` does not necessarily restart an animation (e.g., if a list of animations are applied and one is removed from the list, only that animation will stop; The other animations will continue). In order to restart an animation, it must be removed then reapplied.
-
-The end of the animation is defined by the combination of the `animation-duration`, `animation-iteration-count` and `animation-fill-mode` properties.
-
-  div {
-    animation-name: diagonal-slide;
-      animation-duration: 5s;
-      animation-iteration-count: 10; }
-
-  @keyframes diagonal-slide {
-
-      from {
-        left: 0;
-        top: 0;
-      }
-
-      to {
-        left: 100px;
-        top: 100px;
-      }
-    }
-
-This will produce an animation that moves an element from (0, 0) to   (100px, 100px) over five seconds and repeats itself nine times  (for a total of ten iterations).
-
-
-
-
-
-
-
-Issue: Need to describe what happens if a property is not present in all keyframes.
-
-The @keyframes rule that is used by an animation will be the last one encountered in sorted rules order that matches the name of the animation specified by the `animation-name` property.
- div {
-  		animation-name: slide-right;
-  		animation-duration: 2s; }
- @keyframes slide-right {
-
-  		from {
-    		margin-left: 0px;
-  		}
-
-  		50% {
-    		margin-left: 110px;
-    		opacity: 1;
-  		}
-
-  		50% {
-     	opacity: 0.9;
-  		}
-
-  		to {
-    		margin-left: 200px;
-  		}
- }
-
-At the 1s mark, the slide-right animation will have the same state as if we had defined the 50% rule like this:
-
- @keyframes slide-right {
-
-  		50% {
-    		margin-left: 110px;
-    		opacity: 0.9;
-  		}
-
-  		to {
-    		margin-left: 200px;
-  		}
- }
-
-
-To determine the set of keyframes, all of the values in the selectors are sorted in increasing order by time. The rules within the @keyframes rule then cascade; the properties of a keyframe may thus derive from more than one @keyframes rule with the same selector value.
-
-If a property is not specified for a keyframe, or is specified but invalid, the animation of that  property proceeds as if that keyframe did not exist. Conceptually, it is as if a set of keyframes is constructed for each property that is present in any of the keyframes, and an animation is run independently for each property.
-
-    @keyframes wobble {
-    	0% {
-    	   left: 100px;
-    	}
-    	40% {
-    	   left: 150px;
-    	}
-    	60% {
-    	   left: 75px;
-    	}
-    	100% {
-    	   left: 100px;
-    	} 
-    }
-  
-  Four keyframes are specified for the animation named "wobble". In the first keyframe, 	shown at the beginning of the animation cycle, the value of the `left` property being animated is `100px`. By 40% of the animation duration, `left` has animated to `150px`. 	At 60% of the animation duration, `left` has animated back to `75px`. At the end of the animation cycle, the value of `left` has returned to `100px`. The diagram below shows the state of the animation if it were given a duration of `10s`.
-
-
-### Timing functions for keyframes
-
-A keyframe style rule may also declare the timing function that is to be used as the animation moves to the next keyframe.
-
-	@keyframes bounce {
- 		from {
-	 		top: 100px;
-		  animation-timing-function: ease-out;
-		}
-		25% {
-  			top: 50px;
-  			animation-timing-function: ease-in;
-  		}
-  		50% {
-    		top: 100px;
-    		animation-timing-function: ease-out;
-    	}
-    	75% {
-    		top: 75px;
-    		animation-timing-function: ease-in;
-    	to {
-    		top: 100px;
-  		}
-	}
-
-Five keyframes are specified for the animation named "bounce". Between the first and second 	keyframe (i.e., between 0% and 25%) an ease-out timing function is used. Between the second  and third keyframe (i.e., between 25% and 50%) an ease-in timing function is used. And so on.
-
-The effect will appear as an element that moves up the page 50px, slowing down as it reaches its highest point then speeding up as it falls back to 100px. The second half of the animation behaves in a similar manner, but only moves the element 25px up the page.
-
-
-
-
-
-## Animation Events
-
-Several animation-related events are available through the DOM Event system. The start and end of an animation, and the end of each iteration of an animation, all generate DOM events. An element can have multiple properties being animated simultaneously. This can occur either with a single `animation-name` value with keyframes containing multiple properties, or with multiple `animation-name` values. For the purposes of events, each `animation-name` specifies a single animation. Therefore an event will be generated for each `animation-name` value and not necessarily for each property being animated.
-
-Any animation for which a valid keyframe rule is defined will run and generate events; this includes animations with empty keyframe rules.
-
-The time the animation has been running is sent with each event generated. This allows the event handler to determine the current iteration of a looping animation or the current position of an alternating animation. This time does not include any time the animation was in the `paused` play state.
-
-### The `AnimationEvent` Interface
-
-The `AnimationEvent` interface provides specific contextual information associated with Animation events.
-
-
-#### Attributes
-
-`animationName`, of type DOMString, readonly
-The value of the animation-name property of the animation that fired the event.
-
-`elapsedTime`, of type float, readonly
-The amount of time the animation has been running, in seconds, when this event fired, excluding any time the animation was paused. For an animationstart event, the elapsedTime is zero unless there was a negative value for animation-delay, in which case the event will be fired with an elapsedTime of (-1 * delay).
-`pseudoElement`, of type DOMString, readonly
-The name (beginning with two colons) of the CSS pseudo-element on which the animation runs (in which case the target of the event is that pseudo-element’s corresponding element), or the empty string if the animation runs on an element (which means the target of the event is that element).
-AnimationEvent(type, animationEventInitDict) is an event constructor.
-
-### Types of AnimationEvent
-
-The different types of animation events that can occur are:
-
-** animationstart **
-
-The `animationstart` event occurs at the start of the animation. If there is an animation-delay then this event will fire once the delay period has expired.
-
-A negative delay will cause the event to fire with an elapsedTime equal to the absolute value of the delay; in this case the event will fire whether animation-play-state is set to running or paused.
-
-Bubbles: Yes
-Cancelable: No
-Context Info: animationName, pseudoElement
-
-
-** animationend ** 
-
-The `animationend` event occurs when the animation finishes.
-
-Bubbles: Yes
-Cancelable: No
-Context Info: animationName, elapsedTime, pseudoElement
-
-
-** animationiteration **
-The `animationiteration` event occurs at the end of each iteration of an animation, except when an animationend event would fire at the same time. This means that this event does not occur for animations with an iteration count of one or less.
-
-Bubbles: Yes
-Cancelable: No
-Context Info: animationName, elapsedTime, pseudoElement
-
-## 6 DOM Interfaces
-
-CSS animations are exposed to the CSSOM through a pair of new interfaces describing the keyframes.
-
-### The CSSRule Interface
-
-The following two rule types are added to the CSSRule interface. They provide identification for the new keyframe and keyframes rules.
-
-### The CSSKeyframeRule Interface
-
-The CSSKeyframeRule interface represents the style rule for a single key.
-
-#### Attributes
-
-`keyText`, of type DOMString
-This attribute represents the keyframe selector as a comma-separated list of percentage values. The from and to keywords map to 0% and 100%, respectively.
-If keyText is updated with an invalid keyframe selector, a SyntaxError exception must be thrown.
-
-`style`, of type CSSStyleDeclaration
-This attribute represents the style associated with this keyframe.
-
-### The CSSKeyframesRule Interface
-
-The CSSKeyframesRule interface represents a complete set of keyframes for a single animation.
-
-#### Attributes
-
-`name`, of type DOMString
-This attribute is the name of the keyframes, used by the animation-name property.
-
-`cssRules`, of type CSSRuleList
-This attribute gives access to the keyframes in the list.
-
-#### The `appendRule` method
-
-The `appendRule()` method appends the passed CSSKeyframeRule into the list at the passed key.
-
-Parameters:
-
-rule of type DOMString
-The rule to be appended, expressed in the same syntax as one entry in the @keyframes rule.
-No Return Value
-
-No Exceptions
-
-#### The deleteRule method
-
-The `deleteRule()` deletes the CSSKeyframeRule with the passed key. If a rule with this key does not exist, the method does nothing.
-
-Parameters:
-
-key of type DOMString
-The key which describes the rule to be deleted. A percentage value between 0% and 100%, or one of the keywords fro or to which resolve to 0% and 100%, respectively.
-No Return Value
-
-No Exceptions
-
-#### The findRule method
-
-The findRule() returns the rule with a key matching the passed key. If no such rule exists, a null value is returned.
-
-Parameters:
-
-key of type DOMString
-The key which describes the rule to be deleted. A percentage value between 0% and 100%, or one of the keywords fro or to which resolve to 0% and 100%, respectively.
-Return Value:
-
-CSSKeyframeRule
-The found rule.
-No Exceptions
-
-
